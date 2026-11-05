@@ -50,30 +50,39 @@ Pilih penyu → Pilih metode penetasan → Menetas & lari ke laut
 
 Tiap spesies punya kelebihan dan kekurangan yang **berasal dari fakta biologinya**, jadi memilih karakter sekaligus belajar.
 
-| Penyu | Nama ilmiah | Status IUCN* | Makanan utama (jadi makanan di game) | Gaya main | Tingkat kesulitan |
-|---|---|---|---|---|---|
-| **Lekang** | *Lepidochelys olivacea* | Rentan (VU) | Udang, kepiting, ubur-ubur, kerang (omnivora) | Paling kecil dan lincah, cepat tumbuh, tapi ukuran maksimalnya kecil. Ini penyu yang paling banyak ditangani BSTF | ★ Mudah |
-| **Hijau** | *Chelonia mydas* | Terancam (EN) | Lamun & alga (dewasa herbivora) | Seimbang. Bisa *merumput* di padang lamun untuk isi energi dengan cepat | ★★ Sedang |
-| **Sisik** | *Eretmochelys imbricata* | Kritis (CR) | Spons di terumbu karang | Paruh runcing seperti elang, gesit di sela karang, bisa masuk celah sempit | ★★★ Sulit |
-| **Belimbing** | *Dermochelys coriacea* | Rentan (VU), subpopulasi Pasifik Barat Kritis | Ubur-ubur | Terbesar dan paling cepat di laut lepas. Tapi **kantong plastik terlihat sangat mirip ubur-ubur**, jadi pemain harus jeli | ★★★★ Ahli |
+| Penyu | Nama ilmiah | Status IUCN* | Makanan utama (jadi makanan di game) | Gaya main |
+|---|---|---|---|---|
+| **Lekang** | *Lepidochelys olivacea* | Rentan (VU) | Udang, kepiting, ubur-ubur, kerang (omnivora) | Paling kecil dan lincah, cepat tumbuh, tapi ukuran maksimalnya kecil. Ini penyu yang paling banyak ditangani BSTF |
+| **Hijau** | *Chelonia mydas* | Terancam (EN) | Lamun & alga (dewasa herbivora) | Seimbang. Bisa *merumput* di padang lamun untuk isi energi dengan cepat |
+| **Sisik** | *Eretmochelys imbricata* | Kritis (CR) | Spons di terumbu karang | Paruh runcing seperti elang, gesit di sela karang, bisa masuk celah sempit |
+| **Belimbing** | *Dermochelys coriacea* | Rentan (VU), subpopulasi Pasifik Barat Kritis | Ubur-ubur | Terbesar dan paling cepat di laut lepas. Tapi **kantong plastik terlihat sangat mirip ubur-ubur**, jadi pemain harus jeli |
 
 \*Status IUCN global. Perlu dicek ulang sebelum ditampilkan.
 
+Keempat penyu dibuat **seimbang**: kelebihan satu jenis diimbangi kekurangannya. Jenis penyu hanya menentukan gaya main. **Tingkat kesulitan ditentukan oleh metode penetasan** (bagian 3.2).
+
 Layar pilih karakter menampilkan: ilustrasi, ukuran dewasa, makanan, status konservasi, dan satu fakta unik. Contohnya: *"Cangkang penyu belimbing bukan sisik keras, melainkan kulit tebal dengan 7 alur memanjang, mirip buah belimbing."*
 
-### 3.2 Pemilihan metode penetasan
+### 3.2 Metode penetasan = tingkat kesulitan
 
-Ketiga metode ini benar-benar dipakai di lapangan. Di game, setiap pilihan mengubah **awal permainan, jumlah nyawa, dan pengali skor**. Nyawa digambarkan sebagai **saudara tukik dari sarang yang sama**: jika tukikmu dimangsa, kamu lanjut bermain sebagai saudaranya.
+Ketiga metode ini benar-benar dipakai di lapangan. Di game, metode yang dipilih **menentukan tingkat kesulitan**: seberapa berat perjalanan awal tukik dari sarang ke laut, dan berapa banyak saudara tukik yang menemaninya. Nyawa digambarkan sebagai **saudara tukik dari sarang yang sama**: jika tukikmu dimangsa, kamu lanjut bermain sebagai saudaranya.
 
-| Metode | Penjelasan nyata | Angka tetas (rujukan kasar) | Di dalam game |
-|---|---|---|---|
-| **Alami** | Telur dibiarkan di sarang asli di pantai. Hasilnya bergantung pada alam: predator, pasang air laut, suhu, dan manusia | Bervariasi dan sering lebih rendah. Satu studi penyu lekang di Kupang mencatat sekitar 36% (alami) dibanding 52% (semi alami); angka ini perlu dicek ke jurnal aslinya | **Mini-game "Lari ke Laut"** paling menantang: hindari kepiting hantu, burung, anjing, dan **jangan ikuti cahaya lampu** (fakta polusi cahaya). 2 nyawa, skor ×1,3 |
-| **Semi alami** | Telur dipindah (relokasi) ke sarang buatan di area penetasan yang dijaga, misalnya hatchery BSTF di Pantai Boom dan Pantai Cemara | Sekitar 50 sampai 75%. Contoh: penyu lekang BSTF 2018 mencapai 75% | Lari ke laut lebih pendek dan aman karena dijaga relawan. 3 nyawa, skor ×1,15 |
-| **Intan Box** | Inkubator **tanpa pasir** buatan BSTF yang didukung Bakti BCA. Suhu dan kelembapan diatur. Versi besarnya, Intan Ruang, menampung 15.000 telur | Di atas 90% (klaim BSTF). Antara melaporkan rata-rata Intan Ruang sekitar 85% | Tukik dilepas petugas langsung di bibir pantai, tanpa mini-game lari. 4 nyawa, skor ×1,0. Muncul kartu fakta tentang suhu dan jenis kelamin tukik |
+| Tingkat | Metode | Penjelasan nyata | Tingkat penetasan (rujukan) | Di dalam game |
+|---|---|---|---|---|
+| **Mudah** | **Intan Box** | Inkubator **tanpa pasir** buatan BSTF yang didukung Bakti BCA. Suhu dan kelembapan diatur. Versi besarnya, Intan Ruang, menampung 15.000 telur | Sekitar 85–90% (laporan BSTF dan Antara) | Tukik dilepas petugas di bibir pantai, langsung ke laut. 4 nyawa, skor ×1,0 |
+| **Sedang** | **Semi alami** | Telur dipindah (relokasi) ke sarang buatan di area penetasan yang dijaga, misalnya hatchery BSTF di Pantai Boom dan Pantai Cemara | Sangat bervariasi: sekitar 50% sampai 96% di berbagai studi. Penyu lekang di hatchery BSTF tahun 2018 mencapai 75% | Lari ke laut pendek dengan sedikit predator karena area dijaga relawan. 3 nyawa, skor ×1,15 |
+| **Sulit** | **Alami** | Telur dibiarkan di sarang aslinya di pantai. Ini cara alam yang tetap diutamakan selama sarangnya aman. Tantangannya predator, pasang air laut, suhu, dan gangguan manusia | Sangat bervariasi: bisa tinggi bila sarang aman (satu studi di Pantai Marengan sekitar 81%), bisa rendah bila terganggu (satu studi di Kupang sekitar 36%) | **Mini-game "Lari ke Laut"** paling menantang: hindari kepiting hantu, burung, anjing, dan **jangan ikuti cahaya lampu** (fakta polusi cahaya). 2 nyawa, skor ×1,3 |
 
-Catatan desain:
-- Intan Box sengaja **tidak** digambarkan sebagai pilihan yang lebih buruk. Ia adalah jalur yang paling aman (nyawa terbanyak). Pengali skor hanya menyeimbangkan tingkat kesulitan, sehingga ketiga jalur sama-sama bisa menembus papan juara.
-- Fakta yang ditonjolkan di jalur Intan Box: *"Jenis kelamin tukik ditentukan suhu sarang. Pasir yang makin hangat menghasilkan lebih banyak betina. Intan Box menjaga suhu sekitar 27,4–29,5°C sehingga lebih banyak tukik jantan menetas dan perbandingan jantan dan betina tetap seimbang."*
+Angka penetasan di atas diambil dari hasil pencarian atas beberapa studi berbeda dan perlu dicek ke jurnal aslinya.
+
+Catatan desain supaya **tidak ada metode yang terkesan paling baik**:
+- Label Mudah, Sedang, dan Sulit menggambarkan **tantangan permainan**, bukan peringkat mutu metode. Teks di game tidak memakai kata seperti "terbaik", "paling aman", atau "paling unggul".
+- Tingkat penetasan ditampilkan sebagai **rentang**, dengan keterangan: *"Hasil penetasan sangat bergantung pada kondisi pantai dan cara pengelolaannya."*
+- Setiap metode punya kartu fakta yang menjelaskan **perannya masing-masing**:
+  - **Alami:** *"Sarang alami adalah cara alam. Memindahkan telur adalah pilihan terakhir, hanya bila sarang alami tidak bisa dilindungi."*
+  - **Semi alami:** *"Telur dipindahkan ke area penetasan yang dijaga bila sarangnya terancam abrasi, pasang air laut, predator, atau pencurian telur."*
+  - **Intan Box:** *"Jenis kelamin tukik ditentukan suhu sarang. Pasir yang makin hangat menghasilkan lebih banyak betina. Intan Box menjaga suhu sekitar 27,4–29,5°C agar perbandingan jantan dan betina tetap seimbang."*
+- Pengali skor membuat tingkat Sulit lebih menguntungkan di papan juara, sehingga pemain tertantang mencoba metode alami. Opsional: papan juara dipisah per tingkat kesulitan.
 
 ### 3.3 Tahapan level (badan makin besar)
 
@@ -81,7 +90,7 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 
 | Tahap | Lingkungan | Makanan | Ancaman (predator) | Sampah | Durasi |
 |---|---|---|---|---|---|
-| 0. Menetas | Pantai Banyuwangi, malam | – | Kepiting, burung, cahaya lampu | – | ±20 detik |
+| 0. Menetas | Pantai Banyuwangi, malam | – | Kepiting, burung, cahaya lampu (jumlahnya sesuai tingkat kesulitan) | – | ±20 detik |
 | 1. Tukik | Laut lepas, rumput Sargassum yang mengapung | Plankton, ubur-ubur kecil, telur ikan | Ikan besar, burung laut | Sedotan, mikroplastik | ±60 detik |
 | 2. Remaja | Terumbu karang & padang lamun | Sesuai spesies (lihat 3.1) | Kerapu besar, hiu karang | Kantong plastik, botol, tutup botol | ±75 detik |
 | 3. Dewasa | Laut lepas | Sesuai spesies | Hiu macan, baling-baling kapal | **Jaring hantu** (jaring ikan yang terbuang), kantong plastik | ±75 detik |
@@ -116,8 +125,8 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 - Jarak migrasi: +1 per meter
 - Telur: +10 per butir
 - **Bonus Bebas Plastik**: +1.000 jika sama sekali tidak memakan plastik
-- Pengali spesies: Lekang ×1,0 · Hijau ×1,1 · Sisik ×1,2 · Belimbing ×1,3
-- Pengali metode penetasan: Intan Box ×1,0 · Semi alami ×1,15 · Alami ×1,3
+- Pengali tingkat kesulitan: Mudah/Intan Box ×1,0 · Sedang/Semi alami ×1,15 · Sulit/Alami ×1,3
+- Tidak ada pengali spesies, karena keempat penyu dibuat seimbang
 
 **Papan juara (leaderboard):**
 - Pemain mengisi **nama panggilan** (3 sampai 12 huruf, dengan filter kata kasar) dan memilih ikon penyunya. **Tidak meminta data pribadi** seperti nomor HP atau email, supaya aman dari sisi UU Pelindungan Data Pribadi.
@@ -166,7 +175,7 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 - Kosakata kunci: *mendukung, berkomitmen, berkolaborasi, kolaborasi lintas sektor, pelepasliaran tukik, relokasi sarang, keanekaragaman hayati, keberlanjutan, ekosistem pesisir, generasi mendatang, pilar Bakti Lingkungan.*
 - Selalu menyertakan **angka capaian** yang konkret, misalnya "lebih dari 63.000 tukik" atau "lebih dari 900 sarang".
 - Kutipan juru bicara (EVP Corporate Communication & Social Responsibility, Hera F. Haryn) bernada harapan dan inklusif. Contohnya: *"Kami berharap kolaborasi lintas sektor ini dapat terus menginspirasi masyarakat luas untuk bersama menjaga keanekaragaman hayati Indonesia."* Ada juga gagasan *langkah kecil yang konsisten akan membangun dampak lingkungan yang berkelanjutan.*
-- Tagar yang dipakai BCA: **#BaktiBCA**, **#BCAforSustainability**.
+- Tagar yang dipakai: **#BaktiBCA**.
 
 **Pembagian nada di game:**
 - **Teks gameplay** memakai sapaan *kamu*. Santai, singkat, dan ramah untuk anak dan remaja.
@@ -178,11 +187,11 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 >
 > Di alam, diperkirakan hanya 1 dari 1.000 tukik yang bertahan hingga dewasa. Karena itu, setiap telur yang terselamatkan sangat berarti.
 >
-> Sejak 2016, melalui pilar Bakti Lingkungan, BCA berkolaborasi dengan Banyuwangi Sea Turtle Foundation mendukung pelepasliaran lebih dari **63.000 tukik** dan relokasi lebih dari **900 sarang telur penyu** di Banyuwangi, Yogyakarta, dan Bali, termasuk melalui inovasi penetasan **Intan Box** dan **Intan Ruang**.
+> Sejak 2016, melalui pilar Bakti Lingkungan, BCA berkolaborasi dengan Banyuwangi Sea Turtle Foundation mendukung pelepasliaran lebih dari **63.000 tukik** dan relokasi lebih dari **900 sarang telur penyu** di Banyuwangi, Yogyakarta, dan Bali, mulai dari relokasi sarang telur hingga inovasi penetasan **Intan Box** dan **Intan Ruang**.
 >
 > Langkah kecil yang konsisten akan membawa dampak besar. **Mari bersama Bakti BCA menjaga keanekaragaman hayati Indonesia untuk generasi mendatang.**
 >
-> [QR: Kenali Bakti BCA]  #BaktiBCA #BCAforSustainability
+> [QR: Kenali Bakti BCA]  #BaktiBCA
 
 **Opsional, terhubung ke kegiatan booth:** jika di booth ada mesin pengumpul botol (RVM) seperti kampanye *10 Bottles for 1 Egg*, layar akhir bisa menambahkan: *"Bawa 10 botol plastik bekasmu ke booth ini untuk mendukung 1 tukik kembali ke laut."*
 
@@ -240,7 +249,7 @@ Semua teks fakta, angka capaian, dan teks ajakan disimpan di **file JSON terpisa
 - **Angka atau fakta keliru** → semua angka ada di JSON dan harus direview BCA/BSTF sebelum M5. Fakta yang sumbernya lemah ditulis dengan kata "diperkirakan".
 - **Wi-Fi pameran putus** → offline-first, papan juara lokal.
 - **Antrean panjang** → sesi 4–5 menit, ada opsi *Mode Cepat* (sekitar 3 menit), dan reset otomatis.
-- **Pengunjung anak kecil** → spesies Lekang sebagai mode mudah, kontrol cukup mengikuti jari, teks singkat dan ada ikonnya.
+- **Pengunjung anak kecil** → tingkat Mudah, kontrol cukup mengikuti jari, teks singkat dan ada ikonnya.
 - **Brand** → aset dan teks ajakan BCA melewati persetujuan tim komunikasi BCA.
 
 ---
@@ -289,7 +298,6 @@ Semua teks fakta, angka capaian, dan teks ajakan disimpan di **file JSON terpisa
 - [Ini Cara BCA Dukung Pelestarian Lingkungan (Kontan)](https://keuangan.kontan.co.id/news/ini-cara-bca-dukung-pelestarian-lingkungan)
 - [Pelestarian Orangutan, BCA Sumbang Rp200 Juta (Infobank)](https://infobanknews.com/pelestarian-orangutan-bca-sumbang-rp200-juta)
 - [BCA Expo 2025 Kurangi Emisi Karbon (BCA Sekuritas)](https://bcasekuritas.co.id/latest-news/news/bca-expo-2025-kurangi-emisi-karbon-181-ton)
-- [ESG #BCAforSustainability (bca.co.id)](https://www.bca.co.id/id/tentang-bca/sustainability)
 
 **Penyu & penetasan**
 - [Bab I Pendahuluan, Repository Unair (spesies penyu di Banyuwangi)](https://repository.unair.ac.id/107645/4/4.%20BAB%201%20PENDAHULUAN.pdf)
