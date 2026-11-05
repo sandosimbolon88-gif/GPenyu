@@ -13,8 +13,11 @@ Upload isi repo ini ke hosting statis apa pun, misalnya GitHub Pages, Netlify, a
 Untuk GitHub Pages: buka *Settings → Pages*, pilih *Deploy from a branch*, pilih branch dan folder `/ (root)`. Alamatnya nanti seperti `https://<akun>.github.io/gamesBaktiBCA/`.
 Setelah dibuka sekali, game tersimpan di perangkat dan tetap bisa dimainkan tanpa internet.
 
-**2. Tanpa internet sama sekali**
-Salin folder `games/penyu/` ke perangkat (flashdisk, kabel data), lalu buka `index.html` di Chrome, Edge, Safari, atau Firefox.
+**2. Tanpa internet sama sekali (laptop/PC)**
+Pakai versi satu file: jalankan `python tools/buat_satu_file.py`, lalu salin `dist/pulang-ke-banyuwangi.html` ke laptop/PC (flashdisk, Google Drive, WhatsApp) dan klik dua kali untuk membukanya di Chrome atau Edge.
+Bisa juga mengunduh seluruh repo: di GitHub pilih branch, klik *Code → Download ZIP*, ekstrak, lalu buka `games/penyu/index.html`.
+
+> Di tablet dan HP (Android/iPad), membuka file HTML dari penyimpanan sering tidak berjalan sempurna. Untuk perangkat ini pakai cara 1 (alamat web): cukup buka sekali saat ada internet, setelah itu game tetap bisa dimainkan tanpa internet.
 
 **3. Menjalankan di laptop untuk dites**
 ```bash
