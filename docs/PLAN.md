@@ -131,7 +131,7 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 **Papan juara (leaderboard):**
 - Pemain mengisi **nama panggilan** (3 sampai 12 huruf, dengan filter kata kasar) dan memilih ikon penyunya. **Tidak meminta data pribadi** seperti nomor HP atau email, supaya aman dari sisi UU Pelindungan Data Pribadi.
 - Dua papan: **Juara Hari Ini** (direset tiap hari pameran) dan **Juara Sepanjang Pameran**.
-- Data disimpan **lokal di perangkat** (IndexedDB) agar tetap jalan meski Wi-Fi pameran putus. Opsional: sinkronisasi antar-perangkat lewat backend sederhana (misalnya Supabase atau Firebase), atau lewat satu laptop server di jaringan lokal.
+- Data disimpan **lokal di perangkat** (localStorage) agar tetap jalan meski Wi-Fi pameran putus. Opsional: sinkronisasi antar-perangkat lewat backend sederhana (misalnya Supabase atau Firebase), atau lewat satu laptop server di jaringan lokal.
 - **Layar Papan Juara** tampil bergantian di mode *attract* (saat tidak ada yang main), dan bisa ditayangkan di TV besar booth.
 - Opsional: hadiah merchandise untuk juara harian.
 
@@ -199,36 +199,42 @@ Penyu tumbuh saat **meteran tumbuh** terisi dari makanan. Saat meteran penuh, pe
 
 ## 6. Rencana teknis
 
-| Aspek | Rekomendasi |
-|---|---|
-| Platform | **Game web HTML5** agar bisa jalan di tablet, PC, maupun TV sentuh tanpa instalasi. Bisa juga dibuka di HP pengunjung lewat QR |
-| Engine | **Phaser 3** (game 2D untuk browser) + TypeScript + Vite |
-| Offline | Dibuat sebagai PWA dengan semua aset ter-cache, jadi tetap jalan tanpa internet di lokasi pameran |
-| Mode kiosk | Chrome dalam mode kiosk, layar penuh. **Reset otomatis** setelah 60 detik tidak ada sentuhan. Ada mode *attract* yang memutar demo dan papan juara bergantian. Menu operator tersembunyi untuk reset papan juara |
-| Resolusi | Lanskap 1920×1080, skala menyesuaikan layar lain. Kontrol sentuh sebagai prioritas utama |
-| Bahasa | Bahasa Indonesia (utama). Bahasa Inggris opsional |
-| Papan juara | IndexedDB lokal. Sinkronisasi antar-perangkat opsional (lihat 3.4) |
-| Data pameran | Statistik anonim: jumlah main, spesies dan metode penetasan yang paling sering dipilih, rata-rata skor, jawaban kuis. Berguna untuk laporan kegiatan Bakti BCA |
-| Aset visual | Ilustrasi 2D kartun orisinal dengan palet laut yang cerah. Logo dan warna BCA **diambil dari tim brand BCA** dan perlu persetujuan mereka |
-| Audio | Musik dan efek suara bebas royalti atau dibuat khusus. Volume bisa diatur untuk suasana pameran yang ramai |
+> **Status:** prototipe game penyu sudah dibuat di `games/penyu/` (lihat README untuk cara memainkan).
 
-**Struktur repo yang diusulkan:**
+| Aspek | Yang dipakai |
+|---|---|
+| Platform | **Game web HTML5** agar bisa jalan di tablet, HP, PC, maupun TV sentuh tanpa instalasi. Bisa juga dibuka di HP pengunjung lewat QR |
+| Engine | **HTML5 Canvas + JavaScript biasa**, tanpa library dan tanpa proses build. Semua gambar digambar dengan kode, jadi tidak ada file gambar yang perlu diunduh |
+| Offline | Bisa dibuka langsung dari file (`index.html`), atau dari hosting web. Lewat hosting, service worker menyimpan semua file sehingga tetap jalan tanpa internet |
+| Mode kiosk | Tombol layar penuh. **Kembali otomatis** ke judul setelah 45 detik tanpa sentuhan saat bermain (60 detik di menu). Mode *attract* menampilkan papan juara bergantian. Menu operator tersembunyi (tahan label program 1,5 detik) |
+| Resolusi | Area main 1280×720 yang diskalakan ke layar apa pun. Kontrol sentuh, mouse, dan keyboard |
+| Bahasa | Bahasa Indonesia |
+| Papan juara | Disimpan lokal di perangkat (localStorage). Sinkronisasi antar-perangkat opsional (lihat 3.4) |
+| Data pameran | Statistik anonim di menu operator: jumlah main, spesies dan metode penetasan yang paling sering dipilih, rata-rata skor, jawaban kuis, rata-rata plastik tertelan. Papan juara bisa diunduh sebagai CSV |
+| Aset visual | Ilustrasi 2D kartun orisinal dengan palet laut yang cerah. Logo dan warna BCA **diambil dari tim brand BCA** dan perlu persetujuan mereka |
+| Audio | Efek suara sederhana dari Web Audio (tanpa file). Bisa dimatikan. Musik latar menyusul |
+
+**Struktur repo:**
 
 ```
 gamesBaktiBCA/
+├── index.html              ← halaman pembuka daftar game
 ├── docs/PLAN.md            ← dokumen ini
-├── games/
-│   └── penyu/              ← proyek Phaser game penyu
-│       ├── src/scenes/     (Boot, PilihPenyu, Penetasan, Laut, Migrasi, Bertelur, Skor)
-│       ├── src/data/       (spesies.json, fakta.json, level.json)
-│       └── public/assets/
-└── shared/                 ← dipakai juga oleh game orangutan & pohon nanti
-    ├── leaderboard/
-    ├── kiosk/              (idle reset, attract mode)
-    └── cta/                (layar ajakan Bakti BCA)
+├── tools/buat_qr.py        ← membuat ulang kode QR di layar ajakan
+└── games/
+    └── penyu/
+        ├── index.html, style.css, sw.js, manifest.webmanifest
+        └── js/
+            ├── data.js     ← SEMUA teks, fakta, kuis, angka capaian (edit di sini)
+            ├── game.js     ← mesin game & 6 tahap permainan
+            ├── ui.js       ← menu, kartu tahap, kuis, papan juara, ajakan
+            ├── art.js      ← gambar penyu, ikan, sampah, dll.
+            ├── storage.js  ← papan juara, statistik, pengaturan
+            ├── audio.js    ← efek suara
+            └── qr.js       ← data kode QR (dibuat oleh tools/buat_qr.py)
 ```
 
-Semua teks fakta, angka capaian, dan teks ajakan disimpan di **file JSON terpisah**. Tim BCA cukup mengubah file itu kalau angka diperbarui, tanpa menyentuh kode.
+Semua teks fakta, angka capaian, dan teks ajakan disimpan di **`games/penyu/js/data.js`**. Tim BCA cukup mengubah file itu kalau angka diperbarui, tanpa menyentuh kode.
 
 ---
 
