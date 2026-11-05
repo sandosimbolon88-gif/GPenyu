@@ -38,6 +38,17 @@ a{color:var(--accent)}
 .warn-pill.warn{background:var(--warn-soft);color:var(--warn);border-color:#f0d9b0}
 .warn-pill.ok{background:var(--accent-soft);color:var(--accent-2)}
 .saved{font-size:.75rem;color:var(--muted);white-space:nowrap}
+/* Tab bar terpisah dari header: di HP header ikut tergulung, tab tetap terlihat */
+.tabbar{position:sticky;top:var(--toph,0px);z-index:19;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.top{box-shadow:none}
+@media (max-width:560px){
+  .top{position:static}
+  .top-in{padding:8px 12px;gap:8px}
+  .brand span{display:none}
+  .badge{margin-left:0;flex-wrap:wrap}
+  .saved{display:none}
+}
+.card,[data-oc],h3[id],.subcard{scroll-margin-top:calc(var(--stick,0px) + 12px)}
 nav.tabs{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
 nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 10px;cursor:pointer;color:var(--muted);white-space:nowrap;font-size:.9rem}
 nav.tabs button.on{color:var(--accent-2);border-bottom-color:var(--accent);font-weight:600}
@@ -71,10 +82,6 @@ main{max-width:1180px;margin:0 auto;padding:18px 16px 80px}
 .f.bad input,.f.bad textarea{border-color:var(--err);background:var(--err-soft)}
 .f .msg{font-size:.76rem;color:var(--err);margin-top:2px;min-height:0}
 .f .hint{font-size:.76rem;color:var(--muted);margin-top:2px}
-.f .help{display:none;font-size:.8rem;color:#3e4a45;background:var(--soft);border-radius:8px;padding:6px 9px;margin:2px 0 4px}
-.f.showhelp .help{display:block}
-.q{border:1px solid #b9c4bf;background:#fff;color:var(--muted);width:18px;height:18px;border-radius:50%;font-size:.7rem;line-height:16px;padding:0;cursor:pointer;flex:none}
-.q:hover{color:var(--accent);border-color:var(--accent)}
 .unit{position:relative}
 .unit input{padding-right:34px!important}
 .unit::after{content:attr(data-unit);position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
@@ -176,6 +183,37 @@ td.neg{color:var(--neg)}
 .sdgb{display:inline-block;background:var(--accent-soft);color:var(--accent-2);border:1px solid #b9dccf;border-radius:999px;padding:1px 9px;font-size:.78rem;font-weight:600;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sdgb.utama{background:var(--accent);color:#fff;border-color:var(--accent)}
 
+/* Panel panduan "?" */
+.q{border:1px solid #9fb3ab;background:#fff;color:var(--accent-2);width:19px;height:19px;border-radius:50%;font-size:.72rem;font-weight:700;line-height:17px;padding:0;cursor:pointer;flex:none;text-align:center}
+.q:hover,.q[aria-expanded="true"]{background:var(--accent);color:#fff;border-color:var(--accent)}
+th .q{margin-left:3px;vertical-align:1px}
+.edit-table thead th{white-space:nowrap}
+.hpop{position:absolute;z-index:60;width:min(380px,calc(100vw - 16px));max-height:70vh;overflow:auto;background:#fff;border:1px solid #c9d3cf;border-radius:12px;box-shadow:0 10px 30px rgba(0,0,0,.16);padding:12px 14px;font-size:.86rem;line-height:1.45;color:var(--ink)}
+.hpop.sheet{position:fixed;left:0;right:0;bottom:0;top:auto;width:auto;max-height:65vh;border-radius:14px 14px 0 0}
+.hpop-h{display:flex;gap:8px;align-items:flex-start;margin-bottom:4px}
+.hpop-h b{flex:1;font-size:.95rem}
+.hpop-x{border:0;background:var(--soft);border-radius:50%;width:26px;height:26px;cursor:pointer;font-size:1rem;line-height:1;flex:none}
+.hpop h5{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin:10px 0 3px}
+.hpop p{margin:.2em 0}
+.hpop ul{margin:0;padding-left:1.1em}
+.hpop li{margin:2px 0}
+.hpop-ex{background:#fbfaee;border-left:3px solid #e2dca5;border-radius:0 6px 6px 0;padding:5px 9px}
+.hpop code{background:var(--soft);padding:0 4px;border-radius:4px;font-size:.82rem}
+/* Geser untuk mengubah urutan */
+.grip{border:0;background:none;cursor:grab;color:#8a9691;font-size:1.05rem;line-height:1;padding:4px 3px;touch-action:none;border-radius:5px}
+.grip:hover,.grip:focus-visible{color:var(--accent-2);background:var(--soft)}
+.dragging{opacity:.55;outline:2px dashed var(--accent);outline-offset:2px;background:var(--accent-soft)!important}
+body.is-dragging{cursor:grabbing;user-select:none;-webkit-user-select:none}
+body.is-dragging .grip{cursor:grabbing}
+.sorting .oc-body,.sorting .live,.sorting .ocw,.sorting .subcard .grid{display:none}
+.sorting > [data-item]{margin-bottom:6px}
+.toc .it{display:flex;gap:4px;align-items:flex-start}
+.toc .it .grip{padding:0 2px;font-size:.9rem}
+.toc .it span{flex:1;min-width:0;overflow-wrap:anywhere}
+.toc .col[data-sort]{min-height:60px;border-radius:6px}
+body.is-dragging .toc .col[data-sort]{background:var(--soft)}
+td.gripcell{width:26px;padding-left:2px;padding-right:0;vertical-align:middle}
+
 /* How-to boxes & examples */
 details.howto{background:var(--info-soft);border:1px solid #c8daec;border-radius:var(--r);padding:0;margin-bottom:14px}
 details.howto > summary{cursor:pointer;padding:10px 14px;font-weight:700;color:var(--info);list-style:none;display:flex;gap:8px;align-items:center}
@@ -191,9 +229,6 @@ details.howto > summary .tiny{font-weight:400;color:var(--muted);margin-left:aut
 .howto-b table{background:#fff;font-size:.82rem;margin:4px 0 8px}
 .exbox{background:#fff;border:1px dashed #b8cbe0;border-radius:8px;padding:7px 10px;margin:6px 0}
 .exbox .good{color:var(--accent-2)} .exbox .bad{color:var(--err)}
-.f .ex{font-size:.75rem;color:#6a6f3a;background:#fbfaee;border-left:3px solid #e2dca5;padding:2px 7px;margin-top:3px;border-radius:0 6px 6px 0}
-body.hide-ex .f .ex{display:none}
-.edit-table .f .ex{display:none}
 .subcard{border:1px solid var(--line);border-radius:var(--r);padding:12px;margin-bottom:10px;background:#fcfdfc}
 .subcard-h{display:flex;gap:8px;align-items:center;margin-bottom:8px}
 .subcard-h b{flex:1}
@@ -213,7 +248,10 @@ body.hide-ex .f .ex{display:none}
 /* Guide */
 .guide h3{margin-top:1.2em}
 .guide dl dt{font-weight:700;margin-top:.7em}
-.guide dl dd{margin:0 0 .3em 0}
+.guide dl dd{margin:0 0 .6em 0}
+.guide details.gd{border:1px solid var(--line);border-radius:8px;padding:6px 10px;margin:6px 0}
+.guide details.gd summary{cursor:pointer}
+.guide dd ul{margin:.2em 0 .3em 1.1em;padding:0}
 
 .empty{padding:30px;text-align:center;color:var(--muted)}
 .footer{color:var(--muted);font-size:.75rem;text-align:center;margin-top:30px}
@@ -253,7 +291,6 @@ body.hide-ex .f .ex{display:none}
     <div class="prog">
       <select id="progSelect" aria-label="Pilih program" title="Pilih program"></select>
       <button class="btn sm" data-act="newProg" title="Program baru">+ Baru</button>
-      <button class="btn sm" data-act="togEx" id="exBtn" title="Tampilkan/sembunyikan contoh di bawah kolom isian">Contoh: tampil</button>
       <details class="menu" id="fileMenu">
         <summary class="btn sm" role="button">File ▾</summary>
         <div class="pop">
@@ -273,8 +310,8 @@ body.hide-ex .f .ex{display:none}
     </div>
     <div class="badge" id="liveBadge"></div>
   </div>
-  <nav class="tabs" id="tabs"></nav>
 </header>
+<div class="tabbar"><nav class="tabs" id="tabs"></nav></div>
 <div class="banner" id="banner"></div>
 <main id="main"></main>
 <div class="toast" id="toast"></div>
@@ -285,8 +322,8 @@ body.hide-ex .f .ex{display:none}
 'use strict';
 
 /* ================= Basics ================= */
-const APP_VERSION = '2.0';
-const SCHEMA = 3;
+const APP_VERSION = '2.1';
+const SCHEMA = 4;
 const LS_KEY = 'sroi-app-v2';
 const LS_KEY_V1 = 'sroi-app-v1';
 const $ = s => document.querySelector(s);
@@ -635,6 +672,185 @@ const CSV_LEVELS = [
   ['2','Rantai nilai lebih produktif','Mendefinisikan ulang produktivitas rantai nilai: masalah sosial di rantai pasok/operasional diselesaikan sehingga biaya turun atau mutu naik. Contoh: pemasok UMKM binaan jadi lebih andal.'],
   ['3','Ekosistem / klaster lokal','Membangun klaster lokal: memperkuat ekosistem di sekitar tempat usaha (pelatihan, infrastruktur, kelembagaan) sehingga bisnis dan masyarakat sama-sama tumbuh. Contoh: desa wisata binaan yang ramai transaksi.']
 ];
+/* ================= Panduan per kolom (muncul saat tombol ? diklik) =================
+   Setiap entri: apa (apa ini), cara (langkah mengisi), contoh, hindari. Boleh berisi HTML sederhana. */
+const GUIDE = {
+  /* ---- Program ---- */
+  nama:{apa:'Nama program yang dianalisis. Satu program = satu analisis SROI, boleh berisi beberapa lokasi.',
+    cara:['Sebut kegiatan, sasaran, dan tahun atau angkatannya.','Program yang sama di beberapa lokasi cukup dibuat satu kali; daftarkan lokasinya di kartu <b>Lokasi</b>.'],
+    contoh:'Tenun Warna Alam 2024–2025', hindari:'Nama terlalu umum seperti "Program lingkungan".'},
+  jenis:{apa:'<b>Evaluatif</b> menilai dampak yang sudah terjadi. <b>Prakiraan</b> memperkirakan dampak ke depan.',
+    cara:['Program sudah berjalan dan datanya ada → Evaluatif (seperti worksheet konsultan).','Program masih rencana → Prakiraan; angka diisi dari target dan asumsi.','Evaluatif: semua rupiah dibawa ke tahun akhir. Prakiraan: ke tahun awal. Rasio SROI-nya sama, yang berubah hanya nilai rupiah yang ditampilkan.'],
+    contoh:'Evaluasi Januari 2024 – November 2025 → Evaluatif'},
+  organisasi:{apa:'Unit atau lembaga pelaksana program.', contoh:'Bakti BCA bersama yayasan mitra pelaksana'},
+  penyusun:{apa:'Siapa yang menyusun analisis ini, supaya reviewer tahu harus bertanya ke siapa.', contoh:'Rina (CSR) dan konsultan PT X'},
+  tahunAwal:{apa:'Tahun pertama yang dihitung, biasanya tahun dana pertama keluar.',
+    cara:['Isi 4 digit tahun.','Klik di luar kolom setelah mengganti. Tabel tahun di bawah dan kolom per tahun di tab Input dan Outcome ikut menyesuaikan; isian lama tidak hilang.'], contoh:'2024'},
+  tahunAkhir:{apa:'Tahun terakhir yang dihitung.', cara:['Evaluatif: tahun evaluasi dilakukan.','Prakiraan: tahun terakhir manfaat diperkirakan masih terasa.'], contoh:'2025',
+    hindari:'Periode yang lebih panjang dari data yang ada.'},
+  rate:{apa:'Rate tahun itu dalam persen, biasanya BI Rate. Rate yang dipakai untuk menghitung = rata-rata semua tahun.',
+    cara:['Ambil BI Rate tahun tersebut dari situs Bank Indonesia.','Ingin satu rate tetap (mis. 3,5% sesuai panduan Cabinet Office UK)? Isi tahun pertama, lalu klik <b>Samakan semua tahun</b>.'],
+    contoh:'2024 = 6 · 2025 = 4,75 → rata-rata 5,375%'},
+  bulan:{apa:'Jumlah bulan di tahun itu yang masuk periode analisis. Dipakai untuk menghitung payback period dalam bulan.',
+    cara:['Tahun penuh = 12.','Tahun yang hanya sebagian = jumlah bulannya.'], contoh:'Periode Jan 2024 – Nov 2025 → 2024 = 12, 2025 = 11'},
+  rateAlasan:{apa:'Dasar dan sumber angka rate.', contoh:'Rata-rata BI Rate 2024 (6%) dan 2025 (4,75%) = 5,375%; situs Bank Indonesia, diakses Desember 2025.'},
+  siteNama:{apa:'Lokasi, sub-program, atau angkatan di dalam program ini.',
+    cara:['Satu baris per lokasi atau angkatan.','Pilih lokasinya di setiap baris input dan kartu outcome. Hasil keluar per lokasi dan gabungan, seperti lembar ringkasan Tenun Warna Alam atau Konservasi Penyu.','Geser ⠿ untuk mengubah urutan.'],
+    contoh:'Baduy · Sumba Timur — atau — Angkatan 2023 · Angkatan 2024', hindari:'Membuat program terpisah per lokasi kalau ingin melihat hasil gabungannya.'},
+  lingkup:{apa:'Batas analisis: apa yang dihitung dan apa yang tidak, beserta alasannya. Biasanya bagian pertama yang dibaca reviewer.',
+    cara:['Tulis periode, wilayah, dan stakeholder yang dihitung.','Tulis juga yang tidak dihitung dan alasannya.'],
+    contoh:'Menilai perubahan pada 15 perajin di Baduy dan 50 di Sumba Timur, Januari 2024 – November 2025. Dampak pada pembeli tidak dihitung karena datanya belum ada.'},
+  catatan:{apa:'Hal lain yang perlu diketahui pembaca: keterbatasan data, rencana survei ulang, perubahan dari versi sebelumnya.', contoh:'Data baseline hanya dari 30 responden. Survei ulang dijadwalkan Desember 2026.'},
+
+  /* ---- Stakeholder ---- */
+  sNama:{apa:'Kelompok yang mengalami perubahan karena program.',
+    cara:['Satu baris = satu kelompok, bukan satu orang.','Masukkan juga pihak yang dirugikan, dan perusahaan sendiri kalau ada outcome untuknya (mis. PR value).','Geser ⠿ untuk mengubah urutan.'],
+    contoh:'Perajin tenun · Pengepul lokal · Pemerintah desa · BCA', hindari:'Menggabungkan dua kelompok yang perubahannya berbeda dalam satu baris.'},
+  sJenis:{apa:'Jenis stakeholder, sama dengan kolom "Jenis Stakeholder" di worksheet konsultan.',
+    cara:['<b>Langsung</b>: ikut program. <b>Tidak langsung</b>: merasakan efeknya (keluarga, pelanggan). <b>Fasilitator/mitra</b>: pelaksana. <b>Komunitas</b>: kelompok warga. <b>Pemrakarsa</b>: perusahaan sendiri.','Outcome pemrakarsa ikut dihitung, tapi rasio juga ditampilkan tanpa outcome itu.'],
+    contoh:'Klien jasa MUA → Penerima manfaat tidak langsung'},
+  jumlah:{apa:'Jumlah orang atau unit di kelompok itu.', cara:['Bilangan bulat.','Yang benar-benar berubah ditulis di rumus nilai manfaat (mis. 40 dari 50).'], contoh:'50'},
+  sLibat:{apa:'Cara stakeholder dilibatkan untuk mengetahui perubahannya. SROI wajib bertanya ke stakeholder, bukan menebak.',
+    cara:['Tulis metode, jumlah responden, dan waktunya.'], contoh:'Kuesioner pre-post 15 peserta + FGD 6 orang, Mei 2025', hindari:'Mengisi perubahan tanpa data dari stakeholder.'},
+  sMaterial:{apa:'Apakah perubahan pada kelompok ini cukup penting dan cukup besar untuk dihitung.',
+    cara:['<b>Ya</b> → buat outcome-nya di tab Outcome.','<b>Tidak</b> → tulis alasannya di kolom berikutnya.']},
+  alasanMaterial:{apa:'Alasan kalau kelompok ini tidak dihitung.', contoh:'Kehilangan pasokan pengepul sudah dihitung lewat displacement 10% pada outcome peserta (hindari hitung ganda).'},
+
+  /* ---- Input ---- */
+  iTahun:{apa:'Tahun dana dikeluarkan. Investasi tiap tahun dibawa ke nilai saat ini dengan rate yang sama dengan manfaat.',
+    cara:['Pilih dari tahun di tab Program.','Biaya yang keluar di dua tahun → dua baris.']},
+  iSite:{apa:'Lokasi yang memakai dana ini. Kolom ini muncul kalau program punya lebih dari satu lokasi.',
+    cara:['Biaya bersama: buat satu baris di tiap lokasi dan bagi dengan rumus.','Atau pilih "bersama"; biaya ini hanya masuk hasil gabungan.'],
+    contoh:'BCA Expo Rp 17.646.640 untuk 2 lokasi → di tiap lokasi tulis <code>17.646.640 / 2</code>'},
+  iUraian:{apa:'Pos biaya atau sumber daya yang dipakai program.',
+    cara:['Masukkan semua: dana program, honor vendor, pajak, waktu staf atau relawan, barang donasi, kontribusi mitra.','Input yang lengkap membuat rasio lebih kecil tapi lebih jujur.'],
+    contoh:'Pajak 11% atas jasa pengembangan program', hindari:'Hanya memasukkan dana CSR padahal ada biaya lain.'},
+  nilai:{apa:'Nilai rupiah. Boleh angka atau rumus seperti di Excel.',
+    cara:['Ribuan pakai titik atau tanpa pemisah: 3.600.000 atau 3600000.','Desimal pakai koma: 28,1.','Operator: + − × / dan tanda kurung. Angka dengan % dibagi 100.','Hasil hitungnya muncul di bawah kolom, jadi bisa dicek.'],
+    contoh:'<code>3.345.000.000 + 4.200.000.000</code><br><code>2.815.950.000 × 11%</code> (pajak)<br><code>2 × 10,75 × 35.000.000 / 22</code> (orang × hari × gaji per bulan ÷ 22 hari)'},
+  iSumber:{apa:'Dokumen dasar angka ini.', contoh:'Laporan realisasi anggaran 2024; faktur vendor'},
+};
+Object.assign(GUIDE, {
+  /* ---- Outcome ---- */
+  oStk:{apa:'Stakeholder yang mengalami outcome ini.', cara:['Pilih dari daftar di tab Stakeholder.','Belum ada di daftar? Tambahkan dulu di tab Stakeholder.']},
+  oSite:{apa:'Lokasi, sub-program, atau angkatan tempat outcome ini terjadi.', cara:['Pilih "semua / tidak spesifik" kalau berlaku untuk seluruh program.','Untuk angkatan berbeda, duplikat kartu (⧉) lalu ganti lokasinya.']},
+  aspek:{apa:'Kelompok outcome, dipakai untuk melihat porsi nilai per aspek di tab Hasil.',
+    cara:['<b>Ekonomi</b>: penghasilan, penghematan, akses pasar.','<b>Sosial</b>: keterampilan, pengetahuan, jejaring, akses layanan.','<b>Wellbeing</b>: percaya diri, motivasi, rasa aman.','<b>Lingkungan</b>: sampah, lahan, satwa, emisi.']},
+  outcome:{apa:'Perubahan yang dialami stakeholder. Inilah yang diberi nilai rupiah.',
+    cara:['Mulai dengan kata perubahan: meningkatnya, berkurangnya, terciptanya, terbukanya.','Uji dengan pertanyaan "lalu kenapa?" sampai ketemu perubahan yang benar-benar dirasakan stakeholder.'],
+    contoh:'Meningkatnya keterampilan merias wajah peserta', hindari:'Menulis output ("50 ibu dilatih") atau kepuasan ("peserta senang").'},
+  indikator:{apa:'Bukti bahwa outcome terjadi: ukurannya dan dari mana datanya.', cara:['Tulis ukuran + sumber datanya.'], contoh:'Peningkatan skor keterampilan (pre-post test, 15 peserta)'},
+  jenisOutcome:{apa:'Tanda khusus untuk outcome tertentu.',
+    cara:['<b>Negatif</b>: perubahan yang merugikan; nilainya mengurangi total manfaat.','<b>Kualitatif</b>: dicatat di laporan tapi tidak dirupiahkan, karena proxy belum ada atau memang tidak layak. Tidak ikut rasio.'],
+    contoh:'Negatif: beban waktu ibu bertambah. Kualitatif: meningkatnya koordinasi antardesa.'},
+  metode:{apa:'Cara memberi nilai rupiah pada outcome.',
+    cara: METODE.map(([k,n,d])=>`<b>${n}</b>: ${d}`)},
+  deskripsi:{apa:'Proxy keuangan dan cara hitungnya, supaya orang lain bisa menghitung ulang. Di worksheet konsultan ini kolom "Proxy Keuangan" dan "Deskripsi Valuasi".',
+    cara:['Tulis proxy-nya apa, lalu harga satuan × faktor (persen perubahan, bulan, frekuensi) × jumlah penerima.','Rumus yang sama diketik di kolom nilai manfaat per tahun.'],
+    contoh:'Training cost equivalent – kursus merias wajah setara Rp 30.928.000 per orang × 28,1% rata-rata peningkatan skor (pre-post) × 15 peserta.',
+    hindari:'Angka tanpa penjelasan asal-usulnya.'},
+  proxySumber:{apa:'Sumber harga pembanding dan sumber data perubahan.', cara:['Tautan harga, jurnal, kuesioner, laporan program, wawancara.','Wajib diisi. Tanpa sumber, nilai sulit dipertahankan saat direview.'],
+    contoh:'Harga kursus: situs lembaga kursus X (diakses Mei 2025). Skor: kuesioner pre-post (n = 15).'},
+  nilaiY:{apa:'Nilai manfaat <b>kotor</b> tahun itu, sebelum fiksasi dampak.',
+    cara:['Ketik rumus: harga satuan × faktor × jumlah. Hasilnya muncul di bawah kolom.','Kosongkan tahun yang tidak ada manfaatnya.','Tombol <b>Salin nilai tahun pertama</b> mengisi tahun yang masih kosong.'],
+    contoh:'<code>30.928.000 × 28,1% × 15</code> (training cost)<br><code>1.322.857 × 6 × 15</code> (pendapatan per bulan × bulan × orang)',
+    hindari:'Memasukkan nilai yang sudah dikurangi deadweight; pengurangan dilakukan di kolom sebelahnya.'},
+  dw:{apa:'<b>Deadweight</b>: bagian perubahan yang tetap akan terjadi tanpa program.',
+    cara:['Tanya: "Seandainya tidak ada program ini, apakah perubahan ini tetap terjadi?"','Angka = % responden yang menjawab ya, atau dari data sebelum program / kelompok pembanding.','Diisi per tahun; biasanya sama setiap tahun (pakai <b>Samakan DW/Attr/Disp</b>).'],
+    contoh:'2 dari 15 peserta sudah punya keterampilan ini sebelum program → 13%', hindari:'Semua 0% tanpa alasan; reviewer hampir selalu menanyakannya.'},
+  attr:{apa:'<b>Attribution</b>: bagian perubahan yang disebabkan pihak lain (pemda, LSM lain, keluarga).',
+    cara:['Tanya: "Selain program ini, siapa lagi yang membantu, dan seberapa besar perannya?"','Angka = rata-rata porsi pihak lain. Kalau peran program 75%, attribution = 25%.'],
+    contoh:'Ada pelatihan serupa dari pemda; peserta menilai perannya sekitar 25% → 25%'},
+  disp:{apa:'<b>Displacement</b>: bagian manfaat yang hanya menggeser manfaat pihak lain.',
+    cara:['Tanya pihak yang mungkin dirugikan: pesaing, pengepul lama, penjual lain.','Tidak ada pihak yang tergeser → 0%.'], contoh:'Pengepul lama kehilangan sebagian pasokan → 10%'},
+  drop:{apa:'<b>Drop-off</b>: penurunan nilai di tahun itu dibanding tahun pertama outcome, karena efeknya memudar.',
+    cara:['Tahun pertama outcome = 0%.','Tahun berikutnya: berapa persen manfaatnya sudah memudar dibanding tahun pertama.','Tombol <b>Drop-off majemuk</b> mengisi otomatis: 15% per tahun → 0%, 15%, 27,75%, 38,59%, … (sama dengan rumus (1 − 15%)<sup>n</sup> di worksheet).'],
+    contoh:'Keterampilan memudar 10% per tahun tanpa pendampingan → 2024 = 0%, 2025 = 10%'},
+  dwAlasan:{apa:'Penjelasan dan bukti angka deadweight. Berlaku untuk semua tahun.', contoh:'Dari kuesioner, 2 dari 15 peserta (13%) sudah merias secara profesional sebelum program.'},
+  attrAlasan:{apa:'Penjelasan dan bukti angka attribution. Berlaku untuk semua tahun.', contoh:'Peserta juga ikut pelatihan dari dinas sosial; rata-rata jawaban porsi pihak lain 37%.'},
+  dispAlasan:{apa:'Penjelasan angka displacement. Berlaku untuk semua tahun.', contoh:'Tidak ada pihak yang tergeser (wawancara 3 penyedia jasa MUA setempat) → 0%.'},
+  dropAlasan:{apa:'Penjelasan angka drop-off. Berlaku untuk semua tahun.', contoh:'Sesuai panduan SROI, keterampilan memudar sekitar 20% per tahun tanpa pendampingan lanjutan.'},
+});
+Object.assign(GUIDE, {
+  /* ---- Theory of Change ---- */
+  tocMasalah:{apa:'Masalah utama yang mau diselesaikan dan penyebabnya.', cara:['Tulis dengan data kalau ada, supaya kondisi awalnya jelas.'],
+    contoh:'70% rumah tangga membakar atau membuang sampah ke sungai (survei desa 2024).'},
+  tocSasaran:{apa:'Kelompok sasaran utama dan jumlahnya.', contoh:'50 ibu rumah tangga di 3 RW Desa Sukamaju'},
+  tocInput:{apa:'Sumber daya yang dipakai: dana, orang, barang, mitra.', cara:['Satu baris = satu kotak di diagram.','Tombol <b>Ambil dari Input & Outcome</b> mengisi dari tab Input.']},
+  tocKegiatan:{apa:'Apa yang dikerjakan program. Pakai kata kerja.', cara:['Satu baris = satu kotak.'], contoh:'Pelatihan pemilahan sampah\nPengadaan alat bank sampah'},
+  tocOutput:{apa:'Hasil langsung kegiatan yang bisa dihitung. Belum berupa perubahan.', contoh:'50 ibu dilatih · 1 bank sampah beroperasi'},
+  tocPendek:{apa:'Perubahan pertama yang muncul, biasanya dalam hitungan bulan: pengetahuan, keterampilan, sikap, akses.', contoh:'Ibu paham cara memilah sampah'},
+  tocMenengah:{apa:'Perubahan perilaku atau kondisi setelah outcome jangka pendek. Biasanya ini yang dirupiahkan di tab Outcome.', cara:['Tombol <b>Ambil dari Input & Outcome</b> menyalin nama outcome dari tab Outcome.'], contoh:'Penghasilan tambahan dari jual sampah terpilah'},
+  tocImpact:{apa:'Perubahan jangka panjang yang lebih luas. Program ikut berkontribusi, tapi tidak sendirian.', contoh:'Kesejahteraan keluarga meningkat'},
+  tocAsumsi:{apa:'Kondisi yang harus benar supaya satu kotak mengarah ke kotak berikutnya.', contoh:'Ibu punya waktu memilah; pengepul tetap mau membeli.'},
+  tocRisiko:{apa:'Hal yang bisa memutus rantai perubahan, beserta rencana mitigasinya.', contoh:'Harga sampah anjlok → kerja sama dengan 2 offtaker.'},
+  tocBukti:{apa:'Dasar keyakinan bahwa rantai ini masuk akal.', contoh:'Survei baseline 2024; program serupa di desa tetangga berjalan 3 tahun.'},
+
+  /* ---- Keselarasan ---- */
+  regNama:{apa:'Nama dan nomor peraturan atau standar yang terkait.', cara:['Ketik untuk melihat saran.','Cek ulang nomor, pasal, dan status berlakunya dengan tim legal/kepatuhan sebelum dipakai di laporan.'], contoh:'UU No. 40 Tahun 2007 tentang Perseroan Terbatas (Pasal 74, TJSL)'},
+  regSifat:{apa:'Hubungan program dengan peraturan ini.', cara:['<b>Kewajiban</b>: program membantu memenuhi kewajiban.','<b>Mendukung</b>: program mendukung target/program pemerintah.','<b>Pelaporan</b>: dipakai sebagai dasar laporan.','<b>Pedoman</b>: standar sukarela (GRI, ISO 26000).']},
+  regPasal:{apa:'Pasal, ayat, atau bagian yang relevan. Lebih kuat daripada hanya nama peraturan.', contoh:'Pasal 74 ayat (1)'},
+  regKaitan:{apa:'Satu atau dua kalimat tentang bagaimana program memenuhi atau mendukung ketentuan itu.', contoh:'Bank sampah mendorong pemilahan dan daur ulang di sumber.'},
+  regBukti:{apa:'Dokumen yang menunjukkan kaitannya.', contoh:'Catatan setoran (kg per jenis); RKAP'},
+  sdgGoal:{apa:'Tujuan SDGs (TPB) yang paling terkait.', cara:['Pilih 1–2 tujuan utama dan beberapa pendukung.'], hindari:'Memilih banyak tujuan sekaligus; klaimnya jadi lemah.'},
+  sdgPeran:{apa:'Utama = tujuan yang paling langsung disumbang program. Pendukung = kontribusi tidak langsung.'},
+  sdgTarget:{apa:'Nomor target SDGs, bukan hanya nomor tujuan.', cara:['Ketik nomornya (mis. 12.5) untuk melihat saran.','Saran berupa ringkasan bebas; cek bunyi resmi di metadata TPB Bappenas.'], contoh:'12.5 – Mengurangi timbulan sampah'},
+  sdgOutcome:{apa:'Outcome di tab Outcome yang menjadi dasar kontribusi ini.'},
+  sdgKontribusi:{apa:'Apa yang disumbangkan program ke target itu, sebaiknya dengan angka.', contoh:'18 ton sampah per tahun terpilah dan terjual lewat bank sampah.'},
+  csvCatatan:{apa:'Ringkasan 2–4 kalimat: masalah sosial apa yang diselesaikan, dan nilai bisnis apa yang ikut tercipta (creating shared value).',
+    contoh:'Program menyelesaikan masalah sampah dan penghasilan ibu rumah tangga. Bersamaan, tabungan bank sampah membuka jalan bagi warga untuk punya rekening bank.'},
+  uNama:{apa:'Unit, divisi, atau kantor yang terkait dengan program di luar tim pelaksana.', contoh:'Kantor cabang terdekat · Unit bisnis UMKM · Tim komunikasi'},
+  uJenis:{apa:'Bentuk keterkaitan unit dengan program.', cara:['Bisnis/shared value, kantor cabang, SDM/relawan, komunikasi, risiko & kepatuhan, keberlanjutan & pelaporan, keuangan.']},
+  uStatus:{apa:'Sejauh mana unit ini sudah dilibatkan.'},
+  uPeran:{apa:'Apa yang dikerjakan unit dalam program.', contoh:'Membuka rekening tabungan untuk nasabah bank sampah'},
+  uManfaat:{apa:'Nilai yang didapat unit/perusahaan dari program.', cara:['Di sini hanya dicatat. Kalau ingin ikut dihitung (mis. PR value seperti di worksheet konsultan), buat stakeholder jenis <b>Pemrakarsa</b> dan outcome-nya di tab Outcome.'], contoh:'Nasabah baru dari warga desa'},
+  uCsv:{apa:'Tingkat creating shared value menurut Porter & Kramer (2011).', cara: CSV_LEVELS.map(([k,n,d])=>`<b>${k}. ${n}</b>: ${d}`)},
+  uIndikator:{apa:'Angka bisnis yang bisa dipantau untuk membuktikan manfaat bagi unit.', contoh:'Jumlah rekening baru dari peserta; saldo tabungan'},
+  uPic:{apa:'Nama dan jabatan kontak di unit itu.', contoh:'Budi, Kepala Cabang'},
+
+  /* ---- Lainnya ---- */
+  ckBukti:{apa:'Bukti bahwa prinsip ini sudah dipenuhi: dokumen, tanggal, siapa.', contoh:'Direview tim M&E (Sari) 12 Mei 2025; catatan revisi di file v2.', cara:['Belum terpenuhi? Tulis rencananya di sini, jangan dicentang dulu.']},
+  sensSet:{apa:'Besar perubahan asumsi yang dipakai di tabel "Uji satu per satu".', cara:['Poin %: deadweight 20% ± 10 poin → diuji 10% dan 30%.','Persen: nilai manfaat ± 25% → diuji 75% dan 125% dari nilai semula.','Rate rendah/tinggi: rentang rate yang diuji.']},
+});
+const GUIDE_GROUPS = [
+  ['Program', ['nama','jenis','organisasi','penyusun','tahunAwal','tahunAkhir','rate','bulan','rateAlasan','siteNama','lingkup','catatan']],
+  ['Stakeholder', ['sNama','sJenis','jumlah','sLibat','sMaterial','alasanMaterial']],
+  ['Input', ['iTahun','iSite','iUraian','nilai','iSumber']],
+  ['Outcome & fiksasi dampak', ['oStk','oSite','aspek','outcome','indikator','jenisOutcome','metode','deskripsi','proxySumber','nilaiY','dw','attr','disp','drop']],
+  ['Theory of Change', ['tocMasalah','tocSasaran','tocInput','tocKegiatan','tocOutput','tocPendek','tocMenengah','tocImpact','tocAsumsi','tocRisiko','tocBukti']],
+  ['Keselarasan', ['regNama','regSifat','regPasal','regKaitan','sdgGoal','sdgTarget','sdgKontribusi','csvCatatan','uNama','uJenis','uManfaat','uCsv','uIndikator']],
+  ['Checklist & sensitivitas', ['ckBukti','sensSet']]
+];
+const GUIDE_TITLE = {nama:'Nama program', jenis:'Jenis analisis', organisasi:'Organisasi / unit', penyusun:'Disusun oleh', tahunAwal:'Tahun awal', tahunAkhir:'Tahun akhir',
+  rate:'Rate / BI Rate', bulan:'Bulan dihitung', rateAlasan:'Alasan / sumber rate', siteNama:'Lokasi / sub-program', lingkup:'Lingkup analisis', catatan:'Catatan',
+  sNama:'Nama stakeholder', sJenis:'Jenis stakeholder', jumlah:'Jumlah', sLibat:'Cara dilibatkan', sMaterial:'Material?', alasanMaterial:'Alasan materialitas',
+  iTahun:'Tahun', iSite:'Lokasi', iUraian:'Uraian', nilai:'Nilai (Rp)', iSumber:'Sumber',
+  oStk:'Stakeholder', oSite:'Lokasi / sub-program', aspek:'Aspek', outcome:'Outcome', indikator:'Indikator', jenisOutcome:'Jenis outcome', metode:'Metode valuasi',
+  deskripsi:'Proxy & cara hitung', proxySumber:'Sumber data & referensi', nilaiY:'Nilai manfaat kotor', dw:'Deadweight', attr:'Attribution', disp:'Displacement', drop:'Drop-off',
+  dwAlasan:'Penjelasan deadweight', attrAlasan:'Penjelasan attribution', dispAlasan:'Penjelasan displacement', dropAlasan:'Penjelasan drop-off',
+  tocMasalah:'Masalah / konteks', tocSasaran:'Sasaran', tocInput:'Input', tocKegiatan:'Kegiatan', tocOutput:'Output', tocPendek:'Outcome jangka pendek', tocMenengah:'Outcome jangka menengah', tocImpact:'Impact', tocAsumsi:'Asumsi', tocRisiko:'Risiko & mitigasi', tocBukti:'Bukti / rujukan',
+  regNama:'Regulasi / standar', regSifat:'Sifat', regPasal:'Pasal / bagian', regKaitan:'Kaitan dengan program', regBukti:'Bukti', sdgGoal:'Tujuan SDGs', sdgPeran:'Peran', sdgTarget:'Target', sdgOutcome:'Outcome terkait', sdgKontribusi:'Kontribusi',
+  csvCatatan:'Ringkasan shared value', uNama:'Nama unit', uJenis:'Jenis keterkaitan', uStatus:'Status koordinasi', uPeran:'Peran dalam program', uManfaat:'Manfaat bagi unit / bisnis', uCsv:'Tingkat creating shared value', uIndikator:'Indikator bisnis', uPic:'PIC / kontak',
+  ckBukti:'Bukti', sensSet:'Pengaturan uji'};
+/* path → kunci panduan */
+const HK = {'s:nama':'sNama','s:jenis':'sJenis','s:libat':'sLibat','s:material':'sMaterial','i:tahun':'iTahun','i:siteId':'iSite','i:uraian':'iUraian','i:sumber':'iSumber',
+  'o:stakeholderId':'oStk','o:siteId':'oSite','oy:nilai':'nilaiY','st:nama':'siteNama','r:nama':'regNama','r:sifat':'regSifat','r:pasal':'regPasal','r:kaitan':'regKaitan','r:bukti':'regBukti',
+  'g:goal':'sdgGoal','g:peran':'sdgPeran','g:target':'sdgTarget','g:outcomeId':'sdgOutcome','g:kontribusi':'sdgKontribusi','u:nama':'uNama','u:jenis':'uJenis','u:status':'uStatus','u:peran':'uPeran',
+  'u:manfaat':'uManfaat','u:csv':'uCsv','u:indikator':'uIndikator','u:pic':'uPic','ck:bukti':'ckBukti','y:rate':'rate','y:bulan':'bulan',
+  'toc:masalah':'tocMasalah','toc:sasaran':'tocSasaran','toc:input':'tocInput','toc:kegiatan':'tocKegiatan','toc:output':'tocOutput','toc:outcomePendek':'tocPendek','toc:outcome':'tocMenengah','toc:impact':'tocImpact','toc:asumsi':'tocAsumsi','toc:risiko':'tocRisiko','toc:bukti':'tocBukti'};
+const guideKey = path => { const parts = path.split(':'); const k = parts[0], f = parts[parts.length-1]; if (k==='sens') return 'sensSet'; return HK[k+':'+f] || f; };
+function guideHTML(k, title){
+  const g = GUIDE[k]; if (!g) return '';
+  const list = c => Array.isArray(c) ? `<ul>${c.map(x=>`<li>${x}</li>`).join('')}</ul>` : `<p>${c}</p>`;
+  return `<div class="hpop-h"><b>${esc(title || GUIDE_TITLE[k] || '')}</b><button type="button" class="hpop-x" data-act="helpClose" aria-label="Tutup">×</button></div>
+    ${g.apa?`<p>${g.apa}</p>`:''}
+    ${g.cara?`<h5>Cara mengisi</h5>${list(g.cara)}`:''}
+    ${g.contoh?`<h5>Contoh</h5><div class="hpop-ex">${String(g.contoh).replace(/\n/g,'<br>')}</div>`:''}
+    ${g.hindari?`<h5>Hindari</h5><p>${g.hindari}</p>`:''}`;
+}
+const qBtn = (k, title) => GUIDE[k] ? `<button type="button" class="q" data-act="help" data-k="${k}" data-t="${esc(title||'')}" title="Cara mengisi" aria-label="Cara mengisi ${esc(title||'')}">?</button>` : '';
+const thQ = (label, k, attrs) => `<th${attrs?' '+attrs:''}>${esc(label)} ${qBtn(k, label)}</th>`;
+
 const PRINCIPLES = [
   ['Libatkan stakeholder','Involve stakeholders','Stakeholder ikut menentukan apa yang diukur dan bagaimana menilainya.','Tab Stakeholder: kolom "Cara dilibatkan" terisi untuk semua stakeholder material.'],
   ['Pahami apa yang berubah','Understand what changes','Jelaskan bagaimana perubahan terjadi, termasuk yang tidak disengaja dan yang negatif.','Tab Outcome dan Theory of Change terisi; outcome negatif sudah dipertimbangkan.'],
@@ -758,7 +974,9 @@ function sampleProgram(){
     Object.assign(blankUnit(), {nama:'CONTOH: Tim komunikasi', jenis:'komunikasi', peran:'Publikasi program', manfaat:'PR value (dihitung sebagai outcome pemrakarsa)', indikator:'Jumlah dan nilai pemberitaan', status:'aktif'})
   ];
   p.csvCatatan = 'CONTOH: Program menyelesaikan masalah sampah dan penghasilan ibu rumah tangga, sekaligus membuka jalan bagi warga untuk punya rekening bank.';
-  return p;
+  p.outcomes.forEach(o=>{ o.output = ''; });   // output contoh sudah ada di Theory of Change
+  p.schema = 3;            // lewat migrasi v2.1 supaya kolom contoh ikut digabung
+  return toV4(p);
 }
 
 let db = null, storageOK = true, lastSaved = null, dirty = false, importedV1 = 0;
@@ -791,9 +1009,35 @@ function fromV1(p){
   if (out.sens){ delete out.sens.qtyPct; }
   return out;
 }
+/* v2.0 (schema 3) → v2.1 (schema 4): kolom yang tumpang tindih digabung, hasil hitung tetap sama */
+function toV4(p){
+  p = Object.assign({}, p);
+  const ys = yearsOf(p);
+  if (p.rateMode==='tetap'){ p.years = Object.assign({}, p.years||{}); ys.forEach(y=>{ p.years[y] = Object.assign({bulan:'12'}, p.years[y]||{}, {rate: isBlank(p.rateTetap) ? '0' : String(p.rateTetap)}); }); }
+  p.rateMode = 'rata';
+  p.outcomes = (p.outcomes||[]).map(o=>{ const c = Object.assign({}, o);
+    const pu = String(c.proxyUraian||'').trim(), de = String(c.deskripsi||'').trim();
+    if (pu && !de.includes(pu)) c.deskripsi = de ? `${pu} — ${de}` : pu;
+    const sd = String(c.sumberData||'').trim(), ps = String(c.proxySumber||'').trim();
+    if (sd && !ps.includes(sd)) c.proxySumber = ps ? `${ps}; data: ${sd}` : sd;
+    c.proxyUraian = ''; c.sumberData = '';
+    return c; });
+  const outs = p.outcomes.map(o=>String(o.output||'').trim()).filter(Boolean);
+  if (outs.length){ const ex = lines((p.toc||{}).output); outs.forEach(x=>{ if (!ex.includes(x)) ex.push(x); }); p.toc = Object.assign({}, p.toc||{}, {output: ex.join('\n')}); }
+  p.outcomes.forEach(o=>{ o.output = ''; });
+  const extra = [];
+  if (!isBlank(p.periode)) extra.push(`Periode: ${p.periode}.`);
+  if (!isBlank(p.lokasi) && !(p.sites||[]).length) extra.push(`Lokasi: ${p.lokasi}.`);
+  const add = extra.filter(x=>!String(p.lingkup||'').includes(x));
+  if (add.length) p.lingkup = [p.lingkup, ...add].filter(x=>!isBlank(x)).join('\n');
+  p.periode = ''; p.lokasi = '';
+  p.schema = 4;
+  return p;
+}
 function migrate(p){
   if (!p) return blankProgram();
   if ((p.schema||1) < 3) p = fromV1(p);
+  if ((p.schema||1) < 4) p = toV4(p);
   const b = blankProgram(p.nama);
   const out = Object.assign({}, b, p);
   out.toc = Object.assign({}, b.toc, p.toc||{});
@@ -888,11 +1132,10 @@ function yearsOf(p){
   const ys = []; for (let y=a; y<=b; y++) ys.push(y); return ys;
 }
 function rateOf(p){
-  if (p.rateMode==='tetap') return Math.max(0, val(p.rateTetap,0))/100;
   const rs = yearsOf(p).map(y=>(p.years[y]||{}).rate).filter(x=>!isBlank(x)).map(x=>val(x,0));
   return rs.length ? rs.reduce((s,x)=>s+x,0)/rs.length/100 : 0;
 }
-function refYearOf(p){ const ys = yearsOf(p); const r = Math.round(val(p.tahunAcuan, NaN)); return isFinite(r) ? r : ys[ys.length-1]; }
+function refYearOf(p){ const ys = yearsOf(p); return p.jenis==='prakiraan' ? ys[0] : ys[ys.length-1]; }
 const bulanOf = (p,y) => { const b = (p.years[y]||{}).bulan; return isBlank(b) ? 12 : Math.max(0, val(b,12)); };
 const isPem = (o, p) => { const s = (p||cur()).stakeholders.find(x=>x.id===o.stakeholderId); return !!(s && s.jenis==='pemrakarsa'); };
 function compute(p, ov){
@@ -958,12 +1201,10 @@ function analyze(p, res){
   const W = [];
   const add = (lvl, tab, msg, id) => W.push({lvl, tab, msg, id});
   const ys = res.ys;
-  ['tahunAwal','tahunAkhir','tahunAcuan'].forEach(k=>{ const c = checkNum(k, p[k]); if (c.err) add('err','program',`${NUM[k].label} — ${c.err}`); });
+  ['tahunAwal','tahunAkhir'].forEach(k=>{ const c = checkNum(k, p[k]); if (c.err) add('err','program',`${NUM[k].label} — ${c.err}`); });
   if (val(p.tahunAkhir,0) < val(p.tahunAwal,0)) add('err','program','Tahun akhir lebih kecil dari tahun awal.');
   if (val(p.tahunAkhir,0) - val(p.tahunAwal,0) > 29) add('warn','program','Periode lebih dari 30 tahun; hanya 30 tahun pertama yang dihitung.');
-  if (!ys.includes(res.ref)) add('info','program',`Tahun nilai saat ini (${res.ref}) di luar periode ${ys[0]}–${ys[ys.length-1]}. Boleh, tapi pastikan memang disengaja.`);
-  if (p.rateMode==='tetap'){ const c = checkNum('rateTetap', p.rateTetap); if (c.err) add('err','program',`Rate tetap — ${c.err}`); }
-  else ys.forEach(y=>{ const d = p.years[y]||{}; if (isBlank(d.rate)) add('warn','program',`Rate (BI Rate) tahun ${y} belum diisi; rata-rata hanya dari tahun yang terisi.`); else { const c = checkNum('rate', d.rate); if (c.err) add('err','program',`Rate tahun ${y} — ${c.err}`); } });
+  ys.forEach(y=>{ const d = p.years[y]||{}; if (isBlank(d.rate)) add('warn','program',`Rate (BI Rate) tahun ${y} belum diisi; rata-rata hanya dari tahun yang terisi.`); else { const c = checkNum('rate', d.rate); if (c.err) add('err','program',`Rate tahun ${y} — ${c.err}`); } });
   ys.forEach(y=>{ const d = p.years[y]||{}; const c = checkNum('bulan', d.bulan); if (c.err) add('err','program',`Bulan dihitung tahun ${y} — ${c.err}`); });
   if (isBlank(p.rateAlasan)) add('info','program','Alasan/sumber rate belum ditulis.');
   p.inputs.forEach((i,idx)=>{
@@ -1035,18 +1276,17 @@ function analyze(p, res){
 const countBy = (W,tab) => ({err:W.filter(w=>w.tab===tab&&w.lvl==='err').length, warn:W.filter(w=>w.tab===tab&&w.lvl==='warn').length});
 
 /* ================= UI helpers ================= */
-function helpBtn(key){ return HELP[key] ? `<button type="button" class="q" data-act="help" title="Penjelasan" aria-label="Penjelasan">?</button>` : ''; }
 function fld(o){
-  // o: {label, path, help, type:'text'|'textarea'|'select'|'num', unit, options, ph, rows, cls}
+  // o: {label, path, help, type:'text'|'textarea'|'select'|'num', unit, options, ph, rows, cls, list}
   const v = getPath(o.path) ?? '';
   const f = fieldOf(o.path);
   let ctrl, state = '', msg = '', hint = '';
   if (o.type==='textarea'){
-    ctrl = `<textarea data-path="${o.path}" rows="${o.rows||2}" placeholder="${esc(o.ph||'')}">${esc(v)}</textarea>`;
+    ctrl = `<textarea data-path="${o.path}" rows="${o.rows||2}" placeholder="${esc(o.ph||'')}" aria-label="${esc(o.label||'')}">${esc(v)}</textarea>`;
   } else if (o.type==='select'){
-    ctrl = `<select data-path="${o.path}">${o.options.map(([k,l])=>`<option value="${esc(k)}"${String(k)===String(v)?' selected':''}>${esc(l)}</option>`).join('')}</select>`;
+    ctrl = `<select data-path="${o.path}" aria-label="${esc(o.label||'')}">${o.options.map(([k,l])=>`<option value="${esc(k)}"${String(k)===String(v)?' selected':''}>${esc(l)}</option>`).join('')}</select>`;
   } else {
-    ctrl = `<input type="text" ${o.type==='num'?'inputmode="decimal" autocomplete="off"':''}${o.list?` list="${o.list}" autocomplete="off"`:''} data-path="${o.path}" value="${esc(v)}" placeholder="${esc(o.ph||'')}">`;
+    ctrl = `<input type="text" ${o.type==='num'?'inputmode="decimal" autocomplete="off"':''}${o.list?` list="${o.list}" autocomplete="off"`:''} data-path="${o.path}" value="${esc(v)}" placeholder="${esc(o.ph||'')}" aria-label="${esc(o.label||'')}">`;
     if (o.unit) ctrl = `<div class="unit" data-unit="${esc(o.unit)}">${ctrl}</div>`;
     if (o.type==='num'){
       const c = checkNum(f, v);
@@ -1054,33 +1294,125 @@ function fld(o){
       else if (NUM[f] && NUM[f].money && c.value!=null) hint = '= ' + fmtRp(c.value) + (c.expr ? ' (hasil rumus)' : '');
     }
   }
-  const hk = o.help || f;
-  const exTxt = o.ex!==undefined ? o.ex : EX[o.path.split(':')[0] + ':' + f];
+  const hk = o.help || guideKey(o.path);
   return `<div class="f${state}${o.cls?' '+o.cls:''}" data-f="${o.path}">
-    ${o.label!=null ? `<label>${esc(o.label)} ${helpBtn(hk)}</label>` : ''}
-    ${HELP[hk] ? `<div class="help">${esc(HELP[hk])}</div>` : ''}
+    ${o.label!=null ? `<label>${esc(o.label)} ${qBtn(hk, o.label)}</label>` : ''}
     ${ctrl}
-    ${exTxt ? `<div class="ex">${nl2br(exTxt)}</div>` : ''}
     ${o.type==='num' ? `<div class="msg">${msg}</div><div class="hint">${hint}</div>` : ''}
   </div>`;
 }
+const helpBtn = k => qBtn(k, GUIDE_TITLE[k]);
+const helpBtnInline = k => qBtn(k, GUIDE_TITLE[k]);
 function stOptions(withBlank=true){
   const p = cur();
   return [ ...(withBlank?[['','— pilih stakeholder —']]:[]), ...p.stakeholders.map(s=>[s.id, s.nama || '(tanpa nama)']) ];
 }
 function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove('on'), 2200); }
 
-/* ================= Preferensi tampilan & kotak "Cara isi" ================= */
-let pref = {ex:true, closed:{}};
-try{ const s = JSON.parse(localStorage.getItem(LS_KEY+'-pref')||'null'); if (s) pref = Object.assign(pref, s); }catch(_){}
-const savePref = () => { try{ localStorage.setItem(LS_KEY+'-pref', JSON.stringify(pref)); }catch(_){} };
-function applyPref(){
-  document.body.classList.toggle('hide-ex', !pref.ex);
-  const b = $('#exBtn'); if (b){ b.textContent = pref.ex ? 'Contoh: tampil' : 'Contoh: sembunyi'; b.classList.toggle('pri', !!pref.ex); }
+/* ---- Panel panduan "?" ---- */
+let helpOpenBtn = null;
+function closeHelp(){ const el = document.getElementById('hpop'); if (el) el.remove(); if (helpOpenBtn){ helpOpenBtn.setAttribute('aria-expanded','false'); helpOpenBtn = null; } }
+function openHelp(btn){
+  if (helpOpenBtn === btn){ closeHelp(); return; }
+  closeHelp();
+  const html = guideHTML(btn.dataset.k, btn.dataset.t); if (!html) return;
+  const pop = document.createElement('div'); pop.id = 'hpop'; pop.className = 'hpop'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Cara mengisi');
+  pop.innerHTML = html; document.body.appendChild(pop);
+  if (innerWidth <= 560) pop.classList.add('sheet');
+  else {
+    const r = btn.getBoundingClientRect(), W = pop.offsetWidth, H = pop.offsetHeight;
+    const left = Math.min(Math.max(8, r.left - 18), innerWidth - W - 8);
+    let top = r.bottom + 6; if (top + H > innerHeight - 8 && r.top - H - 6 > stickyH()) top = r.top - H - 6;
+    pop.style.left = (left + scrollX) + 'px'; pop.style.top = (top + scrollY) + 'px';
+  }
+  helpOpenBtn = btn; btn.setAttribute('aria-expanded','true');
 }
+document.addEventListener('keydown', e=>{ if (e.key==='Escape' && helpOpenBtn){ const b = helpOpenBtn; closeHelp(); b.focus(); } });
+
+/* ---- Tinggi bagian atas yang lengket, supaya lompatan ke kartu tidak tertutup ---- */
+function stickyH(){ const t = document.querySelector('.top'), n = document.querySelector('.tabbar'); let h = 0;
+  [t,n].forEach(el=>{ if (el && getComputedStyle(el).position==='sticky') h = Math.max(h, el.getBoundingClientRect().bottom); }); return Math.max(0, h); }
+function syncSticky(){ const t = document.querySelector('.top'); const h = t && getComputedStyle(t).position==='sticky' ? t.offsetHeight : 0;
+  document.documentElement.style.setProperty('--toph', h + 'px'); document.documentElement.style.setProperty('--stick', (stickyH() || 0) + 'px'); }
+window.addEventListener('resize', ()=>{ syncSticky(); closeHelp(); });
+
+/* ---- Geser untuk mengubah urutan (mouse, sentuh, dan panah atas/bawah di tombol ⠿) ---- */
+const SORT_LISTS = {stk:p=>p.stakeholders, inp:p=>p.inputs, out:p=>p.outcomes, site:p=>p.sites, reg:p=>p.regulasi, sdg:p=>p.sdgs, unit:p=>p.units};
+const grip = (label) => `<button type="button" class="grip" data-grip title="Geser untuk mengubah urutan (atau tekan ↑/↓)" aria-label="Geser ${esc(label||'')} untuk mengubah urutan">⠿</button>`;
+let drag = null;
+const sortItems = box => [...box.children].filter(x=>x.hasAttribute('data-item'));
+document.addEventListener('pointerdown', e=>{
+  const g = e.target.closest('[data-grip]'); if (!g || e.button>0) return;
+  const item = g.closest('[data-item]'), box = item && item.parentElement; if (!box || !box.hasAttribute('data-sort')) return;
+  e.preventDefault(); closeHelp();
+  drag = {item, box, group: box.dataset.group || null, id: e.pointerId, moved:false, y0:e.clientY, x0:e.clientX};
+});
+document.addEventListener('pointermove', e=>{
+  if (!drag || e.pointerId!==drag.id) return;
+  if (!drag.moved){
+    if (Math.abs(e.clientY-drag.y0) + Math.abs(e.clientX-drag.x0) < 4) return;
+    drag.moved = true; drag.item.classList.add('dragging'); document.body.classList.add('is-dragging');
+    if (drag.box.dataset.compact!==undefined){
+      const g = drag.item.querySelector('[data-grip]'), y1 = g.getBoundingClientRect().top;
+      drag.box.classList.add('sorting');
+      window.scrollBy(0, g.getBoundingClientRect().top - y1);
+    }
+  }
+  e.preventDefault();
+  let box = drag.box;
+  if (drag.group){
+    const hit = $$(`[data-sort][data-group="${drag.group}"]`).find(b=>{ const r = b.getBoundingClientRect(); return e.clientX>=r.left-8 && e.clientX<=r.right+8 && e.clientY>=r.top-10 && e.clientY<=r.bottom+50; });
+    if (hit) box = hit;
+  }
+  const sibs = sortItems(box).filter(x=>x!==drag.item);
+  let before = null;
+  for (const s of sibs){ const r = s.getBoundingClientRect(); if (e.clientY < r.top + r.height/2){ before = s; break; } }
+  if (before){ if (drag.item.nextSibling!==before || drag.item.parentElement!==box) box.insertBefore(drag.item, before); }
+  else { const last = sibs[sibs.length-1]; const after = last ? last.nextSibling : null; if (drag.item.parentElement!==box || (last && drag.item.previousSibling!==last)) box.insertBefore(drag.item, after); }
+  drag.box = box;
+  const top = stickyH() + 60; if (e.clientY < top) window.scrollBy(0,-14); else if (e.clientY > innerHeight-60) window.scrollBy(0,14);
+}, {passive:false});
+function endDrag(e){
+  if (!drag || (e && e.pointerId!==drag.id)) return;
+  const d = drag; drag = null; d.item.classList.remove('dragging'); document.body.classList.remove('is-dragging');
+  const wasCompact = d.box.classList.contains('sorting'); d.box.classList.remove('sorting');
+  if (d.moved){ applyOrder(d.box, d.group);
+    if (wasCompact){ const el = document.querySelector(`[data-sort="${d.box.dataset.sort}"] > [data-item="${CSS.escape(d.item.dataset.item)}"]`); if (el) el.scrollIntoView({block:'start'}); } }
+}
+document.addEventListener('pointerup', endDrag); document.addEventListener('pointercancel', endDrag);
+function applyOrder(box, group){
+  const p = cur();
+  if (group==='toc'){
+    $$('[data-sort][data-group="toc"]').forEach(b=>{ p.toc[b.dataset.sort.split(':')[1]] = sortItems(b).map(x=>x.dataset.text).join('\n'); });
+  } else {
+    const arr = SORT_LISTS[box.dataset.sort](p), ids = sortItems(box).map(x=>x.dataset.item);
+    arr.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));
+  }
+  save(); const y = scrollY; render(); scrollTo(0,y); toast('Urutan diubah');
+}
+document.addEventListener('keydown', e=>{
+  const g = e.target.closest && e.target.closest('[data-grip]'); if (!g || (e.key!=='ArrowUp' && e.key!=='ArrowDown')) return;
+  const item = g.closest('[data-item]'), box = item && item.parentElement; if (!box || !box.hasAttribute('data-sort')) return;
+  e.preventDefault();
+  const items = sortItems(box), i = items.indexOf(item), j = i + (e.key==='ArrowUp' ? -1 : 1);
+  if (j<0 || j>=items.length) return;
+  if (j<i) box.insertBefore(item, items[j]); else box.insertBefore(item, items[j].nextSibling);
+  const key = item.dataset.item, sortKey = box.dataset.sort;
+  applyOrder(box, box.dataset.group || null);
+  const again = document.querySelector(`[data-sort="${sortKey}"] > [data-item="${CSS.escape(key)}"] [data-grip]`) ||
+    (box.dataset.group ? [...document.querySelectorAll(`[data-sort="${sortKey}"] > [data-item]`)][j]?.querySelector('[data-grip]') : null);
+  if (again) again.focus();
+});
+
+/* ================= Preferensi tampilan & kotak "Langkah" per tab ================= */
+let pref = {open:{}};
+try{ const s = JSON.parse(localStorage.getItem(LS_KEY+'-pref')||'null'); if (s && s.open) pref.open = s.open; }catch(_){}
+const savePref = () => { try{ localStorage.setItem(LS_KEY+'-pref', JSON.stringify(pref)); }catch(_){} };
+function applyPref(){ syncSticky(); }
 function howTo(k){
   const h = HOWTO[k]; if (!h) return '';
-  return `<details class="howto noprint" data-howto="${k}"${pref.closed[k]?'':' open'}><summary>📘 ${esc(h.t)}<span class="tiny">klik untuk buka/tutup</span></summary><div class="howto-b">${h.b}</div></details>`;
+  return `<details class="howto noprint" data-howto="${k}"${pref.open[k]?' open':''}><summary>📘 ${esc(h.t)}<span class="tiny">langkah & contoh · klik untuk buka/tutup</span></summary><div class="howto-b">${h.b}
+    <p class="tiny muted" style="margin-top:8px">Cara mengisi tiap kolom: klik tombol <span class="q" style="display:inline-block;cursor:default">?</span> di samping nama kolom.</p></div></details>`;
 }
 const HOWTO = {};
 HOWTO.program = {t:'Cara isi tab Program', b:`<ol>
@@ -1199,21 +1531,31 @@ HOWTO.checklist = {t:'Cara isi Checklist', b:`<ol>
 
 /* ---- v2: panduan tab yang berubah ---- */
 HOWTO.program = {t:'Cara isi tab Program', b:`<ol>
-  <li><b>Nama & jenis analisis</b>: <i>Evaluatif</i> untuk program yang sudah berjalan (seperti worksheet konsultan), <i>Prakiraan</i> untuk rencana ke depan.</li>
-  <li><b>Periode</b>: isi tahun awal dan tahun akhir. Kolom nilai manfaat dan investasi akan muncul untuk tiap tahun.</li>
-  <li><b>Tahun nilai saat ini</b>: tahun tujuan semua nilai rupiah dibawa. Evaluatif = tahun akhir. Prakiraan = tahun awal.</li>
-  <li><b>Rate</b>: worksheet konsultan memakai <b>rata-rata BI Rate</b> tahun-tahun yang dihitung. Isi BI Rate tiap tahun di tabel, atau pilih satu rate tetap.</li>
-  <li><b>Bulan dihitung</b>: untuk payback period dalam bulan. Kalau periode Jan 2024 – Nov 2025, isi 12 untuk 2024 dan 11 untuk 2025.</li>
-  <li><b>Lokasi / sub-program</b> (opsional): kalau program berjalan di beberapa tempat atau angkatan, daftarkan di sini supaya hasil keluar per lokasi dan gabungan.</li>
+  <li>Isi <b>nama</b> dan pilih <b>jenis analisis</b>: Evaluatif untuk program yang sudah berjalan (seperti worksheet konsultan), Prakiraan untuk rencana.</li>
+  <li>Isi <b>tahun awal</b> dan <b>tahun akhir</b>. Kolom per tahun di tab Input dan Outcome menyesuaikan.</li>
+  <li>Isi <b>BI Rate</b> dan <b>bulan dihitung</b> tiap tahun. Rate yang dipakai = rata-rata; ingin satu rate tetap, isi tahun pertama lalu klik <b>Samakan rate</b>.</li>
+  <li>Program di beberapa tempat atau angkatan? Tambah <b>lokasi</b> supaya hasil keluar per lokasi dan gabungan.</li>
+  <li>Tulis <b>lingkup</b>: apa yang dihitung dan tidak.</li>
 </ol>
 <h4>Contoh perhitungan nilai saat ini</h4>
-<div class="exbox">Periode 2024–2025, tahun nilai saat ini 2025, BI Rate 2024 = 6% dan 2025 = 4,75% → rata-rata <b>5,375%</b>.<br>
-Manfaat 2024 Rp 100 juta → 100 × (1 + 5,375%)<sup>1</sup> = <b>Rp 105,4 juta</b>. Manfaat 2025 Rp 100 juta → × (1 + 5,375%)<sup>0</sup> = <b>Rp 100 juta</b>.<br>
+<div class="exbox">Periode 2024–2025 (evaluatif), BI Rate 2024 = 6% dan 2025 = 4,75% → rata-rata <b>5,375%</b>.<br>
+Manfaat 2024 Rp 100 juta × (1 + 5,375%)<sup>1</sup> = <b>Rp 105,4 juta</b>. Manfaat 2025 Rp 100 juta × (1 + 5,375%)<sup>0</sup> = <b>Rp 100 juta</b>.<br>
 Investasi dibawa dengan cara yang sama, lalu SROI = total manfaat saat ini ÷ total investasi saat ini.</div>
 <h4>Urutan pengisian yang disarankan</h4>
 <p>Program → Theory of Change (tab 7) → Keselarasan (tab 8) → Stakeholder → Input → Outcome → cek Hasil & Sensitivitas → Checklist.</p>`};
-HOWTO.stakeholder = {t:HOWTO.stakeholder.t, b:HOWTO.stakeholder.b.replace('<ol>', `<ol>
-  <li><b>Jenis stakeholder</b>: penerima manfaat langsung, tidak langsung, fasilitator/mitra, komunitas, atau <b>pemrakarsa program</b> (perusahaan sendiri, mis. untuk PR value). Outcome pemrakarsa dipisahkan di hasil.</li>`)};
+HOWTO.stakeholder = {t:'Cara isi tab Stakeholder', b:`<ol>
+  <li>Daftar semua kelompok yang <b>berubah</b> karena program, termasuk yang dirugikan dan perusahaan sendiri (untuk PR value).</li>
+  <li>Pilih <b>jenis</b>, isi <b>jumlah</b>, dan tulis <b>cara dilibatkan</b> (metode + jumlah responden).</li>
+  <li><b>Material?</b> Ya → buat outcome-nya. Tidak → tulis alasannya.</li>
+</ol>
+<h4>Contoh</h4>
+<div class="tw"><table><thead><tr><th>Stakeholder</th><th>Jenis</th><th>Jumlah</th><th>Cara dilibatkan</th><th>Material?</th></tr></thead><tbody>
+  <tr><td>Peserta MUA Tuli</td><td>Penerima manfaat langsung</td><td>10</td><td>Kuesioner pre-post 10 peserta</td><td>Ya</td></tr>
+  <tr><td>Klien jasa MUA</td><td>Penerima manfaat tidak langsung</td><td>40</td><td>Survei singkat 12 klien</td><td>Ya</td></tr>
+  <tr><td>Pelatih</td><td>Fasilitator / mitra</td><td>3</td><td>Wawancara</td><td>Ya</td></tr>
+  <tr><td>Pengepul lama</td><td>Penerima manfaat tidak langsung</td><td>3</td><td>Wawancara</td><td>Tidak, sudah dihitung lewat displacement</td></tr>
+  <tr><td>BCA</td><td>Pemrakarsa program</td><td>1</td><td>Data publikasi tim komunikasi</td><td>Ya (PR value)</td></tr>
+</tbody></table></div>`};
 HOWTO.input = {t:'Cara isi tab Input', b:`<ol>
   <li>Satu baris = satu pos biaya di satu tahun. Pilih <b>tahun</b> dana dikeluarkan dan, kalau ada, <b>lokasi</b>-nya.</li>
   <li>Masukkan <b>semua</b> sumber daya: dana program, honor vendor, pajak, waktu staf/relawan, barang donasi, kontribusi mitra.</li>
@@ -1227,10 +1569,10 @@ HOWTO.input = {t:'Cara isi tab Input', b:`<ol>
   <tr><td>2024</td><td>Pameran (dipakai 2 lokasi)</td><td><code>17.646.640 / 2</code></td><td>Biaya bersama dibagi rata ke tiap lokasi</td></tr>
   <tr><td>2023</td><td>Waktu staf kurasi</td><td><code>2 × 10,75 × 35.000.000 / 22</code></td><td>orang × hari kerja × gaji per bulan ÷ 22 hari</td></tr>
 </tbody></table></div>`};
-HOWTO.outcome = {t:'Cara isi tab Outcome & fiksasi dampak', b:`<p>Satu kartu = satu outcome untuk satu stakeholder (bisa juga per lokasi atau angkatan). Isi dari atas ke bawah:</p>
+HOWTO.outcome = {t:'Cara isi tab Outcome & fiksasi dampak', b:`<p>Satu kartu = satu outcome untuk satu stakeholder (bisa juga per lokasi atau angkatan). Isi dari atas ke bawah; klik <b>?</b> di tiap kolom untuk detailnya.</p>
 <ol>
-  <li><b>Rantai perubahan</b>: stakeholder, aspek (ekonomi/sosial/wellbeing/lingkungan), output, outcome, indikator.</li>
-  <li><b>Valuasi</b>: pilih metode (replacement cost, income approach, avoided cost, dll.), tulis nama proxy, <b>deskripsi cara hitung</b>, dan sumbernya.</li>
+  <li><b>Outcome</b>: stakeholder, aspek, perubahan yang dialami, indikator.</li>
+  <li><b>Valuasi</b>: pilih metode, tulis <b>proxy & cara hitung</b>, dan sumbernya.</li>
   <li><b>Nilai per tahun</b>: isi nilai manfaat kotor tiap tahun. Boleh rumus: <code>harga satuan × faktor × jumlah</code>.</li>
   <li><b>Fiksasi dampak per tahun</b>: deadweight, attribution, displacement, drop-off. Angkanya boleh beda tiap tahun.</li>
   <li><b>Penjelasan</b>: satu penjelasan per filter, berlaku untuk semua tahun.</li>
@@ -1303,22 +1645,22 @@ const yearOptions = () => yearsOf(cur()).map(y=>[String(y), String(y)]);
 const siteOptions = (blankLabel) => [['', blankLabel || '— semua / tidak spesifik —'], ...cur().sites.map(s=>[s.id, s.nama || '(lokasi tanpa nama)'])];
 function rateInfo(p){
   const res = compute(p), ys = res.ys;
-  const how = p.rateMode==='tetap' ? 'rate tetap' : `rata-rata rate ${ys.length>1?ys[0]+'–'+ys[ys.length-1]:ys[0]}`;
-  return `Rate dipakai: <b>${fmtRate(res.r)}</b> (${how}) · semua nilai dibawa ke tahun <b>${res.ref}</b> · total <b>${fmtNum(res.months)}</b> bulan`;
+  return `Rate dipakai: <b>${fmtRate(res.r)}</b> (rata-rata ${ys.length>1?ys[0]+'–'+ys[ys.length-1]:ys[0]}) · nilai rupiah dibawa ke tahun <b>${res.ref}</b> (${p.jenis==='prakiraan'?'tahun awal, karena prakiraan':'tahun akhir, karena evaluatif'}) · periode <b>${fmtNum(res.months)}</b> bulan`;
 }
 function yearTableProg(p){
   const res = compute(p);
-  return `<div class="tw"><table class="edit-table" style="max-width:640px">
-    <thead><tr><th>Tahun</th><th>${p.rateMode==='tetap'?'Rate (tidak dipakai)':'Rate / BI Rate (%)'}</th><th>Bulan dihitung</th><th class="num">Faktor ke nilai saat ini</th></tr></thead>
+  return `<div class="tw"><table class="edit-table" style="max-width:660px">
+    <thead><tr><th>Tahun</th>${thQ('Rate / BI Rate','rate')}${thQ('Bulan dihitung','bulan')}<th class="num">Faktor ke nilai saat ini</th></tr></thead>
     <tbody>${res.ys.map(y=>`<tr><td><b>${y}</b>${y===res.ref?' <span class="tiny muted">(acuan)</span>':''}</td>
-      <td style="width:150px">${fld({label:'Rate', path:`y:${y}:rate`, type:'num', unit:'%'})}</td>
-      <td style="width:120px">${fld({label:'Bulan', path:`y:${y}:bulan`, type:'num', ph:'12'})}</td>
+      <td style="width:150px">${fld({label:'Rate '+y, path:`y:${y}:rate`, type:'num', unit:'%'})}</td>
+      <td style="width:120px">${fld({label:'Bulan '+y, path:`y:${y}:bulan`, type:'num', ph:'12'})}</td>
       <td class="num" data-live="fac:${y}">× ${fmtNum(Math.pow(1+res.r, res.ref-y),4)}</td></tr>`).join('')}</tbody>
-  </table></div>`;
+  </table></div>
+  ${res.ys.length>1?`<div style="margin-top:6px"><button class="btn sm" data-act="rateSame">Samakan rate semua tahun dengan tahun ${res.ys[0]}</button></div>`:''}`;
 }
 function tProgram(){
   const p = cur();
-  const sites = p.sites.map((s,i)=>`<tr><td class="num">${i+1}</td><td>${fld({label:'Nama', path:`st:${s.id}:nama`, ph:'mis. Baduy / Sumba Timur / Angkatan 2024'})}</td>
+  const sites = p.sites.map((s,i)=>`<tr data-item="${s.id}"><td class="gripcell">${grip(s.nama)}</td><td class="num">${i+1}</td><td>${fld({label:'Nama lokasi', path:`st:${s.id}:nama`, ph:'mis. Baduy / Sumba Timur / Angkatan 2024'})}</td>
       <td><button class="btn sm del" data-act="delSite" data-id="${s.id}" title="Hapus">✕</button></td></tr>`).join('');
   return `${howTo('program')}<div class="card">
     <h2>Identitas program</h2>
@@ -1326,39 +1668,29 @@ function tProgram(){
       ${fld({label:'Nama program', path:'p:nama', cls:'span2'})}
       ${fld({label:'Jenis analisis', path:'p:jenis', type:'select', options:[['evaluatif','Evaluatif (dampak yang sudah terjadi)'],['prakiraan','Prakiraan / forecast']]})}
       ${fld({label:'Organisasi / unit', path:'p:organisasi'})}
-      ${fld({label:'Lokasi', path:'p:lokasi'})}
-      ${fld({label:'Periode (teks)', path:'p:periode', ph:'mis. Januari 2024 – November 2025'})}
-      ${fld({label:'Disusun oleh', path:'p:penyusun', cls:'span3'})}
+      ${fld({label:'Disusun oleh', path:'p:penyusun', cls:'span2'})}
     </div>
   </div>
   <div class="card">
     <h2>Periode & rate</h2>
     <div class="grid g3">
-      ${fld({label:'Tahun awal', path:'p:tahunAwal', type:'num', ex:'Contoh: 2024'})}
-      ${fld({label:'Tahun akhir', path:'p:tahunAkhir', type:'num', ex:'Contoh: 2025'})}
-      ${fld({label:'Tahun nilai saat ini', path:'p:tahunAcuan', type:'num', ex:'Evaluatif: sama dengan tahun akhir'})}
-    </div>
-    <div class="chips noprint" style="margin:2px 0 10px"><span class="tiny muted" style="margin-right:4px">Tahun nilai saat ini:</span>
-      <button data-act="setRef" data-v="akhir">= tahun akhir (evaluatif)</button><button data-act="setRef" data-v="awal">= tahun awal (prakiraan)</button></div>
-    <div class="grid g3">
-      ${fld({label:'Cara menentukan rate', path:'p:rateMode', type:'select', options:[['rata','Rata-rata rate per tahun (cara worksheet konsultan)'],['tetap','Satu rate tetap untuk semua tahun']], cls:'span2'})}
-      ${p.rateMode==='tetap' ? fld({label:'Rate tetap per tahun', path:'p:rateTetap', type:'num', unit:'%'}) : '<div></div>'}
+      ${fld({label:'Tahun awal', path:'p:tahunAwal', type:'num', ph:'2024'})}
+      ${fld({label:'Tahun akhir', path:'p:tahunAkhir', type:'num', ph:'2025'})}
     </div>
     <div style="margin-top:8px">${yearTableProg(p)}</div>
     <div class="live" data-live="rateInfo">${rateInfo(p)}</div>
-    <div class="grid g2" style="margin-top:10px">${fld({label:'Alasan / sumber rate', path:'p:rateAlasan', type:'textarea', cls:'span2', help:'rateAlasan'})}</div>
-    <p class="tiny muted">Tabel tahun ikut berubah setelah tahun awal/akhir diganti (klik di luar kolom). Nilai yang sudah diisi tidak hilang.</p>
+    <div class="grid g2" style="margin-top:10px">${fld({label:'Alasan / sumber rate', path:'p:rateAlasan', type:'textarea', cls:'span2'})}</div>
   </div>
   <div class="card">
-    <h2>Lokasi / sub-program / angkatan <span class="tiny muted">(opsional)</span></h2>
-    <p class="small muted">${esc(HELP.sites)}</p>
-    ${p.sites.length ? `<div class="tw"><table class="edit-table" style="max-width:640px"><thead><tr><th>#</th><th>Nama lokasi / sub-program</th><th></th></tr></thead><tbody>${sites}</tbody></table></div>` : ''}
+    <h2>Lokasi / sub-program / angkatan <span class="tiny muted">(opsional)</span> ${qBtn('siteNama','Lokasi / sub-program')}</h2>
+    ${p.sites.length ? `<div class="tw"><table class="edit-table" style="max-width:660px"><thead><tr><th></th><th>#</th><th>Nama lokasi / sub-program</th><th></th></tr></thead><tbody data-sort="site">${sites}</tbody></table></div>`
+      : `<p class="small muted">Belum ada. Kalau program hanya di satu tempat, bagian ini boleh dilewati.</p>`}
     <div style="margin-top:8px"><button class="btn" data-act="addSite">+ Tambah lokasi / sub-program</button></div>
   </div>
   <div class="card">
     <h2>Lingkup & catatan</h2>
     <div class="grid g2">
-      ${fld({label:'Lingkup analisis', path:'p:lingkup', type:'textarea', rows:4, help:'lingkup', ph:'Apa yang dihitung dan tidak, wilayah, periode, alasan…'})}
+      ${fld({label:'Lingkup analisis', path:'p:lingkup', type:'textarea', rows:4, ph:'Apa yang dihitung dan tidak, wilayah, periode, alasannya'})}
       ${fld({label:'Catatan lain', path:'p:catatan', type:'textarea', rows:4})}
     </div>
   </div>`;
@@ -1367,31 +1699,27 @@ function tProgram(){
 /* ---- 2. Stakeholder ---- */
 function tStakeholder(){
   const p = cur();
-  const rows = p.stakeholders.map((s,i)=>`<tr>
+  const rows = p.stakeholders.map((s,i)=>`<tr data-item="${s.id}">
+      <td class="gripcell">${grip(s.nama)}</td>
       <td class="num">${i+1}</td>
-      <td style="min-width:170px">${fld({label:'Nama', path:`s:${s.id}:nama`, ph:'mis. Ibu peserta'})}</td>
-      <td style="min-width:190px">${fld({label:'Jenis', path:`s:${s.id}:jenis`, type:'select', options:JENIS_STK})}</td>
-      <td style="min-width:150px">${fld({label:'Peran', path:`s:${s.id}:peran`, ph:'mis. penerima manfaat'})}</td>
+      <td style="min-width:180px">${fld({label:'Nama', path:`s:${s.id}:nama`, ph:'mis. Perajin tenun'})}</td>
+      <td style="min-width:200px">${fld({label:'Jenis', path:`s:${s.id}:jenis`, type:'select', options:JENIS_STK})}</td>
       <td style="width:90px">${fld({label:'Jumlah', path:`s:${s.id}:jumlah`, type:'num'})}</td>
-      <td style="min-width:190px">${fld({label:'Cara dilibatkan', path:`s:${s.id}:libat`, type:'textarea', ph:'kuesioner / FGD / wawancara'})}</td>
-      <td style="width:110px">${fld({label:'Material?', path:`s:${s.id}:material`, type:'select', options:[['ya','Ya, dihitung'],['tidak','Tidak']]})}</td>
-      <td style="min-width:190px">${fld({label:'Alasan', path:`s:${s.id}:alasanMaterial`, type:'textarea', ph:'wajib kalau tidak dihitung'})}</td>
+      <td style="min-width:200px">${fld({label:'Cara dilibatkan', path:`s:${s.id}:libat`, type:'textarea', ph:'kuesioner / FGD / wawancara'})}</td>
+      <td style="width:120px">${fld({label:'Material?', path:`s:${s.id}:material`, type:'select', options:[['ya','Ya, dihitung'],['tidak','Tidak']]})}</td>
+      <td style="min-width:190px">${fld({label:'Alasan', path:`s:${s.id}:alasanMaterial`, type:'textarea', ph:s.material==='tidak'?'wajib diisi':'isi kalau tidak dihitung'})}</td>
       <td><button class="btn sm del" data-act="delS" data-id="${s.id}" title="Hapus">✕</button></td>
     </tr>`).join('');
   return `${howTo('stakeholder')}<div class="card">
     <h2>Stakeholder</h2>
-    <p class="small muted">Siapa saja yang mengalami perubahan karena program. Tandai mana yang dihitung (material) dan tulis alasan kalau tidak dihitung. ${helpBtnInline('sJenis')}</p>
+    <p class="small muted">Siapa saja yang mengalami perubahan karena program. Klik <b>?</b> di judul kolom untuk cara mengisi; geser ⠿ untuk mengubah urutan.</p>
     <div class="tw"><table class="edit-table">
-      <thead><tr><th>#</th><th>Nama stakeholder</th><th>Jenis</th><th>Peran</th><th>Jumlah</th><th>Cara dilibatkan</th><th>Material?</th><th>Alasan materialitas</th><th></th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="9" class="empty">Belum ada stakeholder.</td></tr>`}</tbody>
+      <thead><tr><th></th><th>#</th>${thQ('Nama stakeholder','sNama')}${thQ('Jenis','sJenis')}${thQ('Jumlah','jumlah')}${thQ('Cara dilibatkan','sLibat')}${thQ('Material?','sMaterial')}${thQ('Alasan materialitas','alasanMaterial')}<th></th></tr></thead>
+      <tbody data-sort="stk">${rows || `<tr><td colspan="9" class="empty">Belum ada stakeholder.</td></tr>`}</tbody>
     </table></div>
     <div style="margin-top:10px"><button class="btn pri" data-act="addS">+ Tambah stakeholder</button></div>
-  </div>
-  <div class="card flat small">
-    <b>Tips.</b> ${esc(HELP.sLibat)} ${esc(HELP.sMaterial)}
   </div>`;
 }
-function helpBtnInline(k){ return `<button class="link small" data-act="helpInline" data-k="${k}">Apa ini?</button><span class="help-inline" data-k="${k}" hidden> ${esc(HELP[k])}</span>`; }
 
 /* ---- 3. Input ---- */
 function inputSummary(p, res){
@@ -1403,23 +1731,22 @@ function inputSummary(p, res){
 }
 function tInput(){
   const p = cur(), res = compute(p), hasSite = p.sites.length>0;
-  const rows = p.inputs.map((it,i)=>`<tr>
+  const rows = p.inputs.map((it,i)=>`<tr data-item="${it.id}">
+      <td class="gripcell">${grip(it.uraian)}</td>
       <td class="num">${i+1}</td>
-      <td style="width:100px">${fld({label:'Tahun', path:`i:${it.id}:tahun`, type:'select', options:[['','— tahun —'],...yearOptions()]})}</td>
-      ${hasSite?`<td style="min-width:150px">${fld({label:'Lokasi', path:`i:${it.id}:siteId`, type:'select', options:siteOptions('— bersama / tanpa lokasi —')})}</td>`:''}
-      <td style="min-width:220px">${fld({label:'Uraian', path:`i:${it.id}:uraian`, type:'textarea', ph:'mis. Pelatihan tahap 1–3'})}</td>
-      <td style="min-width:150px">${fld({label:'Dari', path:`i:${it.id}:stakeholderId`, type:'select', options:[['','Organisasi pelaksana'],...stOptions(false)]})}</td>
-      <td style="width:130px">${fld({label:'Jenis', path:`i:${it.id}:jenis`, type:'select', options:[['uang','Uang'],['natura','Barang/natura'],['waktu','Waktu/tenaga'],['pajak','Pajak']]})}</td>
-      <td style="min-width:200px">${fld({label:'Nilai (Rp)', path:`i:${it.id}:nilai`, type:'num', ph:'angka atau rumus'})}</td>
-      <td style="min-width:170px">${fld({label:'Sumber', path:`i:${it.id}:sumber`, ph:'RAB, laporan realisasi…'})}</td>
-      <td><button class="btn sm" data-act="dupI" data-id="${it.id}" title="Duplikat">⧉</button> <button class="btn sm del" data-act="delI" data-id="${it.id}" title="Hapus">✕</button></td>
+      <td style="width:105px">${fld({label:'Tahun', path:`i:${it.id}:tahun`, type:'select', options:[['','— tahun —'],...yearOptions()]})}</td>
+      ${hasSite?`<td style="min-width:160px">${fld({label:'Lokasi', path:`i:${it.id}:siteId`, type:'select', options:siteOptions('— bersama —')})}</td>`:''}
+      <td style="min-width:240px">${fld({label:'Uraian', path:`i:${it.id}:uraian`, type:'textarea', ph:'mis. Pelatihan tahap 1–3'})}</td>
+      <td style="min-width:220px">${fld({label:'Nilai (Rp)', path:`i:${it.id}:nilai`, type:'num', ph:'angka atau rumus'})}</td>
+      <td style="min-width:180px">${fld({label:'Sumber', path:`i:${it.id}:sumber`, ph:'RAB, laporan realisasi…'})}</td>
+      <td style="white-space:nowrap"><button class="btn sm" data-act="dupI" data-id="${it.id}" title="Duplikat">⧉</button> <button class="btn sm del" data-act="delI" data-id="${it.id}" title="Hapus">✕</button></td>
     </tr>`).join('');
   return `${howTo('input')}<div class="card">
     <h2>Input (investasi)</h2>
-    <p class="small muted">${esc(HELP.iUraian)} ${esc(HELP.nilai)}</p>
+    <p class="small muted">Semua biaya dan sumber daya yang dipakai program, per tahun. Kolom nilai boleh diisi rumus. Klik <b>?</b> di judul kolom untuk cara mengisi.</p>
     <div class="tw"><table class="edit-table">
-      <thead><tr><th>#</th><th>Tahun</th>${hasSite?'<th>Lokasi</th>':''}<th>Uraian</th><th>Dari</th><th>Jenis</th><th>Nilai (Rp)</th><th>Sumber</th><th></th></tr></thead>
-      <tbody>${rows || `<tr><td colspan="${hasSite?9:8}" class="empty">Belum ada input.</td></tr>`}</tbody>
+      <thead><tr><th></th><th>#</th>${thQ('Tahun','iTahun')}${hasSite?thQ('Lokasi','iSite'):''}${thQ('Uraian','iUraian')}${thQ('Nilai (Rp)','nilai')}${thQ('Sumber','iSumber')}<th></th></tr></thead>
+      <tbody data-sort="inp">${rows || `<tr><td colspan="${hasSite?8:7}" class="empty">Belum ada input.</td></tr>`}</tbody>
     </table></div>
     <div style="margin-top:10px"><button class="btn pri" data-act="addI">+ Tambah input</button></div>
   </div>
@@ -1428,7 +1755,7 @@ function tInput(){
 
 /* ---- 4. Outcome ---- */
 const metodeOptions = () => [['','— pilih metode valuasi —'], ...METODE.map(([k,n])=>[k,n])];
-const metodeDesc = k => { const m = METODE.find(x=>x[0]===k); return m ? m[2] : 'Pilih metode untuk melihat penjelasannya.'; };
+const metodeDesc = k => { const m = METODE.find(x=>x[0]===k); return m ? m[2] : ''; };
 function ocTitle(o, idx){
   const s = findS(o.stakeholderId), st = findSite(o.siteId);
   const tags = [s ? s.nama : 'stakeholder belum dipilih', st ? st.nama : '', o.aspek ? optName(ASPEK,o.aspek) : ''].filter(Boolean).map(esc).join(' · ');
@@ -1455,31 +1782,30 @@ function ocYearCells(o, y, res){
 }
 function ocYearTable(o, res){
   const ys = res.ys, r = res.rows.find(x=>x.o.id===o.id);
-  const pc = (y,k) => fld({label:k, path:`oy:${o.id}:${y}:${k}`, type:'num', unit:'%'});
+  const pc = (y,k,lab) => fld({label:`${lab} ${y}`, path:`oy:${o.id}:${y}:${k}`, type:'num', unit:'%'});
   return `<div class="tw"><table class="edit-table yt">
-    <thead><tr><th>Tahun</th><th>Nilai manfaat kotor (Rp) ${helpBtnInline('nilaiY')}</th><th>Deadweight</th><th>Attribution</th><th>Displacement</th><th>Drop-off</th><th class="num">Nilai bersih</th><th class="num">Nilai saat ini</th></tr></thead>
+    <thead><tr><th>Tahun</th>${thQ('Nilai manfaat kotor (Rp)','nilaiY')}${thQ('Deadweight','dw')}${thQ('Attribution','attr')}${thQ('Displacement','disp')}${thQ('Drop-off','drop')}<th class="num">Nilai bersih</th><th class="num">Nilai saat ini</th></tr></thead>
     <tbody>${ys.map(y=>{ const [n,pv] = ocYearCells(o,y,res); return `<tr><td><b>${y}</b></td>
-      <td style="min-width:230px">${fld({label:'Nilai', path:`oy:${o.id}:${y}:nilai`, type:'num', ph:'mis. 750.000 × 40% × 25'})}</td>
-      <td style="width:92px">${pc(y,'dw')}</td><td style="width:92px">${pc(y,'attr')}</td><td style="width:92px">${pc(y,'disp')}</td><td style="width:92px">${pc(y,'drop')}</td>
+      <td style="min-width:230px">${fld({label:'Nilai manfaat '+y, path:`oy:${o.id}:${y}:nilai`, type:'num', ph:'mis. 750.000 × 40% × 25'})}</td>
+      <td style="width:92px">${pc(y,'dw','Deadweight')}</td><td style="width:92px">${pc(y,'attr','Attribution')}</td><td style="width:92px">${pc(y,'disp','Displacement')}</td><td style="width:92px">${pc(y,'drop','Drop-off')}</td>
       <td class="num" data-live="oyn:${o.id}:${y}">${n}</td><td class="num" data-live="oyp:${o.id}:${y}">${pv}</td></tr>`; }).join('')}
     <tr class="tot"><td>Total</td><td class="num" data-live="oyg:${o.id}">${r?fmtRp(r.gross):'–'}</td><td colspan="4"></td><td class="num" data-live="oyN:${o.id}">${r?fmtRp(r.net):'–'}</td><td class="num" data-live="oyP:${o.id}">${r?fmtRp(r.pv):'–'}</td></tr></tbody>
   </table></div>
   <div class="row noprint" style="gap:6px;align-items:center;margin-top:6px">
-    <button class="btn sm" data-act="ocCopyVal" data-id="${o.id}" title="Isi tahun yang masih kosong dengan nilai tahun pertama">Salin nilai tahun pertama ke tahun kosong</button>
-    <button class="btn sm" data-act="ocCopyFil" data-id="${o.id}">Samakan DW/Attr/Disp semua tahun</button>
-    <span class="small">Drop-off majemuk <input type="text" inputmode="decimal" class="dof" data-dof="${o.id}" placeholder="15" style="width:56px;border:1px solid #cdd3cf;border-radius:6px;padding:3px 6px">% per tahun</span>
-    <button class="btn sm" data-act="ocDropComp" data-id="${o.id}">Terapkan</button>
+    <button class="btn sm" data-act="ocCopyVal" data-id="${o.id}" title="Isi tahun yang masih kosong dengan nilai tahun pertama">Salin nilai tahun pertama</button>
+    <button class="btn sm" data-act="ocCopyFil" data-id="${o.id}" title="Deadweight, attribution, displacement semua tahun = tahun pertama">Samakan DW/Attr/Disp</button>
+    <span class="small">Drop-off majemuk <input type="text" inputmode="decimal" class="dof" data-dof="${o.id}" placeholder="15" aria-label="Drop-off per tahun dalam persen" style="width:56px;border:1px solid #cdd3cf;border-radius:6px;padding:3px 6px">% per tahun</span>
+    <button class="btn sm" data-act="ocDropComp" data-id="${o.id}">Terapkan</button> ${qBtn('drop','Drop-off majemuk')}
   </div>`;
 }
 function ocCard(o, idx, res, W){
   const hasSite = cur().sites.length>0;
-  return `<div class="card oc${o.negatif?' negatif':''}${o.kualitatif?' kual':''}${o.collapsed?' collapsed':''}" data-oc="${o.id}">
+  return `<div class="card oc${o.negatif?' negatif':''}${o.kualitatif?' kual':''}${o.collapsed?' collapsed':''}" data-oc="${o.id}" data-item="${o.id}">
     <div class="oc-h">
+      <div class="noprint">${grip(o.outcome)}</div>
       <div class="t" data-live="octitle:${o.id}">${ocTitle(o, idx)}</div>
       <div class="acts noprint">
-        <button class="btn sm" data-act="mvO" data-id="${o.id}" data-d="-1" title="Naik">↑</button>
-        <button class="btn sm" data-act="mvO" data-id="${o.id}" data-d="1" title="Turun">↓</button>
-        <button class="btn sm" data-act="dupO" data-id="${o.id}" title="Duplikat (mis. untuk lokasi atau angkatan lain)">⧉</button>
+        <button class="btn sm" data-act="dupO" data-id="${o.id}" title="Duplikat (mis. untuk lokasi atau angkatan lain)">⧉ Duplikat</button>
         <button class="btn sm" data-act="togO" data-id="${o.id}">${o.collapsed?'Buka':'Tutup'}</button>
         <button class="btn sm del" data-act="delO" data-id="${o.id}" title="Hapus">✕</button>
       </div>
@@ -1487,35 +1813,30 @@ function ocCard(o, idx, res, W){
     <div class="live${o.negatif?' negatif':''}" data-live="oc:${o.id}">${ocLive(o,res)}</div>
     <div class="ocw" data-live="ocw:${o.id}">${ocWarn(o,W)}</div>
     <div class="oc-body">
-      <div class="sec"><h4>Rantai perubahan</h4>
+      <div class="sec"><h4>1. Outcome</h4>
         <div class="grid g3">
-          ${fld({label:'Stakeholder', path:`o:${o.id}:stakeholderId`, type:'select', options:stOptions(), help:'sNama'})}
-          ${hasSite ? fld({label:'Lokasi / sub-program', path:`o:${o.id}:siteId`, type:'select', options:siteOptions(), help:'oSite'}) : ''}
-          ${fld({label:'Aspek', path:`o:${o.id}:aspek`, type:'select', options:[['','— pilih aspek —'],...ASPEK], help:'aspek'})}
-          ${fld({label:'Output (yang dihasilkan program)', path:`o:${o.id}:output`, help:'output', ph:'mis. 50 ibu dilatih'})}
-          ${fld({label:'Outcome (perubahan yang dialami)', path:`o:${o.id}:outcome`, help:'outcome', cls:hasSite?'':'span2'})}
-          ${fld({label:'Indikator', path:`o:${o.id}:indikator`, help:'indikator'})}
-          ${fld({label:'Sumber data', path:`o:${o.id}:sumberData`, help:'sumberData'})}
-          <div class="f"><label>Jenis outcome ${helpBtn('negatif')}</label><div class="help">${esc(HELP.negatif)} ${esc(HELP.kualitatif)}</div>
-            <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:negatif" ${o.negatif?'checked':''}> Outcome negatif (mengurangi nilai)</label>
-            <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:kualitatif" ${o.kualitatif?'checked':''}> Outcome kualitatif (tidak dirupiahkan)</label></div>
+          ${fld({label:'Stakeholder', path:`o:${o.id}:stakeholderId`, type:'select', options:stOptions()})}
+          ${hasSite ? fld({label:'Lokasi / sub-program', path:`o:${o.id}:siteId`, type:'select', options:siteOptions()}) : ''}
+          ${fld({label:'Aspek', path:`o:${o.id}:aspek`, type:'select', options:[['','— pilih aspek —'],...ASPEK]})}
+          ${fld({label:'Outcome (perubahan yang dialami)', path:`o:${o.id}:outcome`, cls:hasSite?'span2':'span2'})}
+          ${fld({label:'Indikator', path:`o:${o.id}:indikator`})}
+          <div class="f"><label>Jenis outcome ${qBtn('jenisOutcome','Jenis outcome')}</label>
+            <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:negatif" ${o.negatif?'checked':''}> Negatif (mengurangi nilai)</label>
+            <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:kualitatif" ${o.kualitatif?'checked':''}> Kualitatif (tidak dirupiahkan)</label></div>
         </div>
       </div>
-      <div class="sec"><h4>Valuasi (proxy keuangan)</h4>
+      <div class="sec"><h4>2. Valuasi</h4>
         <div class="grid g3">
-          <div>${fld({label:'Metode valuasi', path:`o:${o.id}:metode`, type:'select', options:metodeOptions(), help:'metode'})}
+          <div>${fld({label:'Metode valuasi', path:`o:${o.id}:metode`, type:'select', options:metodeOptions()})}
             <div class="tiny muted" data-live="metdesc:${o.id}" style="margin-top:3px">${esc(metodeDesc(o.metode))}</div></div>
-          ${fld({label:'Proxy keuangan', path:`o:${o.id}:proxyUraian`, cls:'span2', help:'proxyUraian'})}
-          ${fld({label:'Deskripsi valuasi (cara hitung)', path:`o:${o.id}:deskripsi`, type:'textarea', rows:3, cls:'span2', help:'deskripsi'})}
-          ${fld({label:'Sumber / referensi', path:`o:${o.id}:proxySumber`, type:'textarea', rows:3, help:'proxySumber'})}
+          ${fld({label:'Proxy & cara hitung', path:`o:${o.id}:deskripsi`, type:'textarea', rows:3, ph:'Proxy apa, harga satuan × faktor × jumlah'})}
+          ${fld({label:'Sumber data & referensi', path:`o:${o.id}:proxySumber`, type:'textarea', rows:3, ph:'Tautan harga, kuesioner, laporan'})}
         </div>
       </div>
-      ${o.kualitatif ? '' : `<div class="sec"><h4>Nilai manfaat & fiksasi dampak per tahun</h4>
+      ${o.kualitatif ? '' : `<div class="sec"><h4>3. Nilai & fiksasi dampak per tahun</h4>
         ${ocYearTable(o,res)}
-      </div>
-      <div class="sec"><h4>Penjelasan fiksasi dampak (berlaku untuk semua tahun)</h4>
-        <div class="grid g2">
-          ${FILTERS.map(F=>fld({label:`${F.lab} – penjelasan / bukti`, path:`o:${o.id}:${F.k}Alasan`, type:'textarea', rows:3, help:F.k, ph:F.q})).join('')}
+        <div class="grid g2" style="margin-top:12px">
+          ${FILTERS.map(F=>fld({label:`Penjelasan ${F.lab.toLowerCase()}`, path:`o:${o.id}:${F.k}Alasan`, type:'textarea', rows:2, ph:F.q})).join('')}
         </div>
       </div>`}
     </div>
@@ -1525,8 +1846,8 @@ function tOutcome(){
   const p = cur(), res = compute(p), W = analyze(p,res);
   return `${howTo('outcome')}<div class="card flat">
     <div class="row" style="align-items:center">
-      <div style="flex:1;min-width:240px"><h2 style="margin:0">Outcome & fiksasi dampak (impact map)</h2>
-      <p class="small muted" style="margin:.3em 0 0">Satu kartu = satu outcome untuk satu stakeholder. Nilai dan fiksasi dampak diisi per tahun ${res.ys[0]}–${res.ys[res.ys.length-1]} (atur di tab Program). Kolom rupiah menerima rumus.</p></div>
+      <div style="flex:1;min-width:240px"><h2 style="margin:0">Outcome & fiksasi dampak</h2>
+      <p class="small muted" style="margin:.3em 0 0">Satu kartu = satu outcome untuk satu stakeholder. Nilai dan fiksasi dampak diisi per tahun ${res.ys[0]}–${res.ys[res.ys.length-1]}. Geser ⠿ untuk mengubah urutan; klik <b>?</b> untuk cara mengisi.</p></div>
       <div class="row noprint" style="gap:6px">
         <button class="btn sm" data-act="collapseAll" data-v="1">Tutup semua</button>
         <button class="btn sm" data-act="collapseAll" data-v="0">Buka semua</button>
@@ -1534,7 +1855,7 @@ function tOutcome(){
       </div>
     </div>
   </div>
-  ${p.outcomes.length ? p.outcomes.map((o,i)=>ocCard(o,i,res,W)).join('') : `<div class="card empty">Belum ada outcome. ${p.stakeholders.length?'':'Isi stakeholder dulu di tab 2 (Stakeholder), lalu '}klik <b>+ Tambah outcome</b>.</div>`}
+  ${p.outcomes.length ? `<div data-sort="out" data-compact>${p.outcomes.map((o,i)=>ocCard(o,i,res,W)).join('')}</div>` : `<div class="card empty">Belum ada outcome. ${p.stakeholders.length?'':'Isi stakeholder dulu di tab 2 (Stakeholder), lalu '}klik <b>+ Tambah outcome</b>.</div>`}
   ${p.outcomes.length ? `<div class="noprint" style="text-align:center"><button class="btn pri" data-act="addO">+ Tambah outcome</button></div>` : ''}`;
 }
 
@@ -1591,7 +1912,7 @@ function outcomeTable(p, res, withAlasan){
       ${ys.map(y=>{ const t = r.years.find(x=>x.y===y); return `<td class="num${t&&t.net<0?' neg':''}">${t&&!t.empty?fmtRp(t.net)+`<div class="tiny muted">kotor ${fmtRpShort(t.gross)} · DW ${fmtPct(t.dw)} · Attr ${fmtPct(t.at)} · Disp ${fmtPct(t.di)} · DO ${fmtPct(t.dr)}</div>`:'–'}</td>`; }).join('')}
       <td class="num${r.pv<0?' neg':''}"><b>${o.kualitatif?'–':fmtRp(r.pv)}</b></td>
     </tr>${withAlasan?`<tr><td></td><td colspan="${5+ys.length}" class="tiny" style="color:#3e4a45">
-      <b>Proxy:</b> ${esc(o.proxyUraian||'–')} · <b>Cara hitung:</b> ${esc(o.deskripsi||'–')} · <i>sumber:</i> ${esc(o.proxySumber||'–')}<br>
+      <b>Proxy & cara hitung:</b> ${esc(o.deskripsi||'–')} · <i>sumber:</i> ${esc(o.proxySumber||'–')}<br>
       ${o.kualitatif?'':`<b>Deadweight:</b> ${esc(o.dwAlasan||'–')}<br><b>Attribution:</b> ${esc(o.attrAlasan||'–')}<br>
       <b>Displacement:</b> ${esc(o.dispAlasan||'–')}<br><b>Drop-off:</b> ${esc(o.dropAlasan||'–')}`}</td></tr>`:''}`;
   }).join('');
@@ -1747,20 +2068,23 @@ function sdgBadges(p){
   return list.filter(g=>{ const k = g.goal+'|'+g.peran; if (seen.has(k)) return false; seen.add(k); return true; })
     .map(g=>`<span class="sdgb${g.peran==='utama'?' utama':''}" title="${g.peran==='utama'?'Tujuan utama':'Tujuan pendukung'}">${esc(sdgLabel(g.goal))}</span>`).join('');
 }
-function tocDiagram(p){
+function tocDiagram(p, ed){
   const t = p.toc;
   const ctx = [['Masalah / konteks',t.masalah],['Sasaran',t.sasaran]].filter(x=>!isBlank(x[1]));
   const after = [['Asumsi',t.asumsi],['Risiko & mitigasi',t.risiko],['Bukti / rujukan',t.bukti]].filter(x=>!isBlank(x[1]));
   const sb = sdgBadges(p);
   return `${ctx.length?`<div class="toc-ctx">${ctx.map(([k,v])=>`<div><b>${k}:</b> ${nl2br(v)}</div>`).join('')}</div>`:''}
-    <div class="toc">${TOC_COLS.map(([k,l,sub])=>`<div class="col"><h4>${l}<small>${sub}</small></h4>${lines(t[k]).map(x=>`<div class="it">${esc(x)}</div>`).join('') || '<div class="it muted">–</div>'}</div>`).join('')}</div>
+    <div class="toc">${TOC_COLS.map(([k,l,sub])=>{ const items = lines(t[k]);
+      return `<div class="col"${ed?` data-sort="toc:${k}" data-group="toc"`:''}><h4>${l}<small>${sub}</small></h4>${
+        ed ? items.map((x,i)=>`<div class="it" data-item="${k}-${i}" data-text="${esc(x)}">${grip(x)}<span>${esc(x)}</span></div>`).join('') + (items.length?'':'<div class="it muted">–</div>')
+           : (items.map(x=>`<div class="it">${esc(x)}</div>`).join('') || '<div class="it muted">–</div>')}</div>`; }).join('')}</div>
     ${after.length?`<div class="toc-ctx" style="margin-top:12px">${after.map(([k,v])=>`<div><b>${k}:</b> ${nl2br(v)}</div>`).join('')}</div>`:''}
     ${sb?`<div class="toc-sdg"><b>Kontribusi SDGs:</b> ${sb}</div>`:''}`;
 }
 function tToc(){
   const p = cur();
   return `${howTo('toc')}<div class="card"><h2>Theory of Change</h2>
-    <p class="small muted">Satu baris = satu kotak di diagram. Outcome jangka menengah sebaiknya sama dengan yang dinilai di tab 4 (Outcome). Tombol di bawah mengambil isi dari tab Input dan Outcome.</p>
+    <p class="small muted">Satu baris = satu kotak di diagram. Klik <b>?</b> untuk cara mengisi tiap kolom. Di diagram, geser ⠿ untuk mengubah urutan kotak atau memindahkannya ke kolom lain.</p>
     <div class="sec" style="border-top:0;margin-top:0;padding-top:0"><h4>1. Konteks</h4>
       <div class="grid g3">
         ${fld({label:'Masalah / konteks', path:'toc:masalah', type:'textarea', rows:3, cls:'span2', help:'tocMasalah'})}
@@ -1782,7 +2106,7 @@ function tToc(){
     <div style="margin-top:10px" class="noprint"><button class="btn" data-act="tocFill">Ambil dari Input & Outcome</button>
       <button class="btn" data-tab="selaras">Isi SDGs & regulasi →</button></div>
   </div>
-  <div class="card"><h2>Diagram</h2><div data-live="tocDiag">${tocDiagram(p)}</div></div>`;
+  <div class="card"><h2>Diagram</h2><p class="small muted noprint">Geser ⠿ kotak untuk menyusun ulang; isian di atas ikut berubah.</p><div data-live="tocDiag">${tocDiagram(p, true)}</div></div>`;
 }
 
 /* ---- 8. Keselarasan: regulasi, SDGs, unit terkait ---- */
@@ -1796,7 +2120,7 @@ const csvOptions = () => [['','— belum jelas / tidak ada —'], ...CSV_LEVELS.
 const optLabel = (opts, k) => (opts.find(o=>o[0]===k)||[,''])[1];
 function tSelaras(){
   const p = cur();
-  const regRows = p.regulasi.map((r,i)=>`<tr>
+  const regRows = p.regulasi.map((r,i)=>`<tr data-item="${r.id}"><td class="gripcell">${grip(r.nama)}</td>
       <td class="num">${i+1}</td>
       <td style="min-width:320px">${fld({label:'Regulasi', path:`r:${r.id}:nama`, list:'dlReg', ph:'ketik: UU, PP, POJK, Permen…'})}</td>
       <td style="min-width:215px">${fld({label:'Sifat', path:`r:${r.id}:sifat`, type:'select', options:REG_SIFAT})}</td>
@@ -1805,7 +2129,7 @@ function tSelaras(){
       <td style="min-width:150px">${fld({label:'Bukti', path:`r:${r.id}:bukti`, type:'textarea', rows:3, ph:'dokumen pendukung'})}</td>
       <td><button class="btn sm del" data-act="delR" data-id="${r.id}" title="Hapus">✕</button></td>
     </tr>`).join('');
-  const sdgRows = p.sdgs.map((g,i)=>`<tr>
+  const sdgRows = p.sdgs.map((g,i)=>`<tr data-item="${g.id}"><td class="gripcell">${grip(sdgLabel(g.goal))}</td>
       <td class="num">${i+1}</td>
       <td style="min-width:230px">${fld({label:'Tujuan', path:`g:${g.id}:goal`, type:'select', options:sdgOptions()})}</td>
       <td style="width:120px">${fld({label:'Peran', path:`g:${g.id}:peran`, type:'select', options:[['utama','Utama'],['pendukung','Pendukung']]})}</td>
@@ -1814,8 +2138,8 @@ function tSelaras(){
       <td style="min-width:230px">${fld({label:'Kontribusi', path:`g:${g.id}:kontribusi`, type:'textarea', rows:3, ph:'Apa yang disumbangkan program, sebaiknya dengan angka'})}</td>
       <td><button class="btn sm del" data-act="delG" data-id="${g.id}" title="Hapus">✕</button></td>
     </tr>`).join('');
-  const units = p.units.map((u,i)=>`<div class="subcard">
-      <div class="subcard-h"><b>Unit #${i+1}</b><button class="btn sm del" data-act="delU" data-id="${u.id}" title="Hapus">✕</button></div>
+  const units = p.units.map((u,i)=>`<div class="subcard" data-item="${u.id}">
+      <div class="subcard-h">${grip(u.nama)}<b>Unit #${i+1}</b><button class="btn sm del" data-act="delU" data-id="${u.id}" title="Hapus">✕</button></div>
       <div class="grid g3">
         ${fld({label:'Nama unit / divisi', path:`u:${u.id}:nama`, help:'uNama', ex:'', ph:'mis. Kantor cabang terdekat, unit bisnis UMKM'})}
         ${fld({label:'Jenis keterkaitan', path:`u:${u.id}:jenis`, type:'select', options:UNIT_JENIS, help:'uJenis'})}
@@ -1833,8 +2157,8 @@ function tSelaras(){
     <h2>A. Regulasi terkait</h2>
     <p class="small muted">Peraturan yang dipenuhi, didukung, atau jadi dasar pelaporan program ini. Ketik di kolom Regulasi untuk melihat saran. Daftar saran bukan daftar lengkap, jadi <b>cek ulang nomor, pasal, dan status berlakunya</b> sebelum dipakai di laporan. ${helpBtnInline('regSifat')}</p>
     <div class="tw"><table class="edit-table">
-      <thead><tr><th>#</th><th>Regulasi / standar</th><th>Sifat</th><th>Pasal / bagian</th><th>Kaitan dengan program</th><th>Bukti</th><th></th></tr></thead>
-      <tbody>${regRows || `<tr><td colspan="7" class="empty">Belum ada regulasi.</td></tr>`}</tbody>
+      <thead><tr><th></th><th>#</th>${thQ('Regulasi / standar','regNama')}${thQ('Sifat','regSifat')}${thQ('Pasal / bagian','regPasal')}${thQ('Kaitan dengan program','regKaitan')}${thQ('Bukti','regBukti')}<th></th></tr></thead>
+      <tbody data-sort="reg">${regRows || `<tr><td colspan="8" class="empty">Belum ada regulasi.</td></tr>`}</tbody>
     </table></div>
     <div style="margin-top:10px"><button class="btn pri" data-act="addR">+ Tambah regulasi</button></div>
   </div>
@@ -1843,8 +2167,8 @@ function tSelaras(){
     <p class="small muted">Pilih 1–2 tujuan utama dan beberapa pendukung, isi targetnya, lalu hubungkan dengan outcome di tab 4. Saran target adalah ringkasan bebas; cek bunyi resmi di metadata TPB Bappenas atau sdgs.un.org. ${helpBtnInline('sdgKontribusi')}</p>
     <div class="toc-sdg" data-live="sdgB" style="margin:0 0 10px">${sb}</div>
     <div class="tw"><table class="edit-table">
-      <thead><tr><th>#</th><th>Tujuan SDGs</th><th>Peran</th><th>Target</th><th>Outcome terkait</th><th>Kontribusi</th><th></th></tr></thead>
-      <tbody>${sdgRows || `<tr><td colspan="7" class="empty">Belum ada SDGs.</td></tr>`}</tbody>
+      <thead><tr><th></th><th>#</th>${thQ('Tujuan SDGs','sdgGoal')}${thQ('Peran','sdgPeran')}${thQ('Target','sdgTarget')}${thQ('Outcome terkait','sdgOutcome')}${thQ('Kontribusi','sdgKontribusi')}<th></th></tr></thead>
+      <tbody data-sort="sdg">${sdgRows || `<tr><td colspan="8" class="empty">Belum ada SDGs.</td></tr>`}</tbody>
     </table></div>
     <div style="margin-top:10px"><button class="btn pri" data-act="addG">+ Tambah SDGs</button></div>
   </div>
@@ -1853,7 +2177,7 @@ function tSelaras(){
     <p class="small muted">Unit lain di kantor yang ikut berperan atau ikut mendapat manfaat. <i>Creating shared value</i> (Porter & Kramer, 2011) = menyelesaikan masalah sosial dengan cara yang sekaligus menciptakan nilai bisnis. Ada tiga tingkat:</p>
     <div class="csv-levels">${CSV_LEVELS.map(([k,n,d])=>`<div><b>${k}. ${esc(n)}</b><div>${esc(d)}</div></div>`).join('')}</div>
     <div class="grid g2" style="margin-bottom:12px">${fld({label:'Ringkasan shared value program ini', path:'p:csvCatatan', type:'textarea', rows:3, cls:'span2', help:'csvCatatan'})}</div>
-    ${units || `<div class="empty">Belum ada unit terkait.</div>`}
+    ${units ? `<div data-sort="unit" data-compact>${units}</div>` : `<div class="empty">Belum ada unit terkait.</div>`}
     <div style="margin-top:10px"><button class="btn pri" data-act="addU">+ Tambah unit terkait</button></div>
     <p class="tiny muted" style="margin-top:10px">Di tab ini manfaat bagi perusahaan hanya dicatat. Kalau ingin ikut dihitung (mis. PR value seperti di worksheet konsultan), buat stakeholder jenis "Pemrakarsa program" dan outcome-nya di tab 4. Hasil akan menampilkan rasio dengan dan tanpa manfaat pemrakarsa.</p>
   </div>`;
@@ -1868,7 +2192,7 @@ function tChecklist(){
       <input type="checkbox" data-path="ck:${i}:done" ${p.checklist[i].done?'checked':''} aria-label="${esc(id)}">
       <div><b>${i+1}. ${esc(id)}</b> <span class="tiny muted">(${esc(en)})</span>
         <div class="small">${esc(desc)}</div><div class="tiny muted" style="margin-bottom:4px">Contoh bukti: ${esc(hint)}</div>
-        ${fld({label:null, path:`ck:${i}:bukti`, type:'textarea', ph:'Bukti / catatan'})}
+        ${fld({label:'Bukti / catatan', path:`ck:${i}:bukti`, type:'textarea', ph:'Dokumen, tanggal, siapa'})}
       </div></div>`).join('')}
   </div>`;
 }
@@ -1894,12 +2218,11 @@ function selarasPrint(p){
 }
 function tRingkasan(){
   const p = cur(), res = compute(p), W = analyze(p,res), st = sensTests(p), be = breakEven(p);
-  const meta = [['Organisasi',p.organisasi],['Lokasi',p.lokasi],['Periode',p.periode || `${res.ys[0]}–${res.ys[res.ys.length-1]}`],['Jenis',p.jenis==='prakiraan'?'Prakiraan (forecast)':'Evaluatif'],
-    ['Rate',`${fmtRate(res.r)} (${p.rateMode==='tetap'?'tetap':'rata-rata per tahun'})`],['Nilai saat ini di tahun',String(res.ref)],['Disusun oleh',p.penyusun]].filter(x=>!isBlank(x[1]));
-  const stk = p.stakeholders.map(s=>`<tr><td>${esc(s.nama)}</td><td>${esc(optName(JENIS_STK,s.jenis))}</td><td>${esc(s.peran)}</td><td class="num">${esc(s.jumlah)}</td><td>${esc(s.libat)}</td><td>${s.material==='ya'?'Ya':'Tidak'}${s.alasanMaterial?` — ${esc(s.alasanMaterial)}`:''}</td></tr>`).join('');
-  const JI = {uang:'Uang',natura:'Barang/natura',waktu:'Waktu/tenaga',pajak:'Pajak'};
+  const meta = [['Organisasi',p.organisasi],['Lokasi',p.sites.map(x=>x.nama).filter(Boolean).join(', ')],['Periode',`${res.ys[0]}–${res.ys[res.ys.length-1]} (${fmtNum(res.months)} bulan)`],['Jenis',p.jenis==='prakiraan'?'Prakiraan (forecast)':'Evaluatif'],
+    ['Rate',`${fmtRate(res.r)} (rata-rata per tahun)`],['Nilai saat ini di tahun',String(res.ref)],['Disusun oleh',p.penyusun]].filter(x=>!isBlank(x[1]));
+  const stk = p.stakeholders.map(s=>`<tr><td>${esc(s.nama)}</td><td>${esc(optName(JENIS_STK,s.jenis))}</td><td class="num">${esc(s.jumlah)}</td><td>${esc(s.libat)}</td><td>${s.material==='ya'?'Ya':'Tidak'}${s.alasanMaterial?` — ${esc(s.alasanMaterial)}`:''}</td></tr>`).join('');
   const inp = p.inputs.slice().sort((a,b)=>String(a.tahun).localeCompare(String(b.tahun))).map(i=>{ const st = findSite(i.siteId), e = evalExpr(i.nilai);
-    return `<tr><td>${esc(i.tahun||'–')}</td><td>${esc(i.uraian)}${st?`<div class="tiny muted">${esc(st.nama)}</div>`:''}</td><td>${esc(i.stakeholderId?(findS(i.stakeholderId)||{}).nama:'Organisasi pelaksana')}</td><td>${esc(JI[i.jenis]||i.jenis)}</td><td class="num">${fmtRp(Math.max(0,valE(i.nilai,0)))}${e.expr?`<div class="tiny muted">${esc(i.nilai)}</div>`:''}</td><td>${esc(i.sumber)}</td></tr>`; }).join('');
+    return `<tr><td>${esc(i.tahun||'–')}</td><td>${esc(i.uraian)}${st?`<div class="tiny muted">${esc(st.nama)}</div>`:''}</td><td class="num">${fmtRp(Math.max(0,valE(i.nilai,0)))}${e.expr?`<div class="tiny muted">${esc(i.nilai)}</div>`:''}</td><td>${esc(i.sumber)}</td></tr>`; }).join('');
   return `<div class="noprint card flat row" style="align-items:center"><div style="flex:1">Halaman ini disusun untuk dicetak atau disimpan sebagai PDF (pilih "Save as PDF" di jendela cetak).</div><button class="btn pri" data-act="print">🖨️ Cetak / PDF</button></div>
   ${p.isContoh?`<div class="card" style="border:2px dashed #d9a441;color:var(--contoh)"><b>CONTOH — angka dummy, bukan data nyata.</b></div>`:''}
   <div class="card"><h1 style="font-size:1.45rem">${esc(p.nama)}</h1>
@@ -1918,8 +2241,8 @@ function tRingkasan(){
       <h3 style="margin-top:12px">Titik impas (SROI = 1 : 1)</h3>
       <div class="tw"><table><tbody>${be.map(b=>`<tr><td>${b.n}</td><td>${b.txt}</td></tr>`).join('')}</tbody></table></div>` : '<p class="small muted">–</p>'}
   </div>
-  <div class="card pbreak"><h2>Stakeholder</h2><div class="tw"><table><thead><tr><th>Stakeholder</th><th>Jenis</th><th>Peran</th><th class="num">Jumlah</th><th>Cara dilibatkan</th><th>Dihitung?</th></tr></thead><tbody>${stk||'<tr><td colspan="6">–</td></tr>'}</tbody></table></div></div>
-  <div class="card"><h2>Input (investasi)</h2><div class="tw"><table><thead><tr><th>Tahun</th><th>Uraian</th><th>Dari</th><th>Jenis</th><th class="num">Nilai</th><th>Sumber</th></tr></thead><tbody>${inp||'<tr><td colspan="6">–</td></tr>'}<tr class="tot"><td colspan="4">Total nominal</td><td class="num">${fmtRp(res.totalInput)}</td><td></td></tr><tr class="tot"><td colspan="4">Total nilai saat ini</td><td class="num">${fmtRp(res.totalInputPV)}</td><td></td></tr></tbody></table></div></div>
+  <div class="card pbreak"><h2>Stakeholder</h2><div class="tw"><table><thead><tr><th>Stakeholder</th><th>Jenis</th><th class="num">Jumlah</th><th>Cara dilibatkan</th><th>Dihitung?</th></tr></thead><tbody>${stk||'<tr><td colspan="5">–</td></tr>'}</tbody></table></div></div>
+  <div class="card"><h2>Input (investasi)</h2><div class="tw"><table><thead><tr><th>Tahun</th><th>Uraian</th><th class="num">Nilai</th><th>Sumber</th></tr></thead><tbody>${inp||'<tr><td colspan="4">–</td></tr>'}<tr class="tot"><td colspan="2">Total nominal</td><td class="num">${fmtRp(res.totalInput)}</td><td></td></tr><tr class="tot"><td colspan="2">Total nilai saat ini</td><td class="num">${fmtRp(res.totalInputPV)}</td><td></td></tr></tbody></table></div></div>
   <div class="card"><h2>Theory of Change</h2>${tocDiagram(p)}</div>
   ${selarasPrint(p)}
   <div class="card"><h2>Cara hitung & asumsi</h2>${formulaBox(p,res)}${p.rateAlasan?`<p class="small" style="margin-top:8px"><b>Alasan rate:</b> ${esc(p.rateAlasan)}</p>`:''}</div>
@@ -1947,7 +2270,8 @@ function tPanduan(){
   <ol>
     <li>Buka file <b>sroi-v2.html</b> dengan double-click (Chrome, Edge atau Safari). Tidak perlu internet.</li>
     <li>Klik <b>+ Baru</b> untuk program baru. Urutan isi yang disarankan: <b>1. Program → 7. Theory of Change → 8. Keselarasan → 2. Stakeholder → 3. Input → 4. Outcome</b>. Tab 5 (Hasil) dan 6 (Sensitivitas) terisi otomatis. Terakhir, isi <b>9. Checklist</b>.</li>
-    <li>Setiap tab punya kotak biru <b>📘 Cara isi</b> berisi langkah dan contoh. Di bawah kolom isian ada contoh singkat berwarna kuning; sembunyikan lewat tombol <b>Contoh: tampil</b> di atas kalau sudah hafal. Tombol <b>?</b> di samping nama kolom membuka penjelasan lengkap.</li>
+    <li>Klik tombol <b>?</b> di samping nama kolom (juga di judul kolom tabel) untuk cara mengisinya: apa itu, langkah, contoh, dan yang perlu dihindari. Kotak biru <b>📘</b> di atas tiap tab berisi langkah singkat tab itu.</li>
+    <li>Urutan stakeholder, input, outcome, lokasi, regulasi, SDGs, unit, dan kotak Theory of Change bisa diubah dengan menggeser tombol <b>⠿</b> (atau pilih ⠿ lalu tekan panah atas/bawah).</li>
     <li>Mau lihat contoh yang sudah terisi lengkap? <b>File ▾ → Tambah program CONTOH</b>.</li>
     <li>Data tersimpan otomatis di browser komputer masing-masing. <b>Data tidak otomatis terlihat di laptop orang lain.</b></li>
     <li>Untuk berbagi ke tim atau backup: <b>File ▾ → Simpan program ke file</b>. Kirim file .json itu lewat Drive, email atau WhatsApp. Penerima membukanya lewat <b>File ▾ → Buka file program</b>.</li>
@@ -1965,46 +2289,10 @@ function tPanduan(){
     <li><b>Laporkan, pakai, dan tanamkan</b>: bagikan ke stakeholder, verifikasi, pakai untuk keputusan.</li>
   </ol>
 
-  <h3>Arti tiap kolom</h3>
-  <dl>
-    <dt>Stakeholder</dt><dd>${esc(HELP.sNama)}</dd>
-    <dt>Input</dt><dd>${esc(HELP.iUraian)}</dd>
-    <dt>Output</dt><dd>${esc(HELP.output)}</dd>
-    <dt>Outcome</dt><dd>${esc(HELP.outcome)}</dd>
-    <dt>Indikator</dt><dd>${esc(HELP.indikator)}</dd>
-    <dt>Aspek</dt><dd>${esc(HELP.aspek)}</dd>
-    <dt>Metode valuasi & proxy keuangan</dt><dd>${esc(HELP.metode)} ${esc(HELP.deskripsi)} ${esc(HELP.proxySumber)}</dd>
-    <dt>Nilai manfaat per tahun</dt><dd>${esc(HELP.nilaiY)}</dd>
-    <dt>Outcome kualitatif</dt><dd>${esc(HELP.kualitatif)}</dd>
-    <dt>Fiksasi dampak</dt><dd>Istilah di worksheet konsultan untuk empat pengurang: deadweight, attribution, displacement, drop-off. Diisi per tahun.</dd>
-    <dt>Deadweight</dt><dd>${esc(HELP.dw)}</dd>
-    <dt>Attribution</dt><dd>${esc(HELP.attr)}</dd>
-    <dt>Displacement</dt><dd>${esc(HELP.disp)}</dd>
-    <dt>Drop-off</dt><dd>${esc(HELP.drop)}</dd>
-    <dt>Rate & nilai saat ini</dt><dd>${esc(HELP.rateMode)} ${esc(HELP.tahunAcuan)}</dd>
-    <dt>Payback period</dt><dd>Berapa bulan sampai manfaat menutup investasi: investasi saat ini ÷ (manfaat saat ini ÷ jumlah bulan periode). ${esc(HELP.bulan)}</dd>
-    <dt>Stakeholder pemrakarsa</dt><dd>Perusahaan sendiri sebagai stakeholder, mis. untuk PR value. Ikut dihitung, tapi rasio juga ditampilkan tanpa manfaat ini supaya pembaca bisa menilai.</dd>
-    <dt>Analisis sensitivitas</dt><dd>Angka filter dan proxy itu perkiraan, jadi hasilnya perlu diuji. Kalau rasio tetap di atas 1 dalam skenario pesimistis, klaimnya kuat. Kalau jatuh di bawah 1 pada perubahan kecil, hasilnya rapuh.</dd>
-  </dl>
-
-  <h3>Theory of Change</h3>
-  <dl>
-    <dt>Masalah / konteks</dt><dd>${esc(HELP.tocMasalah)}</dd>
-    <dt>Outcome jangka pendek</dt><dd>${esc(HELP.tocPendek)}</dd>
-    <dt>Outcome jangka menengah</dt><dd>${esc(HELP.tocMenengah)}</dd>
-    <dt>Impact</dt><dd>${esc(HELP.tocImpact)}</dd>
-    <dt>Asumsi</dt><dd>${esc(HELP.tocAsumsi)}</dd>
-    <dt>Risiko & mitigasi</dt><dd>${esc(HELP.tocRisiko)}</dd>
-  </dl>
-
-  <h3>Keselarasan: regulasi, SDGs, unit terkait</h3>
-  <dl>
-    <dt>Regulasi</dt><dd>${esc(HELP.regNama)} ${esc(HELP.regSifat)}</dd>
-    <dt>SDGs</dt><dd>${esc(HELP.sdgGoal)} ${esc(HELP.sdgTarget)} ${esc(HELP.sdgKontribusi)}</dd>
-    <dt>Unit terkait</dt><dd>${esc(HELP.uNama)} ${esc(HELP.uJenis)}</dd>
-    <dt>Creating shared value (CSV)</dt><dd>Konsep Porter & Kramer (2011): perusahaan menciptakan nilai ekonomi dengan cara yang juga menyelesaikan masalah sosial. Tiga tingkatnya: ${CSV_LEVELS.map(([k,n,d])=>`<b>${k}. ${esc(n)}</b>: ${esc(d)}`).join(' ')}</dd>
-    <dt>Kenapa manfaat bisnis tidak masuk rasio?</dt><dd>${esc(HELP.uManfaat)}</dd>
-  </dl>
+  <h3>Panduan per kolom</h3>
+  <p class="small muted">Isi yang sama dengan tombol <b>?</b> di tiap kolom.</p>
+  ${GUIDE_GROUPS.map(([g,keys])=>`<details class="gd"><summary><b>${g}</b></summary><dl>${keys.filter(k=>GUIDE[k]).map(k=>{ const x = GUIDE[k];
+    return `<dt>${esc(GUIDE_TITLE[k]||k)}</dt><dd>${x.apa||''}${x.cara?(Array.isArray(x.cara)?`<ul>${x.cara.map(c=>`<li>${c}</li>`).join('')}</ul>`:`<p>${x.cara}</p>`):''}${x.contoh?`<div class="hpop-ex"><b>Contoh:</b> ${String(x.contoh).replace(/\n/g,'<br>')}</div>`:''}${x.hindari?`<p class="small"><b>Hindari:</b> ${x.hindari}</p>`:''}</dd>`; }).join('')}</dl></details>`).join('')}
 
   <h3 id="ideProxy">Bank ide proxy</h3>
   <p class="small">Ide <b>jenis</b> proxy dan tempat mencari datanya. Bukan nilai baku: aplikasi tidak mengisi angka. Selalu tulis sumber dan tahun datanya di kolom Sumber proxy.</p>
@@ -2063,6 +2351,7 @@ function tPanduan(){
 const RENDER = {program:tProgram, stakeholder:tStakeholder, input:tInput, outcome:tOutcome, hasil:tHasil, sens:tSens, toc:tToc, selaras:tSelaras, checklist:tChecklist, ringkasan:tRingkasan, panduan:tPanduan};
 
 function render(){
+  closeHelp();
   renderProgSelect(); renderBanner();
   $('#main').innerHTML = RENDER[tab]();
   renderBadge();
@@ -2094,11 +2383,11 @@ function updateLive(changedPath){
   }
   if (tab==='input') setLive('inpSum', inputSummary(p,res));
   if (tab==='sens'){ setLive('sensOut', sensOut()); setLive('scenRes', scenOut()); }
-  if (tab==='toc') setLive('tocDiag', tocDiagram(p));
+  if (tab==='toc') setLive('tocDiag', tocDiagram(p, true));
   if (tab==='selaras') setLive('sdgB', sdgBadges(p));
 }
 /* field yang mengubah susunan halaman → render ulang saat selesai diubah */
-const RERENDER = /^(p:(tahunAwal|tahunAkhir|rateMode)|o:[^:]+:kualitatif)$/;
+const RERENDER = /^(p:(tahunAwal|tahunAkhir|jenis)|o:[^:]+:kualitatif|s:[^:]+:material)$/;
 function validateField(el){
   const path = el.dataset.path, f = fieldOf(path), box = el.closest('.f');
   if (!box || !NUM[f]) return;
@@ -2136,6 +2425,7 @@ document.addEventListener('change', e=>{
   if (el.id==='progSelect'){ db.activeId = el.value; resetScen(); save(true); render(); window.scrollTo(0,0); }
 });
 document.addEventListener('click', e=>{
+  if (helpOpenBtn && !e.target.closest('#hpop') && !e.target.closest('[data-act="help"]')) closeHelp();
   const t = e.target.closest('[data-tab],[data-act]');
   if (!t) { const m = $('#fileMenu'); if (m && m.open && !e.target.closest('#fileMenu')) m.open = false; return; }
   if (t.dataset.tab && !t.dataset.act){
@@ -2147,7 +2437,8 @@ document.addEventListener('click', e=>{
   const act = t.dataset.act, p = cur();
   const m = $('#fileMenu'); if (m && t.closest('#fileMenu .pop')) m.open = false;
   switch(act){
-    case 'help': { const f = t.closest('.f'); if (f) f.classList.toggle('showhelp'); break; }
+    case 'help': openHelp(t); break;
+    case 'helpClose': closeHelp(); break;
     case 'helpInline': { const s = document.querySelector(`.help-inline[data-k="${t.dataset.k}"]`); if (s) s.hidden = !s.hidden; break; }
     case 'setv': {
       setPath(t.dataset.path, t.dataset.v);
@@ -2164,7 +2455,6 @@ document.addEventListener('click', e=>{
       p.inputs.forEach(i=>{ if (i.stakeholderId===t.dataset.id) i.stakeholderId=''; });
       save(); render(); break;
     }
-    case 'togEx': pref.ex = !pref.ex; savePref(); applyPref(); break;
     case 'addR': p.regulasi.push(blankReg()); save(); render(); focusLast('r:'); break;
     case 'delR': if (confirm('Hapus baris regulasi ini?')){ p.regulasi = p.regulasi.filter(x=>x.id!==t.dataset.id); save(); render(); } break;
     case 'addG': p.sdgs.push(blankSdg()); save(); render(); focusLast('g:'); break;
@@ -2177,6 +2467,8 @@ document.addEventListener('click', e=>{
     case 'delSite': { const st = findSite(t.dataset.id); const used = p.inputs.filter(i=>i.siteId===t.dataset.id).length + p.outcomes.filter(o=>o.siteId===t.dataset.id).length;
       if (!confirm(`Hapus lokasi "${st&&st.nama||'(tanpa nama)'}"?${used?`\n${used} input/outcome memakai lokasi ini dan akan jadi "bersama / tidak spesifik".`:''}`)) break;
       p.sites = p.sites.filter(x=>x.id!==t.dataset.id); p.inputs.forEach(i=>{ if (i.siteId===t.dataset.id) i.siteId=''; }); p.outcomes.forEach(o=>{ if (o.siteId===t.dataset.id) o.siteId=''; }); save(); render(); break; }
+    case 'rateSame': { const ys = yearsOf(p), r0 = (p.years[ys[0]]||{}).rate; if (isBlank(r0)){ toast('Isi rate tahun '+ys[0]+' dulu'); break; }
+      ys.forEach(y=>{ p.years[y] = Object.assign({bulan:'12'}, p.years[y]||{}, {rate:r0}); }); save(); render(); toast('Rate semua tahun = '+r0+'%'); break; }
     case 'setRef': { const ys = yearsOf(p); p.tahunAcuan = String(t.dataset.v==='awal' ? ys[0] : ys[ys.length-1]); save(); render(); break; }
     case 'ocCopyVal': case 'ocCopyFil': case 'ocDropComp': {
       const o = p.outcomes.find(x=>x.id===t.dataset.id); if (!o) break;
@@ -2204,7 +2496,6 @@ document.addEventListener('click', e=>{
     case 'tocFill': {
       const merge = (k, items) => { const ex = lines(p.toc[k]); items.forEach(x=>{ x = String(x||'').trim(); if (x && !ex.includes(x)) ex.push(x); }); p.toc[k] = ex.join('\n'); };
       merge('input', p.inputs.map(i=>i.uraian + (valE(i.nilai,0)?` (${i.tahun?i.tahun+', ':''}${fmtRpShort(valE(i.nilai,0))})`:'')));
-      merge('output', p.outcomes.map(o=>o.output));
       merge('outcome', p.outcomes.map(o=>o.outcome + (o.negatif?' (negatif)':'')));
       save(); render(); toast('Diambil dari Input & Outcome'); break;
     }
@@ -2262,12 +2553,12 @@ function exportCSV(){
   const p = cur(), res = compute(p), ys = res.ys;
   const num = (v,d=2) => { const x = Math.round(v*Math.pow(10,d))/Math.pow(10,d); return String(x).replace('.',','); };
   const q = s => { s = String(s??''); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; };
-  const head = ['No','Stakeholder','Jenis stakeholder','Lokasi','Outcome','Aspek','Indikator','Output','Negatif','Kualitatif','Metode valuasi','Proxy keuangan','Deskripsi valuasi','Sumber/referensi'];
+  const head = ['No','Stakeholder','Jenis stakeholder','Lokasi','Outcome','Aspek','Indikator','Negatif','Kualitatif','Metode valuasi','Proxy & cara hitung','Sumber data & referensi'];
   ys.forEach(y=>head.push(`Nilai manfaat ${y} (Rp)`, `Rumus ${y}`, `DW ${y} %`, `Attr ${y} %`, `Disp ${y} %`, `DO ${y} %`, `Nilai bersih ${y} (Rp)`));
   head.push('Penjelasan deadweight','Penjelasan attribution','Penjelasan displacement','Penjelasan drop-off','Total nilai bersih (Rp)','Nilai saat ini (Rp)');
   const rows = [head];
   res.rows.forEach((r,i)=>{ const o = r.o, s = findS(o.stakeholderId), st = findSite(o.siteId);
-    const row = [i+1, s?s.nama:'', s?optName(JENIS_STK,s.jenis):'', st?st.nama:'', o.outcome, optName(ASPEK,o.aspek), o.indikator, o.output, o.negatif?'Ya':'Tidak', o.kualitatif?'Ya':'Tidak', optName(METODE,o.metode), o.proxyUraian, o.deskripsi, o.proxySumber];
+    const row = [i+1, s?s.nama:'', s?optName(JENIS_STK,s.jenis):'', st?st.nama:'', o.outcome, optName(ASPEK,o.aspek), o.indikator, o.negatif?'Ya':'Tidak', o.kualitatif?'Ya':'Tidak', optName(METODE,o.metode), o.deskripsi, o.proxySumber];
     ys.forEach(y=>{ const t = r.years.find(x=>x.y===y), d = (o.years||{})[y]||{};
       if (!t || t.empty) row.push('', '', '', '', '', '', '');
       else row.push(num(Math.abs(t.gross),0), evalExpr(d.nilai).expr ? d.nilai : '', num(t.dw*100), num(t.at*100), num(t.di*100), num(t.dr*100), num(t.net,0)); });
@@ -2284,8 +2575,8 @@ function exportCSV(){
   if (res.sroiNoPem!=null) rows.push(['SROI tanpa manfaat pemrakarsa', num(res.sroiNoPem,4)]);
   rows.push(['Fiksasi dampak %', num(res.fiksasi*100)]);
   rows.push([]);
-  rows.push(['INPUT','Tahun','Lokasi','Uraian','Jenis','Nilai (Rp)','Rumus','Sumber']);
-  p.inputs.forEach((i,k)=>{ const st = findSite(i.siteId); rows.push([k+1, i.tahun, st?st.nama:'', i.uraian, i.jenis, num(Math.max(0,valE(i.nilai,0)),0), evalExpr(i.nilai).expr ? i.nilai : '', i.sumber]); });
+  rows.push(['INPUT','Tahun','Lokasi','Uraian','Nilai (Rp)','Rumus','Sumber']);
+  p.inputs.forEach((i,k)=>{ const st = findSite(i.siteId); rows.push([k+1, i.tahun, st?st.nama:'', i.uraian, num(Math.max(0,valE(i.nilai,0)),0), evalExpr(i.nilai).expr ? i.nilai : '', i.sumber]); });
   const reg = p.regulasi.filter(r=>!isBlank(r.nama)), sdg = p.sdgs.filter(g=>g.goal), un = p.units.filter(u=>!isBlank(u.nama));
   if (reg.length){ rows.push([]); rows.push(['REGULASI TERKAIT','Sifat','Pasal','Kaitan','Bukti']); reg.forEach(r=>rows.push([r.nama, optLabel(REG_SIFAT,r.sifat), r.pasal, r.kaitan, r.bukti])); }
   if (sdg.length){ rows.push([]); rows.push(['SDGs','Peran','Target','Outcome terkait','Kontribusi']); sdg.forEach(g=>{ const o = p.outcomes.find(x=>x.id===g.outcomeId); rows.push([sdgLabel(g.goal), g.peran==='utama'?'Utama':'Pendukung', g.target, o?o.outcome:'', g.kontribusi]); }); }
@@ -2307,7 +2598,7 @@ window.addEventListener('beforeunload', flushSave);
 document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState==='hidden') flushSave(); });
 document.addEventListener('toggle', e=>{
   const d = e.target; if (!d || !d.dataset || !d.dataset.howto) return;
-  pref.closed[d.dataset.howto] = !d.open; savePref();
+  pref.open[d.dataset.howto] = d.open; savePref();
 }, true);
 window.addEventListener('beforeprint',()=>{ if (tab!=='ringkasan'){ tab='ringkasan'; render(); } });
 
