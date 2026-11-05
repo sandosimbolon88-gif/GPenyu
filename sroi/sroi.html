@@ -1,0 +1,1364 @@
+<!doctype html>
+<html lang="id">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Kalkulator SROI</title>
+<style>
+:root{
+  --bg:#f6f7f5; --panel:#ffffff; --ink:#1d2421; --muted:#5d6863; --line:#dfe3e0; --soft:#eef2ef;
+  --accent:#16695a; --accent-2:#0f4f44; --accent-soft:#e3f1ec;
+  --warn:#9a5b00; --warn-soft:#fff4e0; --err:#b3261e; --err-soft:#fdecea; --info:#2f5d8a; --info-soft:#e9f1f9;
+  --neg:#b3261e; --pos:#16695a; --contoh:#7a4b00;
+  --r:10px; --shadow:0 1px 2px rgba(0,0,0,.05),0 2px 8px rgba(0,0,0,.04);
+  color-scheme:light;
+}
+*{box-sizing:border-box}
+html,body{margin:0;background:var(--bg);color:var(--ink);font:15px/1.5 -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,sans-serif}
+button,input,select,textarea{font:inherit;color:inherit}
+h1,h2,h3,h4{line-height:1.25;margin:0 0 .5em}
+h2{font-size:1.25rem} h3{font-size:1.05rem} h4{font-size:.95rem}
+p{margin:.3em 0 .8em}
+a{color:var(--accent)}
+.muted{color:var(--muted)} .small{font-size:.85rem} .tiny{font-size:.78rem}
+.num{font-variant-numeric:tabular-nums;text-align:right;white-space:nowrap}
+
+/* Top bar */
+.top{position:sticky;top:0;z-index:20;background:var(--panel);border-bottom:1px solid var(--line);box-shadow:var(--shadow)}
+.top-in{max-width:1180px;margin:0 auto;padding:10px 16px;display:flex;gap:12px;align-items:center;flex-wrap:wrap}
+.brand{font-weight:700;font-size:1.05rem;letter-spacing:.2px;white-space:nowrap}
+.brand span{display:block;font-weight:400;font-size:.75rem;color:var(--muted)}
+.prog{display:flex;gap:6px;align-items:center;flex:1;min-width:220px}
+.prog select{flex:1;min-width:0;max-width:360px}
+.badge{margin-left:auto;display:flex;gap:8px;align-items:center}
+.ratio-pill{background:var(--accent);color:#fff;border-radius:999px;padding:4px 12px;font-weight:700;white-space:nowrap}
+.ratio-pill.none{background:#9aa5a0}
+.warn-pill{border-radius:999px;padding:3px 10px;font-size:.8rem;cursor:pointer;border:1px solid transparent;white-space:nowrap}
+.warn-pill.err{background:var(--err-soft);color:var(--err);border-color:#f3c4c0}
+.warn-pill.warn{background:var(--warn-soft);color:var(--warn);border-color:#f0d9b0}
+.warn-pill.ok{background:var(--accent-soft);color:var(--accent-2)}
+.saved{font-size:.75rem;color:var(--muted);white-space:nowrap}
+nav.tabs{max-width:1180px;margin:0 auto;padding:0 12px;display:flex;gap:2px;overflow-x:auto;scrollbar-width:thin}
+nav.tabs button{background:none;border:0;border-bottom:3px solid transparent;padding:8px 10px;cursor:pointer;color:var(--muted);white-space:nowrap;font-size:.9rem}
+nav.tabs button.on{color:var(--accent-2);border-bottom-color:var(--accent);font-weight:600}
+nav.tabs button .n{display:inline-block;background:var(--warn-soft);color:var(--warn);border-radius:999px;font-size:.7rem;padding:0 6px;margin-left:4px}
+nav.tabs button .n.err{background:var(--err-soft);color:var(--err)}
+
+main{max-width:1180px;margin:0 auto;padding:18px 16px 80px}
+.banner{max-width:1180px;margin:10px auto 0;padding:0 16px}
+.banner > div{border-radius:var(--r);padding:8px 12px;font-size:.88rem;margin-bottom:6px}
+.b-contoh{background:#fff6e5;border:1px dashed #d9a441;color:var(--contoh)}
+.b-err{background:var(--err-soft);color:var(--err)}
+.b-info{background:var(--info-soft);color:var(--info)}
+
+.card{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:16px;margin-bottom:14px;box-shadow:var(--shadow)}
+.card.flat{box-shadow:none}
+.row{display:flex;gap:12px;flex-wrap:wrap}
+.grid{display:grid;gap:12px}
+.g2{grid-template-columns:repeat(2,minmax(0,1fr))}
+.g3{grid-template-columns:repeat(3,minmax(0,1fr))}
+.g4{grid-template-columns:repeat(4,minmax(0,1fr))}
+@media (max-width:820px){.g3,.g4{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:560px){.g2,.g3,.g4{grid-template-columns:1fr}}
+.span2{grid-column:span 2} .span3{grid-column:1/-1}
+@media (max-width:560px){.span2{grid-column:auto}}
+
+/* Fields */
+.f label{display:flex;align-items:center;gap:6px;font-size:.82rem;font-weight:600;color:#38423e;margin-bottom:3px}
+.f input[type=text],.f input:not([type]),.f select,.f textarea{width:100%;border:1px solid #cdd3cf;border-radius:8px;padding:7px 9px;background:#fff}
+.f textarea{resize:vertical;min-height:38px}
+.f input:focus,.f select:focus,.f textarea:focus{outline:2px solid #9fd1c4;border-color:var(--accent)}
+.f.bad input,.f.bad textarea{border-color:var(--err);background:var(--err-soft)}
+.f .msg{font-size:.76rem;color:var(--err);margin-top:2px;min-height:0}
+.f .hint{font-size:.76rem;color:var(--muted);margin-top:2px}
+.f .help{display:none;font-size:.8rem;color:#3e4a45;background:var(--soft);border-radius:8px;padding:6px 9px;margin:2px 0 4px}
+.f.showhelp .help{display:block}
+.q{border:1px solid #b9c4bf;background:#fff;color:var(--muted);width:18px;height:18px;border-radius:50%;font-size:.7rem;line-height:16px;padding:0;cursor:pointer;flex:none}
+.q:hover{color:var(--accent);border-color:var(--accent)}
+.unit{position:relative}
+.unit input{padding-right:34px!important}
+.unit::after{content:attr(data-unit);position:absolute;right:10px;top:50%;transform:translateY(-50%);color:var(--muted);font-size:.85rem;pointer-events:none}
+.chk{display:flex;align-items:center;gap:8px;font-size:.9rem;cursor:pointer}
+
+.btn{border:1px solid #c5ccc8;background:#fff;border-radius:8px;padding:6px 12px;cursor:pointer;white-space:nowrap}
+.btn:hover{border-color:var(--accent);color:var(--accent-2)}
+button.btn.pri{background:var(--accent);border-color:var(--accent);color:#fff}
+button.btn.pri:hover{background:var(--accent-2);color:#fff}
+button.btn.sm{padding:3px 9px;font-size:.82rem}
+button.btn.del:hover{border-color:var(--err);color:var(--err)}
+button.link{background:none;border:0;color:var(--accent);cursor:pointer;padding:0;text-decoration:underline}
+.chips{display:flex;gap:4px;flex-wrap:wrap;margin-top:4px}
+.chips button{border:1px solid #cdd3cf;background:#fff;border-radius:999px;font-size:.74rem;padding:1px 8px;cursor:pointer}
+.chips button:hover{border-color:var(--accent);color:var(--accent)}
+.chips button.on{background:var(--accent-soft);border-color:var(--accent);color:var(--accent-2)}
+
+details.menu{position:relative}
+details.menu summary{list-style:none;cursor:pointer}
+details.menu summary::-webkit-details-marker{display:none}
+details.menu .pop{position:absolute;right:0;top:calc(100% + 4px);background:#fff;border:1px solid var(--line);border-radius:10px;box-shadow:0 8px 24px rgba(0,0,0,.12);padding:6px;min-width:230px;z-index:30}
+details.menu .pop button{display:block;width:100%;text-align:left;background:none;border:0;padding:7px 10px;border-radius:6px;cursor:pointer}
+details.menu .pop button:hover{background:var(--soft)}
+details.menu .pop hr{border:0;border-top:1px solid var(--line);margin:4px 0}
+
+/* Tables */
+.tw{overflow-x:auto}
+table{border-collapse:collapse;width:100%;font-size:.86rem}
+th,td{border-bottom:1px solid var(--line);padding:6px 8px;vertical-align:top;text-align:left}
+th{background:var(--soft);font-weight:600;font-size:.8rem;color:#38423e}
+tr.tot td{font-weight:700;border-top:2px solid #aab5b0}
+td.neg{color:var(--neg)}
+.edit-table td{padding:4px}
+.edit-table .f label{display:none}
+.edit-table .f input,.edit-table .f select,.edit-table .f textarea{padding:5px 7px}
+
+/* Outcome cards */
+.oc{border-left:4px solid var(--accent)}
+.oc.negatif{border-left-color:var(--neg)}
+.oc-h{display:flex;align-items:flex-start;gap:10px;margin-bottom:10px}
+.oc-h .t{flex:1;min-width:0}
+.oc-h .t b{display:block}
+.oc-h .acts{display:flex;gap:4px;flex-wrap:wrap;justify-content:flex-end}
+.oc.collapsed .oc-body{display:none}
+.sec{border-top:1px dashed var(--line);padding-top:10px;margin-top:10px}
+.sec > h4{font-size:.82rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:8px}
+.filt{display:grid;grid-template-columns:minmax(200px,250px) 1fr;gap:10px;padding:8px 0;border-bottom:1px solid var(--soft)}
+.filt:last-child{border-bottom:0}
+@media (max-width:640px){.filt{grid-template-columns:1fr}}
+.live{background:var(--accent-soft);border-radius:8px;padding:8px 10px;font-size:.85rem;margin-top:10px}
+.live.negatif{background:var(--err-soft)}
+.live .flow{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.live .flow span.a{color:var(--muted)}
+.ocw{margin-top:8px}
+
+/* Results */
+.kpis{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px}
+@media (max-width:820px){.kpis{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.kpi{background:var(--panel);border:1px solid var(--line);border-radius:var(--r);padding:12px 14px}
+.kpi .l{font-size:.78rem;color:var(--muted)}
+.kpi .v{font-size:1.35rem;font-weight:700;font-variant-numeric:tabular-nums}
+.kpi.big{background:var(--accent);color:#fff;border-color:var(--accent)}
+.kpi.big .l{color:#d3ece5}
+.kpi.big .v{font-size:1.9rem}
+.bars .b{display:grid;grid-template-columns:minmax(120px,32%) 1fr 92px;gap:8px;align-items:center;font-size:.84rem;margin:5px 0}
+.bars .track{background:var(--soft);border-radius:4px;height:14px;position:relative;overflow:hidden}
+.bars .fill{position:absolute;top:0;bottom:0;background:var(--accent);border-radius:4px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.bars .fill.neg{background:var(--neg)}
+.tor .b{grid-template-columns:minmax(140px,28%) 1fr 150px}
+.tor .track{height:16px;background:transparent;border-left:0}
+.tor .base{position:absolute;top:-3px;bottom:-3px;width:2px;background:var(--ink)}
+.tor .one{position:absolute;top:-3px;bottom:-3px;width:0;border-left:2px dashed var(--err)}
+.tor .rng{position:absolute;top:2px;bottom:2px;background:#9fd1c4;border-radius:3px;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.wl{list-style:none;padding:0;margin:0}
+.wl li{padding:6px 10px;border-radius:8px;margin-bottom:5px;font-size:.86rem;display:flex;gap:8px;align-items:flex-start}
+.wl li.err{background:var(--err-soft);color:var(--err)}
+.wl li.warn{background:var(--warn-soft);color:#6f4300}
+.wl li.info{background:var(--info-soft);color:var(--info)}
+.wl li .go{margin-left:auto;flex:none}
+.formula{background:#fbfcfb;border:1px solid var(--line);border-radius:8px;padding:10px 12px;font-size:.86rem}
+.formula code{background:var(--soft);padding:1px 5px;border-radius:4px;font-size:.84rem}
+.scen{display:grid;grid-template-columns:minmax(150px,220px) 1fr 70px;gap:10px;align-items:center;margin:6px 0;font-size:.88rem}
+.scen input[type=range]{width:100%;accent-color:var(--accent)}
+
+/* ToC diagram */
+.toc{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:18px;position:relative}
+@media (max-width:900px){.toc{grid-template-columns:1fr;gap:10px}}
+.toc .col h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.6px;color:#fff;background:var(--accent);padding:5px 8px;border-radius:6px;text-align:center;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.toc .col:nth-child(4) h4{background:var(--accent-2)}
+.toc .col:nth-child(5) h4{background:#0a3a32}
+.toc .col{position:relative}
+.toc .col:not(:last-child)::after{content:"→";position:absolute;right:-15px;top:2px;color:var(--muted);font-weight:700}
+@media (max-width:900px){.toc .col:not(:last-child)::after{content:"↓";right:auto;left:50%;top:auto;bottom:-16px}}
+.toc .it{background:#fff;border:1px solid var(--line);border-radius:6px;padding:5px 8px;font-size:.82rem;margin-bottom:5px}
+.toc-ctx{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:.85rem;margin-bottom:12px}
+
+/* Checklist */
+.pr{display:grid;grid-template-columns:28px 1fr;gap:10px;padding:10px 0;border-bottom:1px solid var(--soft)}
+.pr input[type=checkbox]{width:18px;height:18px;margin-top:3px;accent-color:var(--accent)}
+
+/* Guide */
+.guide h3{margin-top:1.2em}
+.guide dl dt{font-weight:700;margin-top:.7em}
+.guide dl dd{margin:0 0 .3em 0}
+
+.empty{padding:30px;text-align:center;color:var(--muted)}
+.footer{color:var(--muted);font-size:.75rem;text-align:center;margin-top:30px}
+.printonly{display:none}
+.toast{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);background:#1d2421;color:#fff;padding:8px 14px;border-radius:8px;font-size:.88rem;z-index:50;opacity:0;transition:opacity .2s;pointer-events:none}
+.toast.on{opacity:1}
+
+@media print{
+  @page{size:A4;margin:14mm}
+  html,body{background:#fff;font-size:11.5px}
+  .top,.banner,.noprint,.toast{display:none!important}
+  main{padding:0;max-width:none}
+  .card{box-shadow:none;break-inside:avoid;border-color:#ccc}
+  .printonly{display:block}
+  .pbreak{break-before:page}
+  table{font-size:10px}
+  .tw{overflow:visible}
+  th,td{padding:4px 5px}
+  .num{white-space:normal}
+  table.otab{font-size:9px}
+  table.otab th{font-size:8.5px}
+  .kpis{grid-template-columns:repeat(4,minmax(0,1fr))}
+  .kpi.big{background:#fff;color:var(--ink);border:2px solid var(--accent)}
+  .kpi.big .l{color:var(--muted)}
+  a{color:inherit;text-decoration:none}
+}
+</style>
+</head>
+<body>
+<header class="top">
+  <div class="top-in">
+    <div class="brand">Kalkulator SROI<span>Social Return on Investment · offline</span></div>
+    <div class="prog">
+      <select id="progSelect" aria-label="Pilih program" title="Pilih program"></select>
+      <button class="btn sm" data-act="newProg" title="Program baru">+ Baru</button>
+      <details class="menu" id="fileMenu">
+        <summary class="btn sm" role="button">File ▾</summary>
+        <div class="pop">
+          <button data-act="saveFile">💾 Simpan program ke file (.json)</button>
+          <button data-act="openFile">📂 Buka file program…</button>
+          <hr>
+          <button data-act="exportCSV">📊 Ekspor peta dampak (CSV untuk Excel)</button>
+          <button data-act="print">🖨️ Cetak / simpan PDF ringkasan</button>
+          <hr>
+          <button data-act="dupProg">⧉ Duplikat program ini</button>
+          <button data-act="loadSample">＋ Tambah program CONTOH</button>
+          <button data-act="backupAll">🗂️ Backup semua program (.json)</button>
+          <hr>
+          <button data-act="delProg" style="color:var(--err)">🗑️ Hapus program ini</button>
+        </div>
+      </details>
+    </div>
+    <div class="badge" id="liveBadge"></div>
+  </div>
+  <nav class="tabs" id="tabs"></nav>
+</header>
+<div class="banner" id="banner"></div>
+<main id="main"></main>
+<div class="toast" id="toast"></div>
+<input type="file" id="fileIn" accept=".json,application/json" hidden>
+
+<script>
+(function(){
+'use strict';
+
+/* ================= Basics ================= */
+const APP_VERSION = '1.0';
+const SCHEMA = 1;
+const LS_KEY = 'sroi-app-v1';
+const $ = s => document.querySelector(s);
+const $$ = s => Array.from(document.querySelectorAll(s));
+const uid = () => Math.random().toString(36).slice(2,8) + Date.now().toString(36).slice(-4);
+const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const nl2br = s => esc(s).replace(/\n/g,'<br>');
+const short = (s,n=48) => { s = String(s||'').trim(); return s.length>n ? s.slice(0,n-1)+'…' : s; };
+const isBlank = s => s==null || String(s).trim()==='';
+
+/* ---- Number parsing: understands Indonesian format (3.600.000 / 3,5) and plain (3600000 / 3.5) ---- */
+function parseNum(raw){
+  if (raw==null) return {empty:true};
+  let s = String(raw).trim().replace(/^rp\.?\s*/i,'').replace(/\s+/g,'').replace(/%$/,'');
+  if (s==='') return {empty:true};
+  let neg = false;
+  if (s[0]==='-' || s[0]==='−'){ neg = true; s = s.slice(1); }
+  if (!/^[\d.,]+$/.test(s) || !/\d/.test(s)) return {err:'Harus berupa angka (contoh: 3.600.000 atau 3,5)'};
+  const dots = (s.match(/\./g)||[]).length, commas = (s.match(/,/g)||[]).length;
+  let n;
+  if (dots && commas){
+    if (s.lastIndexOf(',') > s.lastIndexOf('.')){ // 3.600.000,50
+      if (commas>1) return {err:'Format angka tidak jelas'};
+      n = s.replace(/\./g,'').replace(',','.');
+    } else { // 3,600,000.50
+      if (dots>1) return {err:'Format angka tidak jelas'};
+      n = s.replace(/,/g,'');
+    }
+  } else if (commas){
+    if (commas>1){
+      if (/^\d{1,3}(,\d{3})+$/.test(s)) n = s.replace(/,/g,'');
+      else return {err:'Format angka tidak jelas'};
+    } else n = s.replace(',','.');
+  } else if (dots){
+    if (/^\d{1,3}(\.\d{3})+$/.test(s)) n = s.replace(/\./g,'');     // 1.000 / 3.600.000 = ribuan
+    else if (dots>1) return {err:'Format angka tidak jelas'};
+    else n = s;                                                      // 3.5 = desimal
+  } else n = s;
+  const v = Number(n);
+  if (!isFinite(v)) return {err:'Harus berupa angka'};
+  return {value: neg ? -v : v};
+}
+const NUM = {
+  qty:{min:0,label:'Quantity'},
+  proxyNilai:{min:0,money:true,label:'Proxy'},
+  durasi:{min:1,max:50,int:true,label:'Durasi'},
+  mulai:{min:1,max:50,int:true,label:'Tahun mulai'},
+  dw:{min:0,max:100,label:'Deadweight'},
+  attr:{min:0,max:100,label:'Attribution'},
+  disp:{min:0,max:100,label:'Displacement'},
+  drop:{min:0,max:100,label:'Drop-off'},
+  discountRate:{min:0,max:100,label:'Discount rate'},
+  nilai:{min:0,money:true,label:'Nilai input'},
+  jumlah:{min:0,int:true,label:'Jumlah'},
+  dwPP:{min:0,max:100}, attrPP:{min:0,max:100}, dispPP:{min:0,max:100}, dropPP:{min:0,max:100},
+  proxyPct:{min:0,max:100}, qtyPct:{min:0,max:100}, drLow:{min:0,max:100}, drHigh:{min:0,max:100}
+};
+function checkNum(field, raw){
+  const spec = NUM[field]; if (!spec) return {ok:true};
+  const r = parseNum(raw);
+  if (r.empty) return {empty:true};
+  if (r.err) return {err:r.err};
+  const v = r.value;
+  if (v<0 || (spec.min!=null && v<spec.min)) return {err: spec.min>0 ? `Minimal ${spec.min}` : 'Tidak boleh negatif. Untuk outcome merugikan, centang "Outcome negatif".'};
+  if (spec.max!=null && v>spec.max) return {err:`Maksimal ${spec.max}`};
+  if (spec.int && Math.round(v)!==v) return {err:'Harus bilangan bulat (tahun)'};
+  return {value:v};
+}
+function val(raw, def){ const r = parseNum(raw); return (r.value!=null) ? r.value : def; }
+
+const fmtNum = (v,d=0) => (isFinite(v)?v:0).toLocaleString('id-ID',{minimumFractionDigits:d,maximumFractionDigits:d});
+const fmtRp = v => (v<0?'−':'') + 'Rp\u00a0' + fmtNum(Math.abs(v));
+function fmtRpShort(v){
+  const a = Math.abs(v), s = v<0?'−':'';
+  if (a>=1e12) return s+'Rp\u00a0'+fmtNum(a/1e12,2)+'\u00a0T';
+  if (a>=1e9) return s+'Rp\u00a0'+fmtNum(a/1e9,2)+'\u00a0M';
+  if (a>=1e6) return s+'Rp\u00a0'+fmtNum(a/1e6,1)+'\u00a0jt';
+  return s+'Rp\u00a0'+fmtNum(a);
+}
+const fmtPct = (x,d) => { const p = x*100; return fmtNum(p, d!=null?d:(Math.abs(p-Math.round(p))<1e-9?0:1)) + '%'; };
+const fmtRatio = v => (v==null||!isFinite(v)) ? '–' : fmtNum(v,2);
+const today = () => { const d=new Date(); return d.toISOString().slice(0,10); };
+
+/* ================= Help texts ================= */
+const HELP = {
+  nama:'Nama program yang dinilai. Satu program = satu analisis SROI.',
+  jenis:'Evaluatif: menilai dampak yang sudah terjadi, pakai data nyata. Prakiraan (forecast): memperkirakan dampak program yang akan atau baru berjalan, biasanya dipakai waktu merancang program.',
+  discountRate:'Rupiah tahun depan nilainya lebih kecil dari rupiah hari ini, jadi nilai tahun ke-2, ke-3 dan seterusnya dikecilkan. Panduan Cabinet Office UK (2012) memakai 3,5%. Ada juga praktik di Indonesia yang memakai BI Rate. Yang penting tulis alasannya dan konsisten antar laporan.',
+  lingkup:'Batasan analisis: periode, wilayah, stakeholder dan outcome apa yang dimasukkan dan apa yang tidak, beserta alasannya.',
+  sNama:'Pihak yang mengalami perubahan karena program, positif maupun negatif. Contoh: peserta, keluarga peserta, pengepul, pemerintah desa.',
+  sLibat:'Cara stakeholder dilibatkan: wawancara, kuesioner, FGD. SROI wajib melibatkan stakeholder, bukan ditebak dari meja.',
+  sMaterial:'Material = perubahannya cukup penting dan cukup besar untuk dihitung. Kalau tidak dihitung, tulis alasannya di kolom sebelahnya.',
+  iUraian:'Semua yang dikeluarkan untuk program. Bukan cuma uang: waktu relawan atau barang sumbangan juga bisa dinilai. Total input jadi pembagi (penyebut) rasio SROI.',
+  output:'Apa yang dihasilkan program. Bentuknya kegiatan atau jumlah yang dijangkau, belum berupa perubahan. Contoh: "50 ibu dilatih".',
+  outcome:'Perubahan yang dialami stakeholder. Ini yang dinilai. "Dilatih" itu output, "penghasilannya naik" itu outcome.',
+  indikator:'Cara membuktikan outcome benar-benar terjadi. Contoh: rata-rata penghasilan tambahan per bulan dari catatan setoran.',
+  sumberData:'Dari mana angka quantity dan indikator diambil: kuesioner, data program, catatan lapangan, laporan mitra.',
+  negatif:'Centang kalau ini perubahan yang merugikan (misalnya beban kerja bertambah). Nilainya akan mengurangi total manfaat.',
+  qty:'Berapa orang atau unit yang benar-benar mengalami outcome. Bukan jumlah peserta, tapi yang berubah. Contoh: 40 dari 50 yang aktif setor.',
+  proxyNilai:'Nilai rupiah untuk 1 unit outcome selama 1 tahun. Kalau outcome-nya penghasilan, langsung pakai datanya. Kalau tidak ada harga pasar (misalnya rasa percaya diri), pakai pembanding: biaya pengganti atau harga layanan serupa.',
+  proxyUraian:'Jelaskan proxy-nya apa. Contoh: "rata-rata penghasilan tambahan Rp 300 rb/bulan × 12".',
+  proxySumber:'Wajib diisi. Tanpa sumber, proxy tidak bisa dicek orang lain. Contoh: "Catatan setoran bank sampah Jan–Des 2025" atau nama database/kajian.',
+  durasi:'Berapa tahun outcome bertahan. Harus ada dasarnya (data, literatur, jawaban stakeholder), jangan asal.',
+  mulai:'Tahun ke berapa outcome mulai terasa. Biasanya 1. Pakai 2 kalau baru terasa setelah setahun program.',
+  dw:'Bagian perubahan yang tetap akan terjadi walau tanpa program. Cara tanya: "Tanpa program ini, apakah ibu tetap akan mulai pilah dan jual sampah?" Bisa juga dari kelompok pembanding atau data tren.',
+  attr:'Bagian perubahan yang disebabkan pihak lain (program pemda, NGO lain, keluarga). Cara tanya: "Selain program ini, ada bantuan lain yang ikut membantu?"',
+  disp:'Apakah manfaat ini menggeser atau mengurangi manfaat orang lain. Contoh: pengepul lama kehilangan sebagian pasokan. Kalau tidak ada, isi 0%.',
+  drop:'Berapa persen nilai outcome turun tiap tahun setelah tahun pertama, karena efeknya memudar atau faktor lain mulai ikut berpengaruh. Hanya berpengaruh kalau durasi lebih dari 1 tahun.'
+};
+const FILTERS = [
+  {k:'dw', lab:'Deadweight', q:'Tanpa program, apakah perubahan ini tetap terjadi?'},
+  {k:'attr', lab:'Attribution', q:'Berapa bagian perubahan yang karena pihak lain?'},
+  {k:'disp', lab:'Displacement', q:'Apakah manfaat ini menggeser manfaat pihak lain?'},
+  {k:'drop', lab:'Drop-off', q:'Berapa persen nilainya turun tiap tahun setelah tahun 1?'}
+];
+const PRINCIPLES = [
+  ['Libatkan stakeholder','Involve stakeholders','Stakeholder ikut menentukan apa yang diukur dan bagaimana menilainya.','Tab Stakeholder: kolom "Cara dilibatkan" terisi untuk semua stakeholder material.'],
+  ['Pahami apa yang berubah','Understand what changes','Jelaskan bagaimana perubahan terjadi, termasuk yang tidak disengaja dan yang negatif.','Tab Outcome dan Theory of Change terisi; outcome negatif sudah dipertimbangkan.'],
+  ['Nilai hal yang penting','Value the things that matter','Pakai proxy keuangan supaya nilai outcome yang tidak punya harga pasar tetap terlihat.','Setiap proxy punya uraian dan sumber.'],
+  ['Hanya masukkan yang material','Only include what is material','Tentukan informasi apa yang perlu supaya gambarannya wajar, sampai orang lain bisa menarik kesimpulan yang masuk akal.','Kolom materialitas dan lingkup analisis diisi, termasuk alasan kalau ada yang tidak dihitung.'],
+  ['Jangan klaim berlebihan','Do not over-claim','Hanya klaim nilai yang memang diciptakan organisasi ini.','Deadweight, attribution, displacement, drop-off diisi dengan alasan; analisis sensitivitas sudah dilihat.'],
+  ['Transparan','Be transparent','Tunjukkan dasar setiap angka dan bahwa analisisnya jujur, lalu laporkan dan diskusikan dengan stakeholder.','Ringkasan siap cetak berisi rumus, asumsi, sumber dan alasan.'],
+  ['Verifikasi hasil','Verify the result','Pastikan ada pengecekan independen yang wajar.','Ada reviewer internal/eksternal; catat siapa dan kapan.'],
+  ['Responsif','Be responsive','Pakai hasil analisis untuk mengambil keputusan yang menambah nilai sosial. Prinsip ini ditambahkan Social Value International setelah panduan 2012.','Catat keputusan program yang diambil dari hasil SROI.']
+];
+
+/* ================= Data model ================= */
+function blankProgram(name){
+  return {
+    id: uid(), schema: SCHEMA, nama: name || 'Program baru', organisasi:'', lokasi:'', periode:'',
+    jenis:'evaluatif', tahunDasar: String(new Date().getFullYear()), penyusun:'', lingkup:'', catatan:'',
+    discountRate:'3,5', discountAlasan:'', isContoh:false,
+    stakeholders:[], inputs:[], outcomes:[],
+    toc:{masalah:'', input:'', kegiatan:'', output:'', outcome:'', impact:'', asumsi:''},
+    checklist: PRINCIPLES.map(()=>({done:false,bukti:''})),
+    sens:{dwPP:'10', attrPP:'10', dispPP:'10', dropPP:'10', proxyPct:'25', qtyPct:'25', drLow:'0', drHigh:'7'},
+    created: new Date().toISOString(), updated: new Date().toISOString()
+  };
+}
+function blankOutcome(stakeholderId){
+  return {id:uid(), stakeholderId: stakeholderId||'', output:'', outcome:'', indikator:'', sumberData:'', negatif:false,
+    qty:'', satuan:'orang', proxyNilai:'', proxyUraian:'', proxySumber:'', durasi:'1', durasiAlasan:'', mulai:'1',
+    dw:'', dwAlasan:'', attr:'', attrAlasan:'', disp:'', dispAlasan:'', drop:'', dropAlasan:'', collapsed:false};
+}
+function sampleProgram(){
+  const p = blankProgram('CONTOH – Pelatihan bank sampah ibu rumah tangga');
+  p.isContoh = true;
+  p.organisasi = 'CONTOH (angka dummy)'; p.lokasi = 'Desa contoh'; p.periode = 'Tahun program 1'; p.penyusun = 'Tim CSR';
+  p.discountAlasan = 'CONTOH: mengikuti contoh panduan Cabinet Office UK (2012).';
+  p.lingkup = 'CONTOH: menilai outcome untuk ibu peserta selama 3 tahun sejak pelatihan. Pengepul dan pemerintah desa dicatat sebagai stakeholder tetapi tidak dihitung sebagai outcome terpisah (lihat kolom materialitas).';
+  const s1 = {id:uid(), nama:'Ibu rumah tangga peserta', peran:'Penerima manfaat utama', jumlah:'50', libat:'CONTOH: kuesioner ke 50 peserta + FGD 10 orang', material:'ya', alasanMaterial:''};
+  const s2 = {id:uid(), nama:'Pengepul sampah lokal', peran:'Terdampak tidak langsung', jumlah:'3', libat:'CONTOH: wawancara 3 pengepul', material:'tidak', alasanMaterial:'CONTOH: dampaknya (kehilangan sebagian pasokan) sudah diperhitungkan lewat displacement 10% pada outcome ibu peserta.'};
+  const s3 = {id:uid(), nama:'Pemerintah desa', peran:'Mitra pelaksana', jumlah:'1', libat:'CONTOH: wawancara kepala desa', material:'tidak', alasanMaterial:'CONTOH: perubahan bagi pemdes kecil dan sulit dipisahkan dari program lain.'};
+  p.stakeholders = [s1,s2,s3];
+  p.inputs = [{id:uid(), uraian:'Dana program (pelatihan, alat, pendampingan)', stakeholderId:'', jenis:'uang', nilai:'100.000.000', sumber:'CONTOH: RAB program'}];
+  const o = blankOutcome(s1.id);
+  Object.assign(o, {
+    output:'50 ibu dilatih, 40 aktif setor sampah', outcome:'Penghasilan tambahan dari penjualan sampah terpilah',
+    indikator:'Rata-rata penghasilan tambahan per bulan', sumberData:'CONTOH: catatan setoran bank sampah',
+    qty:'40', satuan:'orang', proxyNilai:'3.600.000', proxyUraian:'Rp 300.000/bulan × 12 bulan', proxySumber:'CONTOH: catatan setoran bank sampah (rata-rata 12 bulan)',
+    durasi:'3', durasiAlasan:'CONTOH: 3 tahun, sesuai umur alat dan pendampingan', mulai:'1',
+    dw:'20', dwAlasan:'CONTOH: dari kuesioner, 10 dari 50 ibu sudah memilah dan menjual sampah sebelum program.',
+    attr:'25', attrAlasan:'CONTOH: ada program bank sampah pemda di desa yang sama; peserta menilai kontribusinya sekitar seperempat.',
+    disp:'10', dispAlasan:'CONTOH: pengepul lama kehilangan sebagian pasokan (wawancara 3 pengepul).',
+    drop:'20', dropAlasan:'CONTOH: perkiraan berdasarkan turunnya keaktifan setor setelah pendampingan selesai.'
+  });
+  p.outcomes = [o];
+  p.toc = {
+    masalah:'CONTOH: sampah rumah tangga dibuang/dibakar, ibu rumah tangga minim sumber penghasilan tambahan.',
+    input:'Dana Rp 100 juta\nPendamping lapangan',
+    kegiatan:'Pelatihan pemilahan sampah\nPengadaan alat bank sampah\nPendampingan 12 bulan',
+    output:'50 ibu dilatih\n40 ibu aktif setor sampah',
+    outcome:'Penghasilan tambahan ibu peserta\nSampah terpilah di sumber',
+    impact:'Kesejahteraan keluarga meningkat\nSampah ke TPA berkurang',
+    asumsi:'CONTOH: harga jual sampah stabil; pengepul tetap mau membeli.'
+  };
+  return p;
+}
+
+let db = null, storageOK = true, lastSaved = null, dirty = false;
+let tab = 'program';
+let scen = {dwAdd:0, attrAdd:0, dispAdd:0, dropAdd:0, proxyPct:0, qtyPct:0, r:null};
+
+function migrate(p){
+  const b = blankProgram(p.nama);
+  const out = Object.assign({}, b, p);
+  out.toc = Object.assign({}, b.toc, p.toc||{});
+  out.sens = Object.assign({}, b.sens, p.sens||{});
+  out.checklist = PRINCIPLES.map((_,i)=>Object.assign({done:false,bukti:''}, (p.checklist||[])[i]||{}));
+  out.stakeholders = (p.stakeholders||[]).map(s=>Object.assign({id:uid(),nama:'',peran:'',jumlah:'',libat:'',material:'ya',alasanMaterial:''}, s));
+  out.inputs = (p.inputs||[]).map(i=>Object.assign({id:uid(),uraian:'',stakeholderId:'',jenis:'uang',nilai:'',sumber:''}, i));
+  out.outcomes = (p.outcomes||[]).map(o=>Object.assign(blankOutcome(), o));
+  ['discountRate','tahunDasar'].forEach(k=>{ if (typeof out[k]==='number') out[k]=String(out[k]); });
+  out.schema = SCHEMA;
+  return out;
+}
+function loadDB(){
+  try{
+    const raw = localStorage.getItem(LS_KEY);
+    if (raw){
+      const d = JSON.parse(raw);
+      if (d && d.programs){
+        Object.keys(d.programs).forEach(k=>{ d.programs[k] = migrate(d.programs[k]); });
+        db = d;
+      }
+    }
+  }catch(e){ storageOK = false; }
+  if (!db || !Object.keys(db.programs).length){
+    const s = sampleProgram();
+    db = {schema:SCHEMA, activeId:s.id, programs:{[s.id]:s}};
+  }
+  if (!db.programs[db.activeId]) db.activeId = Object.keys(db.programs)[0];
+}
+let saveTimer = null;
+function save(now){
+  cur().updated = new Date().toISOString();
+  dirty = true;
+  clearTimeout(saveTimer);
+  const doit = () => {
+    saveTimer = null;
+    try{ localStorage.setItem(LS_KEY, JSON.stringify(db)); lastSaved = new Date(); storageOK = true; }
+    catch(e){ storageOK = false; }
+    renderBadge(); renderBanner();
+  };
+  if (now) doit(); else saveTimer = setTimeout(doit, 350);
+}
+const cur = () => db.programs[db.activeId];
+const findS = id => cur().stakeholders.find(s=>s.id===id);
+
+/* path -> object */
+function resolve(path){
+  const [k,a,b] = path.split(':'); const p = cur();
+  if (k==='p') return [p, a];
+  if (k==='s') return [p.stakeholders.find(x=>x.id===a), b];
+  if (k==='i') return [p.inputs.find(x=>x.id===a), b];
+  if (k==='o') return [p.outcomes.find(x=>x.id===a), b];
+  if (k==='toc') return [p.toc, a];
+  if (k==='ck') return [p.checklist[+a], b];
+  if (k==='sens') return [p.sens, a];
+  return [null,null];
+}
+function getPath(path){ const [o,f] = resolve(path); return o ? o[f] : ''; }
+function setPath(path, v){ const [o,f] = resolve(path); if (o) o[f] = v; }
+const fieldOf = path => path.split(':').pop();
+
+/* ================= Calculation ================= */
+function compute(p, ov){
+  ov = ov || {};
+  const r = (ov.r!=null ? ov.r : val(p.discountRate,0)) / 100;
+  const clamp = x => Math.min(1, Math.max(0, x));
+  const totalInput = p.inputs.reduce((s,i)=> s + Math.max(0, val(i.nilai,0)), 0);
+  const rows = []; let horizon = 0;
+  for (const o of p.outcomes){
+    if (ov.exclude === o.id) continue;
+    const q  = Math.max(0, val(o.qty,0)) * (1 + (ov.qtyPct||0)/100);
+    const px = Math.max(0, val(o.proxyNilai,0)) * (1 + (ov.proxyPct||0)/100);
+    const dw = clamp(val(o.dw,0)/100 + (ov.dwAdd||0)/100);
+    const at = clamp(val(o.attr,0)/100 + (ov.attrAdd||0)/100);
+    const di = clamp(val(o.disp,0)/100 + (ov.dispAdd||0)/100);
+    const dr = clamp(val(o.drop,0)/100 + (ov.dropAdd||0)/100);
+    let d = Math.round(val(o.durasi,1)); if (!(d>=1)) d = 1; if (d>50) d = 50;
+    let m = Math.round(val(o.mulai,1)); if (!(m>=1)) m = 1; if (m>50) m = 50;
+    const sign = o.negatif ? -1 : 1;
+    const gross = q*px;
+    const impact = gross*(1-dw)*(1-at)*(1-di);
+    const years = []; let v = impact, pv = 0, nom = 0;
+    for (let k=0; k<d; k++){
+      const t = m + k;
+      if (k>0) v = v*(1-dr);
+      const pvt = v/Math.pow(1+r, t);
+      years.push({t, v:sign*v, pv:sign*pvt});
+      pv += sign*pvt; nom += sign*v;
+    }
+    horizon = Math.max(horizon, m+d-1);
+    rows.push({o, q, px, dw, at, di, dr, d, m, sign, gross:sign*gross, impact:sign*impact, years, pv, nom});
+  }
+  const byYear = [];
+  for (let t=1; t<=horizon; t++){
+    let v=0, pv=0;
+    rows.forEach(rw=>rw.years.forEach(y=>{ if (y.t===t){ v+=y.v; pv+=y.pv; } }));
+    byYear.push({t, v, pv});
+  }
+  const totalPV = rows.reduce((s,x)=>s+x.pv,0);
+  const totalNom = rows.reduce((s,x)=>s+x.nom,0);
+  const sroi = totalInput>0 ? totalPV/totalInput : null;
+  let payback = null, cum = 0;
+  for (const y of byYear){ cum += y.pv; if (payback==null && totalInput>0 && cum >= totalInput - 1e-6) payback = y.t; }
+  return {r, totalInput, totalPV, totalNom, sroi, npv: totalPV-totalInput, rows, byYear, horizon, payback};
+}
+function solveOne(f, lo, hi){
+  const g = x => { const v = f(x); return v==null ? NaN : v - 1; };
+  let a = lo, b = hi, fa = g(a), fb = g(b);
+  if (!isFinite(fa) || !isFinite(fb) || fa*fb > 0) return null;
+  for (let i=0;i<70;i++){
+    const m = (a+b)/2, fm = g(m);
+    if (fa*fm <= 0){ b = m; fb = fm; } else { a = m; fa = fm; }
+  }
+  return (a+b)/2;
+}
+
+/* ================= Warnings ================= */
+function analyze(p, res){
+  const W = [];
+  const add = (lvl, tab, msg, id) => W.push({lvl, tab, msg, id});
+  // numeric validity
+  p.inputs.forEach((i,idx)=>{ const c = checkNum('nilai', i.nilai); if (c.err) add('err','input',`Input ${idx+1}: nilai — ${c.err}`); });
+  p.stakeholders.forEach((s,idx)=>{ const c = checkNum('jumlah', s.jumlah); if (c.err) add('err','stakeholder',`Stakeholder ${idx+1}: jumlah — ${c.err}`); });
+  { const c = checkNum('discountRate', p.discountRate); if (c.err) add('err','program',`Discount rate — ${c.err}`); }
+  if (!p.inputs.length || res.totalInput<=0) add('err','input','Total input masih 0, jadi rasio SROI belum bisa dihitung.');
+  if (!p.outcomes.length) add('err','outcome','Belum ada outcome yang dinilai.');
+  let allDwZero = p.outcomes.length>0;
+  p.outcomes.forEach((o,idx)=>{
+    const n = `Outcome ${idx+1}${o.outcome ? ' ('+short(o.outcome,40)+')' : ''}`;
+    ['qty','proxyNilai','durasi','mulai','dw','attr','disp','drop'].forEach(f=>{
+      const c = checkNum(f, o[f]); if (c.err) add('err','outcome',`${n}: ${NUM[f].label} — ${c.err}`, o.id);
+    });
+    if (!o.stakeholderId || !findS(o.stakeholderId)) add('warn','outcome',`${n}: stakeholder belum dipilih.`, o.id);
+    if (isBlank(o.outcome)) add('warn','outcome',`${n}: deskripsi outcome masih kosong.`, o.id);
+    if (isBlank(o.indikator)) add('warn','outcome',`${n}: indikator belum diisi.`, o.id);
+    if (isBlank(o.qty)) add('warn','outcome',`${n}: quantity belum diisi (dianggap 0).`, o.id);
+    if (isBlank(o.proxyNilai)) add('warn','outcome',`${n}: proxy keuangan belum diisi (dianggap 0).`, o.id);
+    else if (isBlank(o.proxySumber)) add('warn','outcome',`${n}: sumber proxy kosong. Tanpa sumber, nilai ini sulit dipertahankan saat direview.`, o.id);
+    const d = val(o.durasi,1);
+    FILTERS.forEach(F=>{
+      if (F.k==='drop' && !(d>1)) return;
+      if (isBlank(o[F.k])) add('warn','outcome',`${n}: ${F.lab} belum diisi (dianggap 0%).`, o.id);
+      else if (isBlank(o[F.k+'Alasan'])) add('warn','outcome',`${n}: ${F.lab} diisi ${fmtNum(val(o[F.k],0),1).replace(/,0$/,'')}% tapi alasannya kosong.`, o.id);
+    });
+    if (d>1 && isBlank(o.durasiAlasan)) add('warn','outcome',`${n}: durasi ${d} tahun tanpa alasan.`, o.id);
+    if (d>1 && !isBlank(o.drop) && val(o.drop,0)===0) add('warn','outcome',`${n}: durasi lebih dari 1 tahun tanpa drop-off. Artinya dampak dianggap tidak memudar sama sekali, ini jarang realistis.`, o.id);
+    if (val(o.dw,0)>0) allDwZero = false;
+  });
+  if (allDwZero && p.outcomes.some(o=>!isBlank(o.dw))) add('warn','outcome','Semua deadweight 0%. Artinya tanpa program tidak ada perubahan sama sekali. Ini jarang benar dan sering dipertanyakan reviewer.');
+  if (res.sroi!=null && res.sroi>10) add('warn','hasil',`Rasio ${fmtRatio(res.sroi)} di atas 10. Belum tentu salah, tapi cek ulang proxy, quantity dan filter.`);
+  if (res.sroi!=null && res.sroi<0) add('warn','hasil','Rasio negatif: outcome negatif lebih besar dari outcome positif.');
+  p.stakeholders.forEach((s,idx)=>{
+    const nm = s.nama || `Stakeholder ${idx+1}`;
+    if (s.material==='ya' && !p.outcomes.some(o=>o.stakeholderId===s.id)) add('warn','stakeholder',`${nm}: ditandai material tapi belum punya outcome.`);
+    if (s.material==='tidak' && isBlank(s.alasanMaterial)) add('warn','stakeholder',`${nm}: tidak dihitung, tapi alasannya belum ditulis.`);
+    if (isBlank(s.libat)) add('info','stakeholder',`${nm}: cara dilibatkan belum dicatat.`);
+  });
+  if (!p.stakeholders.length) add('warn','stakeholder','Belum ada stakeholder.');
+  if (p.outcomes.length && !p.outcomes.some(o=>o.negatif)) add('info','outcome','Belum ada outcome negatif. Kalau memang tidak ada, catat di lingkup analisis.');
+  if (isBlank(p.discountAlasan)) add('info','program','Alasan discount rate belum ditulis.');
+  const done = p.checklist.filter(c=>c.done).length;
+  if (done < PRINCIPLES.length) add('info','checklist',`Checklist prinsip SROI: ${done} dari ${PRINCIPLES.length} sudah dicentang.`);
+  return W;
+}
+const countBy = (W,tab) => ({err:W.filter(w=>w.tab===tab&&w.lvl==='err').length, warn:W.filter(w=>w.tab===tab&&w.lvl==='warn').length});
+
+/* ================= UI helpers ================= */
+function helpBtn(key){ return HELP[key] ? `<button type="button" class="q" data-act="help" title="Penjelasan" aria-label="Penjelasan">?</button>` : ''; }
+function fld(o){
+  // o: {label, path, help, type:'text'|'textarea'|'select'|'num', unit, options, ph, rows, cls}
+  const v = getPath(o.path) ?? '';
+  const f = fieldOf(o.path);
+  let ctrl, state = '', msg = '', hint = '';
+  if (o.type==='textarea'){
+    ctrl = `<textarea data-path="${o.path}" rows="${o.rows||2}" placeholder="${esc(o.ph||'')}">${esc(v)}</textarea>`;
+  } else if (o.type==='select'){
+    ctrl = `<select data-path="${o.path}">${o.options.map(([k,l])=>`<option value="${esc(k)}"${String(k)===String(v)?' selected':''}>${esc(l)}</option>`).join('')}</select>`;
+  } else {
+    ctrl = `<input type="text" ${o.type==='num'?'inputmode="decimal" autocomplete="off"':''} data-path="${o.path}" value="${esc(v)}" placeholder="${esc(o.ph||'')}">`;
+    if (o.unit) ctrl = `<div class="unit" data-unit="${esc(o.unit)}">${ctrl}</div>`;
+    if (o.type==='num'){
+      const c = checkNum(f, v);
+      if (c.err){ state = ' bad'; msg = esc(c.err); }
+      else if (NUM[f] && NUM[f].money && c.value!=null) hint = '= ' + fmtRp(c.value);
+    }
+  }
+  const hk = o.help || f;
+  return `<div class="f${state}${o.cls?' '+o.cls:''}" data-f="${o.path}">
+    ${o.label!=null ? `<label>${esc(o.label)} ${helpBtn(hk)}</label>` : ''}
+    ${HELP[hk] ? `<div class="help">${esc(HELP[hk])}</div>` : ''}
+    ${ctrl}
+    ${o.type==='num' ? `<div class="msg">${msg}</div><div class="hint">${hint}</div>` : ''}
+  </div>`;
+}
+function stOptions(withBlank=true){
+  const p = cur();
+  return [ ...(withBlank?[['','— pilih stakeholder —']]:[]), ...p.stakeholders.map(s=>[s.id, s.nama || '(tanpa nama)']) ];
+}
+function toast(msg){ const t = $('#toast'); t.textContent = msg; t.classList.add('on'); clearTimeout(toast._t); toast._t = setTimeout(()=>t.classList.remove('on'), 2200); }
+
+/* ================= Tabs ================= */
+const TABS = [
+  ['program','1. Program'],['stakeholder','2. Stakeholder'],['input','3. Input'],['outcome','4. Outcome & filter'],
+  ['hasil','5. Hasil'],['sens','6. Sensitivitas'],['toc','7. Theory of Change'],['checklist','8. Checklist'],
+  ['ringkasan','Ringkasan (cetak)'],['panduan','Panduan']
+];
+function renderTabs(W){
+  $('#tabs').innerHTML = TABS.map(([k,l])=>{
+    const c = countBy(W,k);
+    const n = c.err ? `<span class="n err">${c.err}</span>` : (c.warn ? `<span class="n">${c.warn}</span>` : '');
+    return `<button data-tab="${k}" class="${k===tab?'on':''}">${l}${n}</button>`;
+  }).join('');
+}
+function renderProgSelect(){
+  const ids = Object.keys(db.programs).sort((a,b)=> (db.programs[b].updated||'').localeCompare(db.programs[a].updated||''));
+  $('#progSelect').innerHTML = ids.map(id=>`<option value="${id}"${id===db.activeId?' selected':''}>${esc(db.programs[id].nama||'(tanpa nama)')}</option>`).join('');
+}
+function renderBadge(){
+  const p = cur(), res = compute(p), W = analyze(p,res);
+  const e = W.filter(w=>w.lvl==='err').length, w = W.filter(w=>w.lvl==='warn').length;
+  const pill = res.sroi==null ? `<span class="ratio-pill none">SROI –</span>`
+    : e ? `<span class="ratio-pill none" title="Ada angka yang tidak valid; rasio ini belum bisa dipakai">SROI 1 : ${fmtRatio(res.sroi)} (belum valid)</span>`
+    : `<span class="ratio-pill" title="Nilai kini manfaat bersih dibagi total input">SROI 1 : ${fmtRatio(res.sroi)}</span>`;
+  const wp = e ? `<span class="warn-pill err" data-tab="hasil">${e} error${w?' · '+w+' peringatan':''}</span>` : (w ? `<span class="warn-pill warn" data-tab="hasil">${w} peringatan</span>` : `<span class="warn-pill ok">Tidak ada peringatan</span>`);
+  const sv = !storageOK ? `<span class="saved" style="color:var(--err)">Simpan otomatis tidak aktif</span>` : (lastSaved ? `<span class="saved">Tersimpan ${lastSaved.toLocaleTimeString('id-ID',{hour:'2-digit',minute:'2-digit'})}</span>` : '');
+  $('#liveBadge').innerHTML = pill + wp + sv;
+  renderTabs(W);
+  return {res, W};
+}
+function renderBanner(){
+  const p = cur(); const out = [];
+  if (p.isContoh) out.push(`<div class="b-contoh"><b>CONTOH.</b> Semua angka di program ini dummy, hanya untuk belajar cara pakai. Jangan dipakai sebagai data nyata. Untuk analisis sungguhan, klik <b>+ Baru</b>.</div>`);
+  if (!storageOK) out.push(`<div class="b-err">Browser ini tidak mengizinkan penyimpanan otomatis. Data hilang kalau halaman ditutup. Pakai <b>File ▾ → Simpan program ke file</b>.</div>`);
+  $('#banner').innerHTML = out.join('');
+}
+
+/* ---- 1. Program ---- */
+function tProgram(){
+  const p = cur();
+  return `<div class="card">
+    <h2>Identitas program</h2>
+    <div class="grid g3">
+      ${fld({label:'Nama program', path:'p:nama', cls:'span2'})}
+      ${fld({label:'Jenis analisis', path:'p:jenis', type:'select', options:[['evaluatif','Evaluatif (dampak yang sudah terjadi)'],['prakiraan','Prakiraan / forecast']]})}
+      ${fld({label:'Organisasi / unit', path:'p:organisasi'})}
+      ${fld({label:'Lokasi', path:'p:lokasi'})}
+      ${fld({label:'Periode analisis', path:'p:periode', ph:'mis. Jan 2025 – Des 2025'})}
+      ${fld({label:'Tahun dasar (tahun 0)', path:'p:tahunDasar', ph:'mis. 2025'})}
+      ${fld({label:'Disusun oleh', path:'p:penyusun', cls:'span2'})}
+    </div>
+  </div>
+  <div class="card">
+    <h2>Discount rate</h2>
+    <div class="grid g3">
+      ${fld({label:'Discount rate per tahun', path:'p:discountRate', type:'num', unit:'%', help:'discountRate'})}
+      ${fld({label:'Alasan memilih angka ini', path:'p:discountAlasan', type:'textarea', cls:'span2', ph:'mis. mengikuti panduan Cabinet Office (3,5%) / BI Rate per tanggal …'})}
+    </div>
+    <div class="chips noprint" style="margin-top:2px"><span class="tiny muted" style="margin-right:4px">Pilihan cepat:</span>
+      <button data-act="setv" data-path="p:discountRate" data-v="3,5">3,5% (panduan UK)</button>
+      <button data-act="setv" data-path="p:discountRate" data-v="0">0% (tanpa diskon)</button>
+    </div>
+  </div>
+  <div class="card">
+    <h2>Lingkup & catatan</h2>
+    <div class="grid g2">
+      ${fld({label:'Lingkup analisis', path:'p:lingkup', type:'textarea', rows:4, help:'lingkup', ph:'Apa yang dihitung dan tidak, wilayah, periode, alasan…'})}
+      ${fld({label:'Catatan lain', path:'p:catatan', type:'textarea', rows:4})}
+    </div>
+  </div>`;
+}
+
+/* ---- 2. Stakeholder ---- */
+function tStakeholder(){
+  const p = cur();
+  const rows = p.stakeholders.map((s,i)=>`<tr>
+      <td class="num">${i+1}</td>
+      <td style="min-width:170px">${fld({label:'Nama', path:`s:${s.id}:nama`, ph:'mis. Ibu peserta'})}</td>
+      <td style="min-width:150px">${fld({label:'Peran', path:`s:${s.id}:peran`, ph:'mis. penerima manfaat'})}</td>
+      <td style="width:90px">${fld({label:'Jumlah', path:`s:${s.id}:jumlah`, type:'num'})}</td>
+      <td style="min-width:190px">${fld({label:'Cara dilibatkan', path:`s:${s.id}:libat`, type:'textarea', ph:'kuesioner / FGD / wawancara'})}</td>
+      <td style="width:110px">${fld({label:'Material?', path:`s:${s.id}:material`, type:'select', options:[['ya','Ya, dihitung'],['tidak','Tidak']]})}</td>
+      <td style="min-width:190px">${fld({label:'Alasan', path:`s:${s.id}:alasanMaterial`, type:'textarea', ph:'wajib kalau tidak dihitung'})}</td>
+      <td><button class="btn sm del" data-act="delS" data-id="${s.id}" title="Hapus">✕</button></td>
+    </tr>`).join('');
+  return `<div class="card">
+    <h2>Stakeholder</h2>
+    <p class="small muted">Siapa saja yang mengalami perubahan karena program. Tandai mana yang dihitung (material) dan tulis alasan kalau tidak dihitung. ${helpBtnInline('sNama')}</p>
+    <div class="tw"><table class="edit-table">
+      <thead><tr><th>#</th><th>Nama stakeholder</th><th>Peran</th><th>Jumlah</th><th>Cara dilibatkan</th><th>Material?</th><th>Alasan materialitas</th><th></th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="8" class="empty">Belum ada stakeholder.</td></tr>`}</tbody>
+    </table></div>
+    <div style="margin-top:10px"><button class="btn pri" data-act="addS">+ Tambah stakeholder</button></div>
+  </div>
+  <div class="card flat small">
+    <b>Tips.</b> ${esc(HELP.sLibat)} ${esc(HELP.sMaterial)}
+  </div>`;
+}
+function helpBtnInline(k){ return `<button class="link small" data-act="helpInline" data-k="${k}">Apa ini?</button><span class="help-inline" data-k="${k}" hidden> ${esc(HELP[k])}</span>`; }
+
+/* ---- 3. Input ---- */
+function tInput(){
+  const p = cur(), res = compute(p);
+  const rows = p.inputs.map((it,i)=>`<tr>
+      <td class="num">${i+1}</td>
+      <td style="min-width:220px">${fld({label:'Uraian', path:`i:${it.id}:uraian`, ph:'mis. Dana program'})}</td>
+      <td style="min-width:150px">${fld({label:'Dari', path:`i:${it.id}:stakeholderId`, type:'select', options:[['','Organisasi pelaksana'],...stOptions(false)]})}</td>
+      <td style="width:130px">${fld({label:'Jenis', path:`i:${it.id}:jenis`, type:'select', options:[['uang','Uang'],['natura','Barang/natura'],['waktu','Waktu/tenaga']]})}</td>
+      <td style="min-width:170px">${fld({label:'Nilai (Rp)', path:`i:${it.id}:nilai`, type:'num'})}</td>
+      <td style="min-width:180px">${fld({label:'Sumber', path:`i:${it.id}:sumber`, ph:'RAB, laporan keuangan…'})}</td>
+      <td><button class="btn sm del" data-act="delI" data-id="${it.id}" title="Hapus">✕</button></td>
+    </tr>`).join('');
+  return `<div class="card">
+    <h2>Input (investasi)</h2>
+    <p class="small muted">${esc(HELP.iUraian)} Input dihitung sebagai nilai di tahun 0 (tidak didiskon).</p>
+    <div class="tw"><table class="edit-table">
+      <thead><tr><th>#</th><th>Uraian</th><th>Dari</th><th>Jenis</th><th>Nilai (Rp)</th><th>Sumber</th><th></th></tr></thead>
+      <tbody>${rows || `<tr><td colspan="7" class="empty">Belum ada input.</td></tr>`}
+      <tr class="tot"><td></td><td colspan="3">Total input</td><td class="num" data-live="totalInput">${fmtRp(res.totalInput)}</td><td colspan="2"></td></tr></tbody>
+    </table></div>
+    <div style="margin-top:10px"><button class="btn pri" data-act="addI">+ Tambah input</button></div>
+  </div>`;
+}
+
+/* ---- 4. Outcome ---- */
+function ocTitle(o, idx){
+  const s = findS(o.stakeholderId);
+  return `<b>#${idx+1} · ${esc(o.outcome || 'Outcome belum dinamai')}</b><span class="small muted">${esc(s ? s.nama : 'stakeholder belum dipilih')}${o.negatif?' · <span style="color:var(--neg)">outcome negatif</span>':''}</span>`;
+}
+function ocLive(o, res){
+  const r = res.rows.find(x=>x.o.id===o.id); if (!r) return '';
+  const share = r.gross!==0 ? r.impact/r.gross : 0;
+  return `<div class="flow">
+      <span>Nilai kotor <b>${fmtRp(r.gross)}</b>/thn</span><span class="a">→ setelah 4 filter →</span>
+      <span><b>${fmtRp(r.impact)}</b>/thn (${fmtPct(share)} dari kotor)</span><span class="a">→</span>
+      <span>${r.d} thn${r.d>1?`, drop-off ${fmtPct(r.dr)}`:''}</span><span class="a">→</span>
+      <span>Nilai kini <b>${fmtRp(r.pv)}</b></span>
+      ${res.totalPV ? `<span class="muted">(${fmtPct(r.pv/res.totalPV)} dari total manfaat)</span>` : ''}
+    </div>`;
+}
+function ocWarn(o, W){
+  const ws = W.filter(w=>w.id===o.id && w.lvl!=='info');
+  return ws.length ? `<ul class="wl">${ws.map(w=>`<li class="${w.lvl}">${w.lvl==='err'?'⛔':'⚠️'} ${esc(w.msg.replace(/^Outcome \d+( \([^)]*\))?: /,''))}</li>`).join('')}</ul>` : '';
+}
+function filterRow(o, F){
+  const path = `o:${o.id}:${F.k}`;
+  const cv = val(o[F.k], null);
+  const chips = [0,25,50,75,100].map(x=>`<button data-act="setv" data-path="${path}" data-v="${x}" class="${cv===x?'on':''}">${x}%</button>`).join('');
+  return `<div class="filt">
+    <div>
+      ${fld({label:F.lab, path, type:'num', unit:'%'})}
+      <div class="chips noprint" title="Contoh praktik, bukan standar baku">${chips}</div>
+      <div class="tiny muted noprint">Pilihan cepat = contoh praktik, bukan standar baku</div>
+    </div>
+    <div>${fld({label:'Alasan / bukti', path:`o:${o.id}:${F.k}Alasan`, type:'textarea', rows:3, help:F.k, ph:F.q})}</div>
+  </div>`;
+}
+function ocCard(o, idx, res, W){
+  return `<div class="card oc${o.negatif?' negatif':''}${o.collapsed?' collapsed':''}" data-oc="${o.id}">
+    <div class="oc-h">
+      <div class="t" data-live="octitle:${o.id}">${ocTitle(o, idx)}</div>
+      <div class="acts noprint">
+        <button class="btn sm" data-act="mvO" data-id="${o.id}" data-d="-1" title="Naik">↑</button>
+        <button class="btn sm" data-act="mvO" data-id="${o.id}" data-d="1" title="Turun">↓</button>
+        <button class="btn sm" data-act="dupO" data-id="${o.id}" title="Duplikat">⧉</button>
+        <button class="btn sm" data-act="togO" data-id="${o.id}">${o.collapsed?'Buka':'Tutup'}</button>
+        <button class="btn sm del" data-act="delO" data-id="${o.id}" title="Hapus">✕</button>
+      </div>
+    </div>
+    <div class="live${o.negatif?' negatif':''}" data-live="oc:${o.id}">${ocLive(o,res)}</div>
+    <div class="ocw" data-live="ocw:${o.id}">${ocWarn(o,W)}</div>
+    <div class="oc-body">
+      <div class="sec"><h4>Rantai perubahan</h4>
+        <div class="grid g3">
+          ${fld({label:'Stakeholder', path:`o:${o.id}:stakeholderId`, type:'select', options:stOptions(), help:'sNama'})}
+          ${fld({label:'Output (yang dihasilkan program)', path:`o:${o.id}:output`, help:'output', ph:'mis. 50 ibu dilatih'})}
+          ${fld({label:'Outcome (perubahan yang dialami)', path:`o:${o.id}:outcome`, help:'outcome', ph:'mis. penghasilan tambahan'})}
+          ${fld({label:'Indikator', path:`o:${o.id}:indikator`, help:'indikator'})}
+          ${fld({label:'Sumber data', path:`o:${o.id}:sumberData`, help:'sumberData'})}
+          <div class="f"><label>Jenis outcome ${helpBtn('negatif')}</label><div class="help">${esc(HELP.negatif)}</div>
+            <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:negatif" ${o.negatif?'checked':''}> Outcome negatif (mengurangi nilai)</label></div>
+        </div>
+      </div>
+      <div class="sec"><h4>Nilai</h4>
+        <div class="grid g4">
+          ${fld({label:'Quantity', path:`o:${o.id}:qty`, type:'num'})}
+          ${fld({label:'Satuan', path:`o:${o.id}:satuan`, ph:'orang / KK / ha / ton'})}
+          ${fld({label:'Proxy per satuan per tahun (Rp)', path:`o:${o.id}:proxyNilai`, type:'num', cls:'span2'})}
+          ${fld({label:'Uraian proxy', path:`o:${o.id}:proxyUraian`, cls:'span2', help:'proxyUraian'})}
+          ${fld({label:'Sumber proxy', path:`o:${o.id}:proxySumber`, cls:'span2', help:'proxySumber'})}
+          ${fld({label:'Durasi (tahun)', path:`o:${o.id}:durasi`, type:'num'})}
+          ${fld({label:'Mulai di tahun ke-', path:`o:${o.id}:mulai`, type:'num'})}
+          ${fld({label:'Alasan durasi', path:`o:${o.id}:durasiAlasan`, type:'textarea', cls:'span2', help:'durasi'})}
+        </div>
+      </div>
+      <div class="sec"><h4>Filter: supaya tidak klaim berlebihan</h4>
+        ${FILTERS.map(F=>filterRow(o,F)).join('')}
+      </div>
+    </div>
+  </div>`;
+}
+function tOutcome(){
+  const p = cur(), res = compute(p), W = analyze(p,res);
+  return `<div class="card flat">
+    <div class="row" style="align-items:center">
+      <div style="flex:1;min-width:240px"><h2 style="margin:0">Outcome & filter (impact map)</h2>
+      <p class="small muted" style="margin:.3em 0 0">Satu kartu = satu outcome untuk satu stakeholder. Kolom angka hanya menerima angka; kolom teks jadi dokumentasi dan tidak ikut dihitung.</p></div>
+      <div class="row noprint" style="gap:6px">
+        <button class="btn sm" data-act="collapseAll" data-v="1">Tutup semua</button>
+        <button class="btn sm" data-act="collapseAll" data-v="0">Buka semua</button>
+        <button class="btn pri" data-act="addO">+ Tambah outcome</button>
+      </div>
+    </div>
+  </div>
+  ${p.outcomes.length ? p.outcomes.map((o,i)=>ocCard(o,i,res,W)).join('') : `<div class="card empty">Belum ada outcome. ${p.stakeholders.length?'':'Isi stakeholder dulu di tab 2, lalu '}klik <b>+ Tambah outcome</b>.</div>`}
+  ${p.outcomes.length ? `<div class="noprint" style="text-align:center"><button class="btn pri" data-act="addO">+ Tambah outcome</button></div>` : ''}`;
+}
+
+/* ---- 5. Hasil ---- */
+function warnList(W, linkTabs){
+  if (!W.length) return `<p class="small muted">Tidak ada peringatan.</p>`;
+  const order = {err:0,warn:1,info:2};
+  return `<ul class="wl">${W.slice().sort((a,b)=>order[a.lvl]-order[b.lvl]).map(w=>`<li class="${w.lvl}">${w.lvl==='err'?'⛔':w.lvl==='warn'?'⚠️':'ℹ️'} <span>${esc(w.msg)}</span>${linkTabs?`<button class="btn sm go noprint" data-tab="${w.tab}" ${w.id?`data-focus="${w.id}"`:''}>Buka</button>`:''}</li>`).join('')}</ul>`;
+}
+function kpis(res){
+  const nErr = analyze(cur(), res).filter(w=>w.lvl==='err').length;
+  return `${nErr && res.sroi!=null ? `<div class="banner" style="padding:0;margin:0 0 10px"><div class="b-err"><b>Belum valid:</b> ada ${nErr} error (angka tidak valid atau data wajib kosong). Angka di bawah belum bisa dipakai sampai error diperbaiki.</div></div>` : ''}
+  <div class="kpis">
+    <div class="kpi big"><div class="l">Rasio SROI</div><div class="v">1 : ${fmtRatio(res.sroi)}</div>
+      <div class="tiny" style="opacity:.9">${res.sroi!=null?`Tiap Rp 1 investasi → nilai sosial sekitar Rp ${fmtNum(res.sroi,2)}`:'Isi input dan outcome dulu'}</div></div>
+    <div class="kpi"><div class="l">Nilai kini manfaat bersih</div><div class="v">${fmtRpShort(res.totalPV)}</div><div class="tiny muted">${fmtRp(res.totalPV)}</div></div>
+    <div class="kpi"><div class="l">Total input</div><div class="v">${fmtRpShort(res.totalInput)}</div><div class="tiny muted">${fmtRp(res.totalInput)}</div></div>
+    <div class="kpi"><div class="l">Nilai bersih (NPV)</div><div class="v" style="color:${res.npv<0?'var(--neg)':'inherit'}">${fmtRpShort(res.npv)}</div>
+      <div class="tiny muted">${res.payback?`Nilai kini manfaat melewati input di tahun ke-${res.payback}`:(res.totalInput>0?'Manfaat belum melewati input':'')}</div></div>
+  </div>`;
+}
+function outcomeTable(p, res, withAlasan){
+  if (!res.rows.length) return `<p class="small muted">Belum ada outcome.</p>`;
+  const rows = res.rows.map((r,i)=>{ const o=r.o, s=findS(o.stakeholderId);
+    return `<tr>
+      <td>${i+1}</td><td>${esc(s?s.nama:'–')}</td><td>${esc(o.outcome||'–')}${o.negatif?' <span style="color:var(--neg)">(negatif)</span>':''}<div class="tiny muted">${esc(o.indikator)}</div></td>
+      <td class="num">${fmtNum(r.q, r.q%1?2:0)} ${esc(o.satuan||'')}</td><td class="num">${fmtRp(r.px)}</td>
+      <td class="num${r.gross<0?' neg':''}">${fmtRp(r.gross)}</td>
+      <td class="num">${fmtPct(r.dw)}</td><td class="num">${fmtPct(r.at)}</td><td class="num">${fmtPct(r.di)}</td>
+      <td class="num${r.impact<0?' neg':''}">${fmtRp(r.impact)}</td>
+      <td class="num">${r.d}${r.m>1?` <span class="tiny muted">(mulai th ${r.m})</span>`:''}</td><td class="num">${r.d>1?fmtPct(r.dr):'–'}</td>
+      <td class="num${r.pv<0?' neg':''}"><b>${fmtRp(r.pv)}</b></td>
+    </tr>${withAlasan?`<tr><td></td><td colspan="12" class="tiny" style="color:#3e4a45">
+      <b>Proxy:</b> ${esc(o.proxyUraian||'–')} · <i>sumber:</i> ${esc(o.proxySumber||'–')}<br>
+      <b>Durasi:</b> ${esc(o.durasiAlasan||'–')}<br>
+      <b>Deadweight:</b> ${esc(o.dwAlasan||'–')}<br><b>Attribution:</b> ${esc(o.attrAlasan||'–')}<br>
+      <b>Displacement:</b> ${esc(o.dispAlasan||'–')}<br><b>Drop-off:</b> ${esc(o.dropAlasan||'–')}</td></tr>`:''}`;
+  }).join('');
+  return `<div class="tw"><table class="otab">
+    <thead><tr><th>#</th><th>Stakeholder</th><th>Outcome</th><th class="num">Quantity</th><th class="num">Proxy/thn</th><th class="num">Nilai kotor/thn</th>
+      <th class="num">DW</th><th class="num">Attr</th><th class="num">Disp</th><th class="num">Dampak/thn</th><th class="num">Durasi</th><th class="num">Drop-off</th><th class="num">Nilai kini</th></tr></thead>
+    <tbody>${rows}<tr class="tot"><td colspan="12">Total nilai kini manfaat bersih</td><td class="num">${fmtRp(res.totalPV)}</td></tr></tbody>
+  </table></div>`;
+}
+function yearTable(res){
+  if (!res.byYear.length) return '';
+  let cum = 0;
+  return `<div class="tw"><table>
+    <thead><tr><th>Tahun ke-</th><th class="num">Nilai (belum diskon)</th><th class="num">Faktor diskon</th><th class="num">Nilai kini</th><th class="num">Kumulatif nilai kini</th></tr></thead>
+    <tbody>${res.byYear.map(y=>{ cum+=y.pv; return `<tr><td>${y.t}</td><td class="num">${fmtRp(y.v)}</td><td class="num">${fmtNum(1/Math.pow(1+res.r,y.t),4)}</td><td class="num">${fmtRp(y.pv)}</td><td class="num">${fmtRp(cum)}</td></tr>`;}).join('')}
+    <tr class="tot"><td>Total</td><td class="num">${fmtRp(res.totalNom)}</td><td></td><td class="num">${fmtRp(res.totalPV)}</td><td></td></tr></tbody>
+  </table></div>`;
+}
+function shareBars(res){
+  const p = cur();
+  const by = {};
+  res.rows.forEach(r=>{ const k = r.o.stakeholderId||'_'; by[k] = (by[k]||0) + r.pv; });
+  const maxAbs = Math.max(1, ...res.rows.map(r=>Math.abs(r.pv)));
+  const bars = res.rows.map((r,i)=>`<div class="b"><div>${i+1}. ${esc(short(r.o.outcome||'Outcome',44))}</div>
+      <div class="track"><div class="fill${r.pv<0?' neg':''}" style="left:0;width:${(Math.abs(r.pv)/maxAbs*100).toFixed(1)}%"></div></div>
+      <div class="num">${fmtRpShort(r.pv)}</div></div>`).join('');
+  const st = Object.keys(by).map(k=>`<tr><td>${esc(k==='_'?'(belum dipilih)':(findS(k)||{}).nama||'–')}</td><td class="num">${fmtRp(by[k])}</td><td class="num">${res.totalPV?fmtPct(by[k]/res.totalPV):'–'}</td></tr>`).join('');
+  return `<div class="grid g2"><div><h3>Nilai kini per outcome</h3><div class="bars">${bars||'<p class="small muted">–</p>'}</div></div>
+    <div><h3>Per stakeholder</h3><div class="tw"><table><thead><tr><th>Stakeholder</th><th class="num">Nilai kini</th><th class="num">Porsi</th></tr></thead><tbody>${st}</tbody></table></div></div></div>`;
+}
+function formulaBox(p, res){
+  return `<div class="formula">
+    <b>Cara hitung</b> (mengikuti <i>A Guide to Social Return on Investment</i>, Cabinet Office UK 2012)
+    <ol style="margin:.4em 0 0 1.1em;padding:0">
+      <li>Nilai kotor/thn = <code>quantity × proxy</code></li>
+      <li>Dampak tahun pertama = <code>nilai kotor × (1 − deadweight) × (1 − attribution) × (1 − displacement)</code></li>
+      <li>Tahun berikutnya = <code>nilai tahun sebelumnya × (1 − drop-off)</code>, sampai habis durasi</li>
+      <li>Nilai kini = <code>nilai tahun ke-t ÷ (1 + discount rate)^t</code>, dengan t = 1 untuk tahun pertama. Discount rate: <b>${fmtNum(res.r*100,2).replace(/,?0+$/,'')}%</b></li>
+      <li>Rasio SROI = <code>total nilai kini manfaat bersih ÷ total input</code>. Outcome negatif mengurangi total. Input dihitung di tahun 0 tanpa diskon.</li>
+    </ol>
+    <div class="tiny muted" style="margin-top:6px">Penyesuaian dihitung dengan perkalian, bukan pengurangan bertahap. Kalau laporan SROI tim memakai cara lain, samakan dulu sebelum membandingkan rasio.</div>
+  </div>`;
+}
+function tHasil(){
+  const p = cur(), res = compute(p), W = analyze(p,res);
+  return `${kpis(res)}
+  <div class="card" style="margin-top:14px"><h2>Peringatan & kelengkapan</h2>${warnList(W,true)}</div>
+  <div class="card"><h2>Rincian per outcome</h2>${outcomeTable(p,res,false)}</div>
+  <div class="card">${shareBars(res)}</div>
+  <div class="card"><h2>Per tahun</h2>${yearTable(res)}</div>
+  <div class="card flat">${formulaBox(p,res)}</div>`;
+}
+
+/* ---- 6. Sensitivitas ---- */
+function sensTests(p){
+  const base = compute(p).sroi;
+  const S = p.sens; const g = k => Math.max(0, val(S[k],0));
+  const tests = [
+    ['Deadweight', `±${fmtNum(g('dwPP'))} poin %`, {dwAdd:-g('dwPP')}, {dwAdd:g('dwPP')}],
+    ['Attribution', `±${fmtNum(g('attrPP'))} poin %`, {attrAdd:-g('attrPP')}, {attrAdd:g('attrPP')}],
+    ['Displacement', `±${fmtNum(g('dispPP'))} poin %`, {dispAdd:-g('dispPP')}, {dispAdd:g('dispPP')}],
+    ['Drop-off', `±${fmtNum(g('dropPP'))} poin %`, {dropAdd:-g('dropPP')}, {dropAdd:g('dropPP')}],
+    ['Proxy keuangan', `±${fmtNum(g('proxyPct'))}%`, {proxyPct:-g('proxyPct')}, {proxyPct:g('proxyPct')}],
+    ['Quantity', `±${fmtNum(g('qtyPct'))}%`, {qtyPct:-g('qtyPct')}, {qtyPct:g('qtyPct')}],
+    ['Discount rate', `${fmtNum(g('drLow'),1).replace(/,0$/,'')}% s/d ${fmtNum(g('drHigh'),1).replace(/,0$/,'')}%`, {r:g('drLow')}, {r:g('drHigh')}]
+  ].map(([n,desc,a,b])=>{ const A = compute(p,a).sroi, B = compute(p,b).sroi; return {n,desc,lo:Math.min(A,B),hi:Math.max(A,B),A,B}; });
+  return {base, tests};
+}
+function breakEven(p){
+  const base = compute(p).sroi; if (base==null) return [];
+  const f = ov => compute(p, ov).sroi;
+  const out = [];
+  const add = (n, x, txt) => out.push({n, txt: x==null ? 'Tidak tercapai dalam rentang wajar' : txt(x)});
+  add('Semua deadweight ditambah', solveOne(x=>f({dwAdd:x}),-100,100), x=>`${x>=0?'+':''}${fmtNum(x,1)} poin %`);
+  add('Semua attribution ditambah', solveOne(x=>f({attrAdd:x}),-100,100), x=>`${x>=0?'+':''}${fmtNum(x,1)} poin %`);
+  add('Semua drop-off ditambah', solveOne(x=>f({dropAdd:x}),-100,100), x=>`${x>=0?'+':''}${fmtNum(x,1)} poin %`);
+  add('Semua proxy diubah', solveOne(x=>f({proxyPct:x}),-100,2000), x=>`${x>=0?'+':''}${fmtNum(x,1)}%`);
+  add('Discount rate menjadi', solveOne(x=>f({r:x}),0,500), x=>`${fmtNum(x,1)}% per tahun`);
+  return out;
+}
+function tornado(st){
+  const vals = st.tests.flatMap(t=>[t.lo,t.hi]).concat([st.base,1]).filter(v=>v!=null&&isFinite(v));
+  if (!vals.length) return '';
+  let mn = Math.min(...vals), mx = Math.max(...vals); if (mx-mn<1e-9){ mx+=0.5; mn-=0.5; }
+  const pad = (mx-mn)*0.06; mn-=pad; mx+=pad;
+  const X = v => ((v-mn)/(mx-mn)*100).toFixed(2);
+  const sorted = st.tests.slice().sort((a,b)=>(b.hi-b.lo)-(a.hi-a.lo));
+  return `<div class="bars tor">${sorted.map(t=>`<div class="b"><div>${t.n} <span class="tiny muted">${t.desc}</span></div>
+    <div class="track"><div class="rng" style="left:${X(t.lo)}%;width:${(X(t.hi)-X(t.lo)).toFixed(2)}%"></div><div class="base" style="left:${X(st.base)}%"></div>${mn<1&&mx>1?`<div class="one" style="left:${X(1)}%"></div>`:''}</div>
+    <div class="num">${fmtRatio(t.lo)} – ${fmtRatio(t.hi)}</div></div>`).join('')}</div>
+    <div class="tiny muted">Garis hitam = rasio dasar (${fmtRatio(st.base)}). ${mn<1&&mx>1?'Garis putus merah = titik impas 1 : 1.':''} Diurutkan dari yang paling berpengaruh.</div>`;
+}
+function sensOut(){
+  const p = cur(), st = sensTests(p), be = breakEven(p);
+  if (st.base==null) return `<div class="card empty">Rasio belum bisa dihitung. Isi input dan outcome dulu.</div>`;
+  const ex = p.outcomes.length>1 ? p.outcomes.map((o,i)=>{ const v = compute(p,{exclude:o.id}).sroi; return `<tr><td>${i+1}. ${esc(short(o.outcome||'Outcome',60))}</td><td class="num">${fmtRatio(v)}</td></tr>`; }).join('') : '';
+  const fragile = st.tests.filter(t=>t.lo<1);
+  return `<div class="card"><h2>Uji satu per satu</h2>
+      <p class="small muted">Setiap baris mengubah satu asumsi untuk <b>semua outcome</b>, yang lain tetap. ${fragile.length?`<b style="color:var(--err)">Rasio jatuh di bawah 1 pada: ${fragile.map(t=>t.n).join(', ')}.</b> Ini tanda hasilnya rapuh terhadap asumsi tersebut.`:'<b>Rasio tetap di atas 1 pada semua uji.</b>'}</p>
+      ${tornado(st)}
+      <div class="tw" style="margin-top:10px"><table><thead><tr><th>Asumsi</th><th>Perubahan</th><th class="num">SROI kalau asumsi diturunkan</th><th class="num">SROI kalau asumsi dinaikkan</th></tr></thead>
+      <tbody>${st.tests.map(t=>`<tr><td>${t.n}</td><td>${t.desc}</td><td class="num">${fmtRatio(t.A)}</td><td class="num">${fmtRatio(t.B)}</td></tr>`).join('')}</tbody></table></div>
+    </div>
+    <div class="card"><h2>Titik impas (SROI = 1 : 1)</h2>
+      <p class="small muted">Seberapa jauh asumsi harus berubah sampai nilai sosial sama dengan biaya. Makin jauh dari kondisi sekarang, makin kuat klaimnya.</p>
+      <div class="tw"><table><thead><tr><th>Asumsi</th><th>Agar SROI = 1</th></tr></thead><tbody>${be.map(b=>`<tr><td>${b.n}</td><td>${b.txt}</td></tr>`).join('')}</tbody></table></div>
+    </div>
+    ${ex?`<div class="card"><h2>Kalau satu outcome dikeluarkan</h2><p class="small muted">Berguna untuk melihat apakah rasio bergantung pada satu outcome saja.</p>
+      <div class="tw"><table><thead><tr><th>Outcome yang dikeluarkan</th><th class="num">SROI tanpa outcome ini</th></tr></thead><tbody>${ex}</tbody></table></div></div>`:''}`;
+}
+function scenOut(){
+  const p = cur(); const b = compute(p).sroi;
+  const ov = {dwAdd:scen.dwAdd, attrAdd:scen.attrAdd, dispAdd:scen.dispAdd, dropAdd:scen.dropAdd, proxyPct:scen.proxyPct, qtyPct:scen.qtyPct};
+  if (scen.r!=null) ov.r = scen.r;
+  const s = compute(p, ov).sroi;
+  return `Rasio dasar <b>1 : ${fmtRatio(b)}</b> → skenario <b style="font-size:1.15rem;color:${s!=null&&s<1?'var(--err)':'var(--accent-2)'}">1 : ${fmtRatio(s)}</b>`;
+}
+function tSens(){
+  const p = cur();
+  const sl = (k, lab, min, max, step, unit) => `<div class="scen"><div>${lab}</div><input type="range" min="${min}" max="${max}" step="${step}" value="${k==='r'?(scen.r==null?val(p.discountRate,0):scen.r):scen[k]}" data-scen="${k}"><div class="num" data-live="scenv:${k}">${scenLabel(k)}</div></div>`;
+  return `<div class="card noprint"><h2>Coba-coba skenario</h2>
+    <p class="small muted">Geser untuk melihat dampaknya langsung. Tidak mengubah data, hanya simulasi.</p>
+    ${sl('dwAdd','Deadweight semua outcome',-50,50,1)}
+    ${sl('attrAdd','Attribution semua outcome',-50,50,1)}
+    ${sl('dispAdd','Displacement semua outcome',-50,50,1)}
+    ${sl('dropAdd','Drop-off semua outcome',-50,50,1)}
+    ${sl('proxyPct','Semua proxy',-80,100,1)}
+    ${sl('qtyPct','Semua quantity',-80,100,1)}
+    ${sl('r','Discount rate',0,20,0.5)}
+    <div class="live" data-live="scenRes" style="font-size:1rem">${scenOut()}</div>
+    <div style="margin-top:8px"><button class="btn sm" data-act="scenReset">Reset skenario</button></div>
+  </div>
+  <div class="card noprint"><h3>Pengaturan uji standar</h3>
+    <div class="grid g4">
+      ${fld({label:'Deadweight ± (poin %)', path:'sens:dwPP', type:'num'})}
+      ${fld({label:'Attribution ± (poin %)', path:'sens:attrPP', type:'num'})}
+      ${fld({label:'Displacement ± (poin %)', path:'sens:dispPP', type:'num'})}
+      ${fld({label:'Drop-off ± (poin %)', path:'sens:dropPP', type:'num'})}
+      ${fld({label:'Proxy ± (%)', path:'sens:proxyPct', type:'num'})}
+      ${fld({label:'Quantity ± (%)', path:'sens:qtyPct', type:'num'})}
+      ${fld({label:'Discount rate rendah (%)', path:'sens:drLow', type:'num'})}
+      ${fld({label:'Discount rate tinggi (%)', path:'sens:drHigh', type:'num'})}
+    </div>
+  </div>
+  <div data-live="sensOut">${sensOut()}</div>`;
+}
+function scenLabel(k){
+  if (k==='r') return (scen.r==null ? fmtNum(val(cur().discountRate,0),1) : fmtNum(scen.r,1)) + '%';
+  const v = scen[k]; const sfx = (k==='proxyPct'||k==='qtyPct') ? '%' : ' poin';
+  return (v>0?'+':'') + v + sfx;
+}
+
+/* ---- 7. ToC ---- */
+const TOC_COLS = [['input','Input'],['kegiatan','Kegiatan'],['output','Output'],['outcome','Outcome'],['impact','Impact']];
+const lines = s => String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
+function tocDiagram(p){
+  const t = p.toc;
+  return `${t.masalah?`<div class="toc-ctx"><b>Masalah / konteks:</b> ${nl2br(t.masalah)}</div>`:''}
+    <div class="toc">${TOC_COLS.map(([k,l])=>`<div class="col"><h4>${l}</h4>${lines(t[k]).map(x=>`<div class="it">${esc(x)}</div>`).join('') || '<div class="it muted">–</div>'}</div>`).join('')}</div>
+    ${t.asumsi?`<div class="toc-ctx" style="margin-top:12px"><b>Asumsi & risiko:</b> ${nl2br(t.asumsi)}</div>`:''}`;
+}
+function tToc(){
+  const p = cur();
+  return `<div class="card"><h2>Theory of Change</h2>
+    <p class="small muted">Satu baris = satu kotak di diagram. Outcome di sini sebaiknya sama dengan yang dinilai di tab 4. Tombol di bawah mengambil isi dari tab Input dan Outcome.</p>
+    <div class="grid g3">
+      ${fld({label:'Masalah / konteks', path:'toc:masalah', type:'textarea', rows:3, cls:'span3'})}
+      ${TOC_COLS.map(([k,l])=>fld({label:l, path:'toc:'+k, type:'textarea', rows:5})).join('')}
+      ${fld({label:'Asumsi & risiko', path:'toc:asumsi', type:'textarea', rows:5})}
+    </div>
+    <div style="margin-top:10px" class="noprint"><button class="btn" data-act="tocFill">Ambil dari Input & Outcome</button></div>
+  </div>
+  <div class="card"><h2>Diagram</h2><div data-live="tocDiag">${tocDiagram(p)}</div></div>`;
+}
+
+/* ---- 8. Checklist ---- */
+function tChecklist(){
+  const p = cur();
+  return `<div class="card"><h2>Checklist prinsip SROI</h2>
+    <p class="small muted">Centang kalau prinsipnya sudah dipenuhi, lalu tulis buktinya. Ini yang biasanya dicek reviewer atau assurance.</p>
+    ${PRINCIPLES.map(([id,en,desc,hint],i)=>`<div class="pr">
+      <input type="checkbox" data-path="ck:${i}:done" ${p.checklist[i].done?'checked':''} aria-label="${esc(id)}">
+      <div><b>${i+1}. ${esc(id)}</b> <span class="tiny muted">(${esc(en)})</span>
+        <div class="small">${esc(desc)}</div><div class="tiny muted" style="margin-bottom:4px">Contoh bukti: ${esc(hint)}</div>
+        ${fld({label:null, path:`ck:${i}:bukti`, type:'textarea', ph:'Bukti / catatan'})}
+      </div></div>`).join('')}
+  </div>`;
+}
+
+/* ---- Ringkasan ---- */
+function tRingkasan(){
+  const p = cur(), res = compute(p), W = analyze(p,res), st = sensTests(p), be = breakEven(p);
+  const meta = [['Organisasi',p.organisasi],['Lokasi',p.lokasi],['Periode',p.periode],['Jenis',p.jenis==='prakiraan'?'Prakiraan (forecast)':'Evaluatif'],['Tahun dasar',p.tahunDasar],['Disusun oleh',p.penyusun]].filter(x=>!isBlank(x[1]));
+  const stk = p.stakeholders.map(s=>`<tr><td>${esc(s.nama)}</td><td>${esc(s.peran)}</td><td class="num">${esc(s.jumlah)}</td><td>${esc(s.libat)}</td><td>${s.material==='ya'?'Ya':'Tidak'}${s.alasanMaterial?` — ${esc(s.alasanMaterial)}`:''}</td></tr>`).join('');
+  const inp = p.inputs.map(i=>`<tr><td>${esc(i.uraian)}</td><td>${esc(i.stakeholderId?(findS(i.stakeholderId)||{}).nama:'Organisasi pelaksana')}</td><td>${esc({uang:'Uang',natura:'Barang/natura',waktu:'Waktu/tenaga'}[i.jenis]||i.jenis)}</td><td class="num">${fmtRp(Math.max(0,val(i.nilai,0)))}</td><td>${esc(i.sumber)}</td></tr>`).join('');
+  return `<div class="noprint card flat row" style="align-items:center"><div style="flex:1">Halaman ini disusun untuk dicetak atau disimpan sebagai PDF (pilih "Save as PDF" di jendela cetak).</div><button class="btn pri" data-act="print">🖨️ Cetak / PDF</button></div>
+  ${p.isContoh?`<div class="card" style="border:2px dashed #d9a441;color:var(--contoh)"><b>CONTOH — angka dummy, bukan data nyata.</b></div>`:''}
+  <div class="card"><h1 style="font-size:1.45rem">${esc(p.nama)}</h1>
+    <div class="small muted">Laporan ringkas SROI · dicetak ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
+    ${meta.length?`<div class="small" style="margin-top:8px">${meta.map(([k,v])=>`<b>${k}:</b> ${esc(v)}`).join(' · ')}</div>`:''}
+    ${p.lingkup?`<p class="small" style="margin-top:8px"><b>Lingkup:</b> ${nl2br(p.lingkup)}</p>`:''}
+  </div>
+  ${kpis(res)}
+  <div class="card" style="margin-top:14px"><h2>Rincian per outcome, alasan dan sumber</h2>${outcomeTable(p,res,true)}</div>
+  <div class="card"><h2>Per tahun</h2>${yearTable(res)}</div>
+  <div class="card"><h2>Analisis sensitivitas</h2>
+    ${st.base!=null ? `<div class="tw"><table><thead><tr><th>Asumsi</th><th>Perubahan</th><th class="num">SROI kalau asumsi diturunkan</th><th class="num">SROI kalau asumsi dinaikkan</th></tr></thead>
+      <tbody>${st.tests.map(t=>`<tr><td>${t.n}</td><td>${t.desc}</td><td class="num">${fmtRatio(t.A)}</td><td class="num">${fmtRatio(t.B)}</td></tr>`).join('')}</tbody></table></div>
+      <h3 style="margin-top:12px">Titik impas (SROI = 1 : 1)</h3>
+      <div class="tw"><table><tbody>${be.map(b=>`<tr><td>${b.n}</td><td>${b.txt}</td></tr>`).join('')}</tbody></table></div>` : '<p class="small muted">–</p>'}
+  </div>
+  <div class="card pbreak"><h2>Stakeholder</h2><div class="tw"><table><thead><tr><th>Stakeholder</th><th>Peran</th><th class="num">Jumlah</th><th>Cara dilibatkan</th><th>Dihitung?</th></tr></thead><tbody>${stk||'<tr><td colspan="5">–</td></tr>'}</tbody></table></div></div>
+  <div class="card"><h2>Input</h2><div class="tw"><table><thead><tr><th>Uraian</th><th>Dari</th><th>Jenis</th><th class="num">Nilai</th><th>Sumber</th></tr></thead><tbody>${inp||'<tr><td colspan="5">–</td></tr>'}<tr class="tot"><td colspan="3">Total</td><td class="num">${fmtRp(res.totalInput)}</td><td></td></tr></tbody></table></div></div>
+  <div class="card"><h2>Theory of Change</h2>${tocDiagram(p)}</div>
+  <div class="card"><h2>Cara hitung & asumsi</h2>${formulaBox(p,res)}${p.discountAlasan?`<p class="small" style="margin-top:8px"><b>Alasan discount rate:</b> ${esc(p.discountAlasan)}</p>`:''}</div>
+  <div class="card"><h2>Checklist prinsip SROI</h2><div class="tw"><table><tbody>${PRINCIPLES.map(([id],i)=>`<tr><td style="width:24px">${p.checklist[i].done?'✅':'⬜'}</td><td><b>${esc(id)}</b>${p.checklist[i].bukti?`<div class="small">${nl2br(p.checklist[i].bukti)}</div>`:''}</td></tr>`).join('')}</tbody></table></div></div>
+  <div class="card"><h2>Catatan kelengkapan</h2>${warnList(W,false)}</div>
+  ${p.catatan?`<div class="card"><h2>Catatan</h2><p class="small">${nl2br(p.catatan)}</p></div>`:''}
+  <div class="footer">Kalkulator SROI v${APP_VERSION} · rumus mengikuti A Guide to Social Return on Investment (Cabinet Office UK, 2012)</div>`;
+}
+
+/* ---- Panduan ---- */
+function tPanduan(){
+  return `<div class="card guide">
+  <h2>Cara pakai untuk tim</h2>
+  <ol>
+    <li>Buka file <b>sroi.html</b> dengan double-click (Chrome, Edge atau Safari). Tidak perlu internet.</li>
+    <li>Klik <b>+ Baru</b> untuk program baru, lalu isi tab 1 sampai 4 berurutan. Tab 5 dan 6 terisi otomatis.</li>
+    <li>Data tersimpan otomatis di browser komputer masing-masing. <b>Data tidak otomatis terlihat di laptop orang lain.</b></li>
+    <li>Untuk berbagi ke tim atau backup: <b>File ▾ → Simpan program ke file</b>. Kirim file .json itu lewat Drive, email atau WhatsApp. Penerima membukanya lewat <b>File ▾ → Buka file program</b>.</li>
+    <li>Untuk laporan: tab <b>Ringkasan</b> → Cetak → pilih "Save as PDF". Untuk olah di Excel: <b>File ▾ → Ekspor peta dampak (CSV)</b>.</li>
+  </ol>
+  <p class="small muted">Ketik angka bebas format: 3600000, 3.600.000 atau 3,6 juta ditulis 3.600.000. Desimal pakai koma (3,5) atau titik (3.5). Di bawah kolom rupiah muncul angka hasil bacaan aplikasi, jadi bisa dicek.</p>
+
+  <h3>Alur SROI (6 tahap panduan)</h3>
+  <ol>
+    <li><b>Tentukan lingkup dan stakeholder</b>: siapa yang terdampak, mana yang dihitung.</li>
+    <li><b>Petakan outcome</b>: input → output → outcome (impact map, Theory of Change).</li>
+    <li><b>Buktikan dan beri nilai outcome</b>: indikator, quantity, durasi, proxy keuangan.</li>
+    <li><b>Tetapkan dampak</b>: deadweight, attribution, displacement, drop-off.</li>
+    <li><b>Hitung SROI</b>: diskon ke nilai kini, bagi dengan input, uji sensitivitas.</li>
+    <li><b>Laporkan, pakai, dan tanamkan</b>: bagikan ke stakeholder, verifikasi, pakai untuk keputusan.</li>
+  </ol>
+
+  <h3>Arti tiap kolom</h3>
+  <dl>
+    <dt>Stakeholder</dt><dd>${esc(HELP.sNama)}</dd>
+    <dt>Input</dt><dd>${esc(HELP.iUraian)}</dd>
+    <dt>Output</dt><dd>${esc(HELP.output)}</dd>
+    <dt>Outcome</dt><dd>${esc(HELP.outcome)}</dd>
+    <dt>Indikator</dt><dd>${esc(HELP.indikator)}</dd>
+    <dt>Quantity</dt><dd>${esc(HELP.qty)}</dd>
+    <dt>Proxy keuangan</dt><dd>${esc(HELP.proxyNilai)} ${esc(HELP.proxySumber)}</dd>
+    <dt>Durasi</dt><dd>${esc(HELP.durasi)}</dd>
+    <dt>Deadweight</dt><dd>${esc(HELP.dw)}</dd>
+    <dt>Attribution</dt><dd>${esc(HELP.attr)}</dd>
+    <dt>Displacement</dt><dd>${esc(HELP.disp)}</dd>
+    <dt>Drop-off</dt><dd>${esc(HELP.drop)}</dd>
+    <dt>Discount rate</dt><dd>${esc(HELP.discountRate)}</dd>
+    <dt>Analisis sensitivitas</dt><dd>Angka filter dan proxy itu perkiraan, jadi hasilnya perlu diuji. Kalau rasio tetap di atas 1 dalam skenario pesimistis, klaimnya kuat. Kalau jatuh di bawah 1 pada perubahan kecil, hasilnya rapuh.</dd>
+  </dl>
+
+  <h3>Contoh hitung (program CONTOH bawaan)</h3>
+  <p class="small">40 ibu × Rp 3.600.000 = Rp 144 juta/thn. Setelah filter: 144 × 0,8 × 0,75 × 0,9 = Rp 77,76 juta. Tahun 2: 62,21 juta, tahun 3: 49,77 juta (drop-off 20%). Nilai kini dengan 3,5%: 75,13 + 58,07 + 44,89 = Rp 178,09 juta. SROI = 178,09 ÷ 100 = <b>1,78</b>.</p>
+
+  <h3>Hal yang sering terlewat</h3>
+  <ul>
+    <li>Outcome negatif juga dihitung (centang "Outcome negatif").</li>
+    <li>Rasio 1 : 3 dengan filter dan alasan lengkap lebih kredibel daripada 1 : 30 dengan filter lemah.</li>
+    <li>Pilihan cepat 0/25/50/75/100% hanya contoh praktik, bukan standar baku. Angka sebaiknya dari kuesioner, pembanding atau data.</li>
+    <li>Rasio SROI antar program hanya bisa dibandingkan kalau metode, proxy dan discount rate-nya sama.</li>
+  </ul>
+
+  <h3>Keterbatasan aplikasi</h3>
+  <ul>
+    <li>Input dianggap dikeluarkan di tahun 0. Kalau investasi tersebar beberapa tahun, hitung nilai kininya dulu sebelum diisi.</li>
+    <li>Satu proxy berlaku sama setiap tahun (tidak ada inflasi proxy).</li>
+    <li>Aplikasi tidak mengisi proxy atau angka apa pun. Semua angka dari pengguna.</li>
+    <li>Data di browser bisa hilang kalau riwayat/cache browser dihapus. Rutin simpan ke file.</li>
+  </ul>
+  <p class="tiny muted">Rujukan: Cabinet Office (2012), <i>A Guide to Social Return on Investment</i>; Social Value International, <i>Principles of Social Value</i>.</p>
+  </div>
+  <div class="footer">Kalkulator SROI v${APP_VERSION}</div>`;
+}
+
+const RENDER = {program:tProgram, stakeholder:tStakeholder, input:tInput, outcome:tOutcome, hasil:tHasil, sens:tSens, toc:tToc, checklist:tChecklist, ringkasan:tRingkasan, panduan:tPanduan};
+
+function render(){
+  renderProgSelect(); renderBanner();
+  $('#main').innerHTML = RENDER[tab]();
+  renderBadge();
+}
+
+/* ---- Live updates without re-render (keeps focus) ---- */
+function updateLive(changedPath){
+  const p = cur();
+  const {res, W} = renderBadge();
+  if (changedPath && changedPath==='p:nama') renderProgSelect();
+  if (tab==='outcome'){
+    p.outcomes.forEach((o,i)=>{
+      const a = document.querySelector(`[data-live="oc:${o.id}"]`); if (a) a.innerHTML = ocLive(o,res);
+      const b = document.querySelector(`[data-live="octitle:${o.id}"]`); if (b) b.innerHTML = ocTitle(o,i);
+      const c = document.querySelector(`[data-live="ocw:${o.id}"]`); if (c) c.innerHTML = ocWarn(o,W);
+      const card = document.querySelector(`[data-oc="${o.id}"]`);
+      if (card){ card.classList.toggle('negatif', !!o.negatif); card.querySelector('.live').classList.toggle('negatif', !!o.negatif); }
+      FILTERS.forEach(F=>{ const cv = val(o[F.k], null);
+        document.querySelectorAll(`[data-act="setv"][data-path="o:${o.id}:${F.k}"]`).forEach(btn=>btn.classList.toggle('on', +btn.dataset.v===cv)); });
+    });
+  }
+  if (tab==='input'){ const t = document.querySelector('[data-live="totalInput"]'); if (t) t.textContent = fmtRp(res.totalInput); }
+  if (tab==='sens'){ const s = document.querySelector('[data-live="sensOut"]'); if (s) s.innerHTML = sensOut(); const r = document.querySelector('[data-live="scenRes"]'); if (r) r.innerHTML = scenOut(); }
+  if (tab==='toc'){ const d = document.querySelector('[data-live="tocDiag"]'); if (d) d.innerHTML = tocDiagram(p); }
+}
+function validateField(el){
+  const path = el.dataset.path, f = fieldOf(path), box = el.closest('.f');
+  if (!box || !NUM[f]) return;
+  const c = checkNum(f, el.value);
+  box.classList.toggle('bad', !!c.err);
+  const m = box.querySelector('.msg'), h = box.querySelector('.hint');
+  if (m) m.textContent = c.err || '';
+  if (h) h.textContent = (!c.err && c.value!=null && NUM[f].money) ? '= ' + fmtRp(c.value) : '';
+}
+
+/* ================= Events ================= */
+function onField(el){
+  const path = el.dataset.path;
+  const v = el.type==='checkbox' ? el.checked : el.value;
+  setPath(path, v);
+  validateField(el);
+  save();
+  updateLive(path);
+  if (el.type==='checkbox' && path.startsWith('ck:')) {/* nothing */}
+}
+document.addEventListener('input', e=>{
+  const el = e.target;
+  if (el.dataset.path && el.type!=='checkbox' && el.tagName!=='SELECT') onField(el);
+  if (el.dataset.scen){
+    const k = el.dataset.scen; const v = parseFloat(el.value);
+    if (k==='r') scen.r = v; else scen[k] = v;
+    const lab = document.querySelector(`[data-live="scenv:${k}"]`); if (lab) lab.textContent = scenLabel(k);
+    const r = document.querySelector('[data-live="scenRes"]'); if (r) r.innerHTML = scenOut();
+  }
+});
+document.addEventListener('change', e=>{
+  const el = e.target;
+  if (el.dataset.path && (el.type==='checkbox' || el.tagName==='SELECT')) onField(el);
+  if (el.id==='progSelect'){ db.activeId = el.value; resetScen(); save(true); render(); window.scrollTo(0,0); }
+});
+document.addEventListener('click', e=>{
+  const t = e.target.closest('[data-tab],[data-act]');
+  if (!t) { const m = $('#fileMenu'); if (m && m.open && !e.target.closest('#fileMenu')) m.open = false; return; }
+  if (t.dataset.tab && !t.dataset.act){
+    tab = t.dataset.tab; render(); window.scrollTo(0,0);
+    if (t.dataset.focus){ const card = document.querySelector(`[data-oc="${t.dataset.focus}"]`); if (card){ card.scrollIntoView({behavior:'smooth',block:'start'}); card.style.outline='3px solid #f0c36d'; setTimeout(()=>card.style.outline='',1800); } }
+    return;
+  }
+  const act = t.dataset.act, p = cur();
+  const m = $('#fileMenu'); if (m && t.closest('#fileMenu .pop')) m.open = false;
+  switch(act){
+    case 'help': { const f = t.closest('.f'); if (f) f.classList.toggle('showhelp'); break; }
+    case 'helpInline': { const s = document.querySelector(`.help-inline[data-k="${t.dataset.k}"]`); if (s) s.hidden = !s.hidden; break; }
+    case 'setv': {
+      setPath(t.dataset.path, t.dataset.v);
+      const inp = document.querySelector(`[data-path="${t.dataset.path}"]`);
+      if (inp){ inp.value = t.dataset.v; validateField(inp); }
+      save(); updateLive(t.dataset.path); break;
+    }
+    case 'addS': p.stakeholders.push({id:uid(),nama:'',peran:'',jumlah:'',libat:'',material:'ya',alasanMaterial:''}); save(); render(); focusLast('s:'); break;
+    case 'delS': {
+      const s = findS(t.dataset.id); const used = p.outcomes.filter(o=>o.stakeholderId===t.dataset.id).length;
+      if (!confirm(`Hapus stakeholder "${s&&s.nama||'(tanpa nama)'}"?${used?`\n${used} outcome memakai stakeholder ini dan akan jadi "belum dipilih".`:''}`)) break;
+      p.stakeholders = p.stakeholders.filter(x=>x.id!==t.dataset.id);
+      p.outcomes.forEach(o=>{ if (o.stakeholderId===t.dataset.id) o.stakeholderId=''; });
+      p.inputs.forEach(i=>{ if (i.stakeholderId===t.dataset.id) i.stakeholderId=''; });
+      save(); render(); break;
+    }
+    case 'addI': p.inputs.push({id:uid(),uraian:'',stakeholderId:'',jenis:'uang',nilai:'',sumber:''}); save(); render(); focusLast('i:'); break;
+    case 'delI': if (confirm('Hapus baris input ini?')){ p.inputs = p.inputs.filter(x=>x.id!==t.dataset.id); save(); render(); } break;
+    case 'addO': { const o = blankOutcome(p.stakeholders.length===1?p.stakeholders[0].id:''); p.outcomes.push(o); save(); render();
+      const c = document.querySelector(`[data-oc="${o.id}"]`); if (c){ c.scrollIntoView({behavior:'smooth',block:'start'}); const f = c.querySelector('select,input'); if (f) setTimeout(()=>f.focus(),300); } break; }
+    case 'delO': { const o = p.outcomes.find(x=>x.id===t.dataset.id); if (confirm(`Hapus outcome "${o&&o.outcome||'(belum dinamai)'}"?`)){ p.outcomes = p.outcomes.filter(x=>x.id!==t.dataset.id); save(); render(); } break; }
+    case 'dupO': { const i = p.outcomes.findIndex(x=>x.id===t.dataset.id); const c = JSON.parse(JSON.stringify(p.outcomes[i])); c.id = uid(); c.outcome = (c.outcome||'') + ' (salinan)'; p.outcomes.splice(i+1,0,c); save(); render(); break; }
+    case 'mvO': { const i = p.outcomes.findIndex(x=>x.id===t.dataset.id), j = i + (+t.dataset.d); if (j<0||j>=p.outcomes.length) break; [p.outcomes[i],p.outcomes[j]] = [p.outcomes[j],p.outcomes[i]]; save(); render(); break; }
+    case 'togO': { const o = p.outcomes.find(x=>x.id===t.dataset.id); o.collapsed = !o.collapsed; save(); render(); break; }
+    case 'collapseAll': p.outcomes.forEach(o=>o.collapsed = t.dataset.v==='1'); save(); render(); break;
+    case 'scenReset': resetScen(); render(); break;
+    case 'tocFill': {
+      const merge = (k, items) => { const ex = lines(p.toc[k]); items.forEach(x=>{ x = String(x||'').trim(); if (x && !ex.includes(x)) ex.push(x); }); p.toc[k] = ex.join('\n'); };
+      merge('input', p.inputs.map(i=>i.uraian + (val(i.nilai,0)?` (${fmtRpShort(val(i.nilai,0))})`:'')));
+      merge('output', p.outcomes.map(o=>o.output));
+      merge('outcome', p.outcomes.map(o=>o.outcome + (o.negatif?' (negatif)':'')));
+      save(); render(); toast('Diambil dari Input & Outcome'); break;
+    }
+    case 'newProg': { const n = prompt('Nama program baru:', 'Program baru'); if (n===null) break; const np = blankProgram(n.trim()||'Program baru'); db.programs[np.id] = np; db.activeId = np.id; tab='program'; resetScen(); save(true); render(); break; }
+    case 'dupProg': { const c = migrate(JSON.parse(JSON.stringify(p))); c.id = uid(); c.nama = p.nama + ' (salinan)'; c.created = c.updated = new Date().toISOString(); db.programs[c.id] = c; db.activeId = c.id; save(true); render(); toast('Program diduplikat'); break; }
+    case 'loadSample': { const s = sampleProgram(); db.programs[s.id] = s; db.activeId = s.id; tab='program'; resetScen(); save(true); render(); break; }
+    case 'delProg': {
+      if (!confirm(`Hapus program "${p.nama}" dari browser ini?\nSaran: simpan ke file dulu kalau masih perlu.`)) break;
+      delete db.programs[p.id];
+      if (!Object.keys(db.programs).length){ const np = blankProgram('Program baru'); db.programs[np.id] = np; }
+      db.activeId = Object.keys(db.programs).sort((a,b)=>(db.programs[b].updated||'').localeCompare(db.programs[a].updated||''))[0];
+      tab = 'program'; save(true); render(); break;
+    }
+    case 'saveFile': download(fileName(p.nama,'json'), JSON.stringify({app:'sroi-kalkulator', appVersion:APP_VERSION, schema:SCHEMA, exported:new Date().toISOString(), program:p}, null, 2), 'application/json'); dirty=false; break;
+    case 'backupAll': download(`SROI_backup_semua_${today()}.json`, JSON.stringify({app:'sroi-kalkulator', appVersion:APP_VERSION, schema:SCHEMA, exported:new Date().toISOString(), programs:Object.values(db.programs)}, null, 2), 'application/json'); dirty=false; break;
+    case 'openFile': $('#fileIn').value=''; $('#fileIn').click(); break;
+    case 'exportCSV': exportCSV(); break;
+    case 'print': tab='ringkasan'; render(); setTimeout(()=>window.print(), 120); break;
+  }
+});
+function focusLast(prefix){ const els = $$(`[data-path^="${prefix}"]`); if (els.length){ const row = els[els.length-1].closest('tr'); const f = row && row.querySelector('input,textarea'); if (f) f.focus(); } }
+function resetScen(){ scen = {dwAdd:0, attrAdd:0, dispAdd:0, dropAdd:0, proxyPct:0, qtyPct:0, r:null}; }
+
+/* ================= Files ================= */
+function fileName(name, ext){ return `SROI_${String(name||'program').replace(/[^\w\- ]+/g,'').trim().replace(/\s+/g,'_').slice(0,60)||'program'}_${today()}.${ext}`; }
+function download(name, text, mime){
+  const blob = new Blob([text], {type: mime + ';charset=utf-8'});
+  const a = document.createElement('a'); a.href = URL.createObjectURL(blob); a.download = name;
+  document.body.appendChild(a); a.click(); setTimeout(()=>{ URL.revokeObjectURL(a.href); a.remove(); }, 500);
+  toast('File diunduh: ' + name);
+}
+$('#fileIn').addEventListener('change', e=>{
+  const f = e.target.files[0]; if (!f) return;
+  const rd = new FileReader();
+  rd.onload = () => {
+    let d; try{ d = JSON.parse(rd.result); }catch(err){ alert('File tidak bisa dibaca. Pastikan ini file .json dari Kalkulator SROI.'); return; }
+    const list = d.programs ? d.programs : (d.program ? [d.program] : (d.outcomes ? [d] : null));
+    if (!list || !list.length){ alert('File ini bukan file program Kalkulator SROI.'); return; }
+    if (d.schema && d.schema > SCHEMA){ alert('File ini dibuat versi aplikasi yang lebih baru. Minta versi terbaru sroi.html.'); return; }
+    let lastId = null, n = 0;
+    for (const raw of list){
+      const p = migrate(raw);
+      if (db.programs[p.id]){
+        const keep = confirm(`Program "${p.nama}" sudah ada di browser ini.\n\nOK = timpa dengan isi file\nBatal = simpan sebagai salinan`);
+        if (!keep){ p.id = uid(); p.nama = p.nama + ' (dari file)'; }
+      }
+      db.programs[p.id] = p; lastId = p.id; n++;
+    }
+    db.activeId = lastId; tab = 'hasil'; resetScen(); save(true); render();
+    toast(n>1 ? `${n} program dibuka` : 'Program dibuka');
+  };
+  rd.readAsText(f);
+});
+function exportCSV(){
+  const p = cur(), res = compute(p);
+  const num = (v,d=2) => { const x = Math.round(v*Math.pow(10,d))/Math.pow(10,d); return String(x).replace('.',','); };
+  const q = s => { s = String(s??''); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; };
+  const head = ['No','Stakeholder','Output','Outcome','Negatif','Indikator','Sumber data','Quantity','Satuan','Proxy per tahun (Rp)','Uraian proxy','Sumber proxy','Nilai kotor per tahun (Rp)','Deadweight %','Alasan deadweight','Attribution %','Alasan attribution','Displacement %','Alasan displacement','Dampak per tahun (Rp)','Durasi (tahun)','Mulai tahun ke','Alasan durasi','Drop-off %','Alasan drop-off','Nilai kini (Rp)'];
+  const rows = [head];
+  res.rows.forEach((r,i)=>{ const o = r.o, s = findS(o.stakeholderId);
+    rows.push([i+1, s?s.nama:'', o.output, o.outcome, o.negatif?'Ya':'Tidak', o.indikator, o.sumberData, num(r.q), o.satuan, num(r.px,0), o.proxyUraian, o.proxySumber, num(r.gross,0), num(r.dw*100), o.dwAlasan, num(r.at*100), o.attrAlasan, num(r.di*100), o.dispAlasan, num(r.impact,0), r.d, r.m, o.durasiAlasan, num(r.dr*100), o.dropAlasan, num(r.pv,0)]);
+  });
+  rows.push([]);
+  rows.push(['Total input (Rp)', num(res.totalInput,0)]);
+  rows.push(['Total nilai kini manfaat bersih (Rp)', num(res.totalPV,0)]);
+  rows.push(['Discount rate %', num(res.r*100)]);
+  rows.push(['Rasio SROI', res.sroi==null?'':num(res.sroi,4)]);
+  if (p.isContoh) rows.push(['CONTOH - angka dummy']);
+  const text = '﻿' + 'sep=;\r\n' + rows.map(r=>r.map(q).join(';')).join('\r\n');
+  download(fileName(p.nama,'csv'), text, 'text/csv');
+}
+
+/* other tab / window edits */
+window.addEventListener('storage', e=>{
+  if (e.key!==LS_KEY || !e.newValue) return;
+  try{ const d = JSON.parse(e.newValue); if (d && d.programs){ const keepActive = db.activeId; Object.keys(d.programs).forEach(k=>d.programs[k]=migrate(d.programs[k])); db = d; if (db.programs[keepActive]) db.activeId = keepActive; render(); toast('Diperbarui dari jendela lain'); } }catch(_){}
+});
+function flushSave(){ if (saveTimer){ clearTimeout(saveTimer); saveTimer = null; try{ localStorage.setItem(LS_KEY, JSON.stringify(db)); }catch(_){} } }
+window.addEventListener('pagehide', flushSave);
+window.addEventListener('beforeunload', flushSave);
+document.addEventListener('visibilitychange', ()=>{ if (document.visibilityState==='hidden') flushSave(); });
+window.addEventListener('beforeprint',()=>{ if (tab!=='ringkasan'){ tab='ringkasan'; render(); } });
+
+/* ================= Boot ================= */
+loadDB();
+try{ localStorage.setItem(LS_KEY+'-test','1'); localStorage.removeItem(LS_KEY+'-test'); }catch(e){ storageOK = false; }
+render();
+if (storageOK) save(true);
+window.__sroi = {compute, parseNum, checkNum, analyze, breakEven, sensTests, get db(){return db;}, cur};
+})();
+</script>
+</body>
+</html>
