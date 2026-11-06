@@ -1,10 +1,10 @@
-# Catatan fact check — Pulang ke Banyuwangi v7
+# Catatan fact check — Pulang ke Banyuwangi v8
 
 Diperiksa 6 November 2026. Berlaku untuk konten aktif `games/penyu/js/data.js`, kartu tahap, kuis, dan layar hasil. `PLAN.md` adalah dokumen rancangan lama; gunakan catatan ini untuk keputusan fakta terbaru. Angka program selalu diberi periode publikasinya.
 
-## Koreksi dari lampiran v6
+## Koreksi dari lampiran v6 (dasar v7)
 
-| Topik | Keputusan v7 | Rujukan |
+| Topik | Keputusan v7/v8 | Rujukan |
 | --- | --- | --- |
 | Status penyu hijau | Ubah EN menjadi **LC / Least Concern secara global** setelah pembaruan 2025. Ini tidak berarti semua populasi aman atau perlindungan Indonesia dicabut. | [IUCN, pengumuman 10 Oktober 2025](https://iucn.org/press-release/202510/arctic-seals-threatened-climate-change-birds-decline-globally-iucn-red-list), [MTSG](https://www.iucn-mtsg.org/statuses) |
 | Status spesies lain | Lekang VU, sisik CR, belimbing VU secara global. Belimbing Pasifik Barat CR. Label kartu menyebut **global**. | [IUCN MTSG](https://www.iucn-mtsg.org/statuses) |
@@ -13,7 +13,7 @@ Diperiksa 6 November 2026. Berlaku untuk konten aktif `games/penyu/js/data.js`, 
 | Persentase metode penetasan | Hapus 85–90%, 50–96%, dan 36–81% sebagai perbandingan umum. Data dari lokasi dan kondisi berbeda tidak membuktikan satu metode selalu lebih baik. Nyawa dan pengali dinyatakan sebagai aturan permainan. | [BCA, fasilitas konservasi 2025](https://www.bca.co.id/id/tentang-bca/media-riset/pressroom/siaran-pers/2025/08/04/07/46/dukung-pelestarian-penyu-bca-resmikan-fasilitas-konservasi-di-pantai-goa-cemara) melaporkan hasil program, bukan percobaan perbandingan universal. |
 | Suhu Intan Box dan rasio kelamin | Hapus jaminan bahwa 27,4–29,5°C menghasilkan rasio seimbang untuk semua penyu. Hubungan suhu dan kelamin bergantung pada spesies/populasi serta kondisi inkubasi. | [NOAA — penyu hijau](https://www.fisheries.noaa.gov/species/green-turtle) |
 | Diet penyu hijau | Fase muda dapat omnivor; tahap pesisir/dewasa di game menekankan lamun dan alga. Nama hijau merujuk warna lemak, bukan warna cangkang. | [NOAA — penyu hijau](https://www.fisheries.noaa.gov/species/green-turtle) |
-| Diet sisik | Spons menjadi makanan normal di pesisir dan saat migrasi; tidak dibatasi satu spons langka. | [NOAA — penyu sisik](https://www.fisheries.noaa.gov/species/hawksbill-turtle) |
+| Diet sisik | Spons menjadi makanan normal di pesisir. Pada migrasi laut lepas v8, ubur-ubur dan salpa dipilih sebagai mangsa pelengkap yang sesuai. | [NOAA — penyu sisik](https://www.fisheries.noaa.gov/species/hawksbill-turtle) |
 | Diet belimbing | Ubur-ubur sejak tahap laut pertama. Tidak diberi telur ikan, plankton hijau, atau makanan bercangkang keras. Habitat tahap muda tetap laut lepas. | [NOAA — belimbing](https://www.fisheries.noaa.gov/species/leatherback-turtle) |
 | Diet lekang | Omnivora, termasuk invertebrata; udang, kepiting dan ubur-ubur dipilih sebagai subset untuk game. | [NOAA — lekang](https://www.fisheries.noaa.gov/species/olive-ridley-turtle), [USFWS — lekang](https://www.fws.gov/species/olive-ridley-sea-turtle-lepidochelys-olivacea) |
 | Plankton penyembuh | Hapus bonus kesehatan ajaib. Zooplankton adalah ilustrasi makanan hewani kecil yang diperbesar, bukan mikroalga obat atau diet universal semua tukik. Efek energi dari makanan biasa adalah mekanik arcade. | Diet dibedakan berdasarkan profil NOAA di atas. |
@@ -43,14 +43,23 @@ Ukuran kartu adalah rentang pendekatan dewasa, bukan nilai maksimum atau ukuran 
 
 Rentang 5–12 cm dan 20–45 cm, ambang bahaya ikan 15 cm, perubahan tahap, percepatan tumbuh, napas, energi, kombo, jumlah telur hasil, dan peluang lolos adalah **parameter game**, bukan kurva pertumbuhan, batas biologis predasi, masa dewasa, atau model reproduksi. Makanan kecil termasuk telur ikan dan zooplankton, sampah kecil, serta penanda interaksi diperbesar untuk keterbacaan. Tidak ada data survei yang digunakan untuk memperkirakan kepadatan satwa/plastik di Banyuwangi.
 
-## Kepadatan dan ruang gerak
+## Tambahan v8: makanan, ancaman dan cahaya
 
-- Awal laut: hanya 2–3 upaya penempatan sampah, dengan jarak aman dari pemain dan makanan.
-- Batas sampah: 5 / 6 / 7 pada tiga fase laut. Maksimal dua predator termasuk yang masih dalam peringatan, satu jaring dan satu kapal.
-- Jumlah rintangan laut dibatasi 6 / 8 / 9. Burung memiliki batas terpisah satu ekor pada fase tukik.
-- Anggaran luas rintangan di air: sekitar 14% bidang main; jaring tidak menutup seluruh kedalaman. Ini aturan ruang gerak, bukan pengukuran ekologi.
-- Hiu memberi peringatan 2,2 detik, pengejaran terbatas, lalu lewat. Sampah dan predator mempunyai masa tampil terbatas.
-- Migrasi menambah satu sampah per gelombang, dengan selang jaring dan kapal lebih panjang.
+- Lekang mendapat kerang dan siput sebagai contoh moluska, serta salpa sebagai tunikata; sisik mendapat tunikata dan moluska sebagai pelengkap spons. Sumber: [NOAA lekang](https://www.fisheries.noaa.gov/species/olive-ridley-turtle) dan [NOAA sisik](https://www.fisheries.noaa.gov/species/hawksbill-turtle). Belimbing mendapat salpa selain ubur-ubur, sesuai [NOAA belimbing](https://www.fisheries.noaa.gov/species/leatherback-turtle). Varian lamun dan alga merah memperkaya bentuk makanan hijau tanpa mengubah diet dewasa yang terutama nabati. Ini contoh kelompok makanan, bukan rekomendasi memberi makan penyu liar.
+- [NOAA](https://www.fisheries.noaa.gov/feature-story/what-can-you-do-help-sea-turtles) menjelaskan kemiripan kantong plastik dengan makanan. Plastik lapuk diilustrasikan robek dan terfragmentasi, mengikuti [NOAA Marine Debris](https://marinedebris.noaa.gov/what-marine-debris/microplastics). Fragmentasi tidak disamakan dengan biodegradasi tuntas atau hilangnya bahaya. Fragmen di game adalah ilustrasi makro; gambar tersebut bukan skala mikroplastik.
+- Barakuda ditambahkan sebagai predator potensial tukik, disebut dalam [Handbook on Sea Turtles of India, Zoological Survey of India](https://faunaofindia.nic.in/PDFVolumes/hpg/014/index.pdf). Panjang 35–60 cm di game adalah individu ilustratif, bukan ukuran maksimum barakuda atau bukti kelimpahannya di Banyuwangi. Ambang mangsa tetap penyederhanaan game.
+- Karakter **Pemburu ilegal** merujuk ancaman perburuan di air. [Polri, 23 September 2026](https://inp.polri.go.id/artikel/immigration-office-handed-over-the-chinese-turtle-poacher-to-the-southwest-papua-regional-police) melaporkan dugaan kasus penyu Raja Ampat beserta peralatan selam dan alat berburu. Kasus tersebut dilaporkan sebagai dugaan; game tidak mengidentifikasi pelaku atau menyatakan semua penyelam berbahaya. Alat tangkap pada ilustrasi disederhanakan dan tidak merekonstruksi kasus tersebut. Tidak ada klaim frekuensi kejadian di Banyuwangi.
+- Semua orang bersenter yang sebelumnya mengganggu di tahap bertelur dihapus. Sumber cahaya baru adalah jendela kafe dan bangunan kota yang mengarah ke pasir. [FWC](https://myfwc.com/wildlifehabitats/wildlife/sea-turtle/lighting/disorientations/) menjelaskan gangguan cahaya pada betina dan tukik; [Sea Turtle Conservancy](https://conserveturtles.org/program-activity/finding-wildlife-lighting/) juga menyebut cahaya bangunan dan skyglow. Ini ilustrasi risiko penerangan pesisir, bukan tuduhan kepada lokasi usaha tertentu atau patroli Bakti BCA.
+- Menahan klik/sentuhan/Spasi mewakili upaya mengayuh sirip dan mengais pasir. Jarak Intan Box/semi alami serta kecepatan layar bukan ukuran lapangan atau prosedur konservasi. Tahap peneluran tetap menampilkan relawan pendamping yang tidak menyebabkan gangguan.
+
+## Kepadatan, skor dan ruang gerak v8
+
+- Awal laut: target 10 / 13 / 16 sampah. Penempatan awal menjaga jarak dari pemain dan makanan, dengan percobaan terbatas.
+- Batas sampah 16 / 20 / 24. Botol, kantong, plastik robek dan fragmen mendapat bobot dominan. Selang penambahan sekitar 1–1,35 detik.
+- Maksimal tiga predator termasuk yang diperingatkan, satu pemburu ilegal pada tahap 2–3, satu jaring dan satu kapal. Pemburu diperingatkan 2,4 detik sebelum masuk.
+- Batas total rintangan laut 22 / 27 / 31, dengan burung maksimal satu pada tahap tukik. Anggaran luas rintangan sekitar 22% bidang air, termasuk ancaman yang menunggu masuk; jaring tidak menutup seluruh kedalaman. Anggaran ini pendekatan desain, bukan kepadatan ekologis hasil survei.
+- Migrasi menghadirkan 2–3 potongan sampah per gelombang, maksimal 18 sampah aktif. Jaring dan kapal tetap mempunyai selang masuk terpisah.
+- Makanan **+5** dan sampah **−4** pada semua tingkat, saat kombo/frenzy, di laut dan migrasi. Pengali tingkat hanya memengaruhi bonus perjalanan; kuis tetap dihitung terpisah. Health botol −28, kantong/plastik robek −32, makanan +0,45, dan kehabisan napas −22 per detik merupakan parameter arcade, bukan ukuran toksisitas biologis.
 
 ## Batas verifikasi
 

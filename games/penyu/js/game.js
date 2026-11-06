@@ -14,12 +14,14 @@
   const CFG = {
     goal: [0, 34, 54, 90],
     speed: [0, 280, 295, 305],
-    breathDrain: [0, 3.1, 2.7, 2.3],
+    breathDrain: [0, 3.6, 3.2, 2.8],
     migrateDur: 45,
     quick: 0.6,
     nestMash: 14,
     netMash: [0, 6, 7, 9],
-    netTime: 5
+    netTime: 5,
+    foodScore: 5, trashPenalty: 4,
+    trashDamage: { kantong: 32, robek: 32, serpih: 26, botol: 28, sedotan: 22, tutup: 20, kaleng: 24, tali: 26 }
   };
 
   const G = {
@@ -193,7 +195,7 @@
       if (e.pointerType === 'mouse') G.input.usingKeys = false;
       G.lastInput = Date.now();
     });
-    const up = (e) => { if (e.pointerType !== 'mouse') G.input.active = false; };
+    const up = () => { G.input.active = false; };
     c.addEventListener('pointerup', up);
     c.addEventListener('pointercancel', up);
     c.addEventListener('pointerleave', (e) => { if (e.pointerType === 'mouse') G.input.inside = false; });
@@ -209,8 +211,20 @@
       }
     });
     window.addEventListener('keyup', (e) => { G.input.keys[e.code] = false; });
+    window.addEventListener('blur', () => { G.input.keys = {}; G.input.active = false; });
   }
 
+  function sandHeld() { return G.bot || G.input.active || !!G.input.keys.Space; }
+  function crawlSand(p,dt,speed,target) {
+    if (!sandHeld()) { p.vx=p.vy=0; return; }
+    const noDirection = !G.input.inside && !keyDir().x && !keyDir().y;
+    steer(p,dt,speed,9,G.bot ? target : noDirection ? target : null);
+  }
+  function sandHint(ctx) {
+    ctx.save(); rr(ctx,18,H-43,760,29,12);ctx.fillStyle='rgba(4,29,39,.85)';ctx.fill();
+    ctx.font='600 14px system-ui';ctx.fillStyle='#f4dfb6';ctx.textAlign='left';
+    ctx.fillText('Tahan klik / sentuhan atau SPASI untuk mengais pasir · Mouse / WASD: arah',32,H-23);ctx.restore();
+  }
   function takeMash() { const m = G.input.mash; G.input.mash = 0; return m; }
 
   function keyDir() {
@@ -319,12 +333,18 @@
 
   /* ---------------- Skor & alur ---------------- */
   G.rawTotal = function () {
-    const r = G.run.raw;
-    return r.makan + r.tahap + r.jarak + r.telur + r.bebas;
+    const r=G.run.raw; return r.makan+r.sampah+r.tahap+r.jarak+r.telur+r.bebas;
   };
-  G.score = function () {
-    if (!G.run) return 0;
-    return Math.round(G.rawTotal() * G.run.ht.pengali);
+  G.scoreRun = function(run,withQuiz=false) {
+    const r=run.raw;
+    const bonus=Math.round((r.tahap+r.jarak+r.telur+r.bebas)*run.ht.pengali);
+    return bonus+r.makan+r.sampah+(withQuiz?(run.quiz||0)*D.kuisBonus:0);
+  };
+  G.score = function() { return G.run ? G.scoreRun(G.run) : 0; };
+  G.recordFood = function(run) { run.raw.makan+=CFG.foodScore;run.eaten++;return CFG.foodScore; };
+  G.recordTrash = function(run,type) {
+    run.raw.sampah-=CFG.trashPenalty; run.health-=CFG.trashDamage[type]||26;
+    run.plasticFree=false;run.plastic++;
   };
 
   G.newRun = function (spId, htId) {
@@ -332,8 +352,8 @@
     const ht = D.penetasan.find((h) => h.id === htId) || D.penetasan[0];
     G.run = {
       sp: sp, ht: ht, lives: ht.nyawa, maxLives: ht.nyawa,
-      raw: { makan: 0, tahap: 0, jarak: 0, telur: 0, bebas: 0 },
-      health: 100, breath: 100, plasticFree: true, plastic: 0,
+      raw: { makan: 0, sampah: 0, tahap: 0, jarak: 0, telur: 0, bebas: 0 },
+      eaten: 0, health: 100, breath: 100, plasticFree: true, plastic: 0,
       eggs: 0, disturbed: 0, stage: 0, finished: false, reason: '', start: Date.now()
     };
     ST.track((s) => {
@@ -753,10 +773,10 @@
       this.frozen = false;
       this.seaX = 1110;
       this.fx = newFx();
-      this.start = id === 'alami' ? { x: 150, y: 380 } : id === 'semi' ? { x: 640, y: 380 } : { x: 990, y: 380 };
+      this.start = id === 'alami' ? { x: 150, y: 380 } : id === 'semi' ? { x: 360, y: 380 } : { x: 540, y: 380 };
       this.p = { x: this.start.x, y: this.start.y, vx: 0, vy: 0, r: 12, angle: 0, inv: 1, hold: 0 };
       this.crabs = [];
-      const nCrab = { alami: 5, semi: 2, intan: 0 }[id];
+      const nCrab = { alami: 5, semi: 3, intan: 1 }[id];
       for (let i = 0; i < nCrab; i++) {
         const x0 = lerp(this.start.x + 150, this.seaX - 80, (i + 0.5) / nCrab) + rand(-30, 30);
         const y0 = rand(140, 620);
@@ -767,7 +787,7 @@
       this.birdT = id === 'alami' ? 2.2 : 3.5;
       this.lamp = id === 'alami' ? { x: 600, y: 22, R: 290 } : null;
       this.logs = [];
-      const nLog = { alami: 6, semi: 2, intan: 0 }[id];
+      const nLog = { alami: 6, semi: 3, intan: 2 }[id];
       for (let i = 0; i < nLog; i++) {
         let lx, ly, ok = false, tries = 0;
         while (!ok && tries++ < 40) {
@@ -817,10 +837,11 @@
       if (p.hold > 0) {
         p.hold -= dt;
       } else if (!this.done) {
-        steer(p, dt, 130 * sp.stat.speed, 7, G.bot ? this.botTarget() : null);
+        crawlSand(p,dt,52*sp.stat.speed,G.bot?this.botTarget():{x:this.seaX+30,y:p.y});
+        if(sandHeld() && Math.random()<dt*12) sand(this.fx,p.x-9,p.y+4,2);
       }
       // tarikan cahaya lampu
-      if (this.lamp && !this.done) {
+      if (this.lamp && !this.done && sandHeld()) {
         const L = this.lamp, d = dist(p.x, p.y, L.x, L.y);
         if (d < L.R) {
           const s = Math.pow(1 - d / L.R, 1.2) * 190;
@@ -853,16 +874,16 @@
           c.ang = c.dir > 0 ? Math.PI / 2 : -Math.PI / 2;
           if (dp < 110 && p.inv <= 0 && !this.done) {
             c.st = 'siap';
-            c.tt = 0.4;
+            c.tt = 0.65;
           }
         } else if (c.st === 'siap') {
           // jeda singkat sebelum menerjang, supaya pemain sempat menghindar
           c.ang = Math.atan2(p.y - c.y, p.x - c.x);
           if (c.tt <= 0) {
             c.st = 'kejar';
-            c.tt = 0.7;
-            c.vx = Math.cos(c.ang) * 135;
-            c.vy = Math.sin(c.ang) * 135;
+            c.tt = 0.55;
+            c.vx = Math.cos(c.ang) * 110;
+            c.vy = Math.sin(c.ang) * 110;
           }
         } else if (c.st === 'kejar') {
           c.x += c.vx * dt;
@@ -877,7 +898,7 @@
         this.birdT -= dt;
         if (this.birdT <= 0 && this.birds.length < this.birdMax && p.inv <= 0) {
           this.birdT = this.mode === 'alami' ? rand(2.0, 3.0) : rand(3.5, 4.8);
-          this.birds.push({ x: clamp(p.x + p.vx * 0.9 + rand(-25, 25), 40, this.seaX - 20), y: clamp(p.y + p.vy * 0.9 + rand(-25, 25), 40, H - 40), st: 'bayang', tt: 1.15, R: 36 });
+          this.birds.push({ x: clamp(p.x + p.vx * 0.8 + rand(-25, 25), 40, this.seaX - 20), y: clamp(p.y + p.vy * 0.8 + rand(-25, 25), 40, H - 40), st: 'bayang', tt: 1.45, R: 30 });
         }
       }
       for (const b of this.birds) {
@@ -950,7 +971,7 @@
       // burung
       for (const b of this.birds) {
         if (b.st === 'bayang') {
-          const k = 1 - b.tt / 1.15;
+          const k = 1 - b.tt / 1.45;
           ctx.fillStyle = `rgba(0,0,0,${0.20 + k * 0.42})`;
           A.ell(ctx, b.x, b.y, b.R * (0.5 + k * 0.5), b.R * (0.35 + k * 0.35));
           ctx.fill();
@@ -1010,6 +1031,7 @@
       ctx.font = '800 20px "Trebuchet MS", system-ui, sans-serif';
       ctx.textAlign = 'center';
       ctx.fillText('LAUT ➜', this.seaX + 85, H / 2);
+      sandHint(ctx);
     }
   };
 
@@ -1025,17 +1047,24 @@
     kepiting: { r: 17, val: 2, mv: 'floor' },
     lamun: { r: 22, val: 2, mv: 'static' },
     alga: { r: 18, val: 2, mv: 'drift' },
-    spons: { r: 22, val: 3, mv: 'static' }
+    spons: { r: 22, val: 3, mv: 'static' },
+    kerang: { r: 17, val: 2, mv: 'static' },
+    siput: { r: 16, val: 2, mv: 'static' },
+    salpa: { r: 18, val: 2, mv: 'drift' },
+    tunikata: { r: 20, val: 3, mv: 'static' },
+    algaMerah: { r: 21, val: 2, mv: 'drift' },
+    lamunDaun: { r: 25, val: 2, mv: 'static' }
   };
-  const TRASH = { kantong: 18, botol: 16, sedotan: 12, tutup: 9, kaleng: 14, tali: 19 };
+  const TRASH = { kantong: 18, botol: 16, sedotan: 12, tutup: 9, kaleng: 14, tali: 19, robek: 23, serpih: 17 };
   // Per-stage zoom. Shell length (cm) and predator total length (cm) use the same scale.
   // Hatchlings are shown close up; this is an arcade timeline, not a growth model.
   const PIXELS_CM = [0, 4.0, 1.7, 1.1];
-  const LIMITS = [null, { trash: 5, preds: 2, total: 6 }, { trash: 6, preds: 2, total: 8 }, { trash: 7, preds: 2, total: 9 }];
-  const FOOD_NAMES = { plankton: 'Zooplankton · diperbesar', telur: 'Telur ikan · diperbesar', ubur: 'Ubur-ubur', uburBesar: 'Ubur-ubur', udang: 'Udang', kepiting: 'Kepiting', lamun: 'Lamun', alga: 'Alga', spons: 'Spons' };
+  const LIMITS = [null, { trash: 16, preds: 3, total: 22 }, { trash: 20, preds: 3, total: 27 }, { trash: 24, preds: 3, total: 31 }];
+  const FOOD_NAMES = { plankton: 'Zooplankton · diperbesar', telur: 'Telur ikan · diperbesar', ubur: 'Ubur-ubur', uburBesar: 'Ubur-ubur', udang: 'Udang', kepiting: 'Kepiting', lamun: 'Lamun', alga: 'Alga', spons: 'Spons', kerang:'Kerang', siput:'Siput laut',salpa:'Salpa',tunikata:'Tunikata',algaMerah:'Alga merah',lamunDaun:'Lamun daun lebar' };
   // Fish are illustrative potential hatchling predators, not named local species.
   const PRED = {
     kakap: { label: 'Ikan besar', draw: 'fish', body: '#559ca7', belly: '#d2e5cc', fin: '#246175', cm: [25, 40], span: 2.6, visual: 1, hit: .9, spd: [85, 115], maxPreyCm: 15 },
+    barakuda: { label:'Barakuda',draw:'fish',kind:'barakuda',body:'#8eacb1',belly:'#dce4d8',fin:'#52777e',cm:[35,60],span:2.6,visual:1,hit:.8,spd:[100,140],maxPreyCm:15 },
     kerapu: { label: 'Ikan besar', draw: 'fish', body: '#a18c68', belly: '#e1d3ad', fin: '#605740', cm: [30, 45], span: 2.6, visual: 1, hit: .9, spd: [70, 100], maxPreyCm: 15 },
     hiu: { label: 'Hiu macan muda', draw: 'shark', tiger: true, cm: [200, 250], span: 3.05, visual: 1, hit: 1.2, spd: [100, 125], chase: true, always: true, warn: true },
     hiumacan: { label: 'Hiu macan', draw: 'shark', tiger: true, cm: [300, 400], span: 3.05, visual: 1, hit: 1.2, spd: [100, 125], chase: true, always: true, warn: true }
@@ -1053,21 +1082,13 @@
     const a = clamp(f.fade, 0, 1);
     ctx.save();
     ctx.globalAlpha = a;
-    // lingkaran cahaya lembut supaya makanan mudah dikenali
     const hy = f.mv === 'static' ? f.y - f.r * 0.6 : f.y;
-    const hg = ctx.createRadialGradient(f.x, hy, 0, f.x, hy, f.r * 3.0);
-    hg.addColorStop(0, 'rgba(255,255,210,0.32)');
-    hg.addColorStop(1, 'rgba(255,255,210,0)');
-    ctx.fillStyle = hg;
-    A.ell(ctx, f.x, hy, f.r * 3.0, f.r * 3.0);
-    ctx.fill();
     switch (f.type) {
       case 'plankton': A.plankton(ctx, f.x, f.y, f.r, t + f.ph); break;
       case 'telur': A.fishEggs(ctx, f.x, f.y, f.r); break;
       case 'ubur': case 'uburBesar': {
         const jc = f.jellyClass || (f.type === 'uburBesar' ? 'besar' : 'kecil');
-        const col = jc === 'langka' ? [255, 205, 105] : jc === 'besar' ? [205, 160, 235] : jc === 'mini' ? [175, 225, 238] : [185, 220, 238];
-        if (jc === 'langka') { ctx.shadowColor = 'rgba(255,220,100,0.9)'; ctx.shadowBlur = 20; }
+        const col = [[204,220,220],[217,224,216],[205,214,227]][Math.floor(f.ph||0)%3];
         A.jelly(ctx, f.x, f.y, f.r, t + f.ph * (jc === 'mini' ? 1.35 : jc === 'besar' ? 0.72 : 1), col);
         ctx.shadowBlur = 0;
         break;
@@ -1077,10 +1098,14 @@
       case 'lamun': A.seagrass(ctx, f.x, f.y, f.r, t + f.ph); break;
       case 'alga': A.algae(ctx, f.x, f.y, f.r, t + f.ph); break;
       case 'spons': A.sponge(ctx, f.x, f.y, f.r, t, f.hue); break;
+      case 'kerang': A.shellfish(ctx,f.x,f.y,f.r,t); break;
+      case 'siput': A.seaSnail(ctx,f.x,f.y,f.r,t); break;
+      case 'salpa': A.salp(ctx,f.x,f.y,f.r,t+f.ph); break;
+      case 'tunikata': A.tunicate(ctx,f.x,f.y,f.r,t); break;
+      case 'algaMerah': A.redAlgae(ctx,f.x,f.y,f.r,t); break;
+      case 'lamunDaun': A.broadSeagrass(ctx,f.x,f.y,f.r,t); break;
     }
-    ctx.strokeStyle = '#a5f1ce'; ctx.lineWidth = 1.4;
-    ctx.setLineDash([2, 5]); A.ell(ctx, f.x, hy, f.r + 7, f.r + 7); ctx.stroke(); ctx.setLineDash([]);
-    if (f.fade > .7 && (f.type === 'spons' || f.type === 'lamun' || f.jellyClass === 'langka')) {
+    if (f.fade > .7 && (f.type === 'spons' || f.type === 'lamun')) {
       ctx.font = '600 12px system-ui'; ctx.textAlign = 'center'; ctx.fillStyle = '#d7ffe5';
       ctx.strokeStyle = '#073839'; ctx.lineWidth = 4;
       ctx.strokeText(FOOD_NAMES[f.type], f.x, hy - f.r - 12); ctx.fillText(FOOD_NAMES[f.type], f.x, hy - f.r - 12);
@@ -1091,6 +1116,8 @@
   function drawTrash(ctx, e, t) {
     switch (e.type) {
       case 'kantong': A.bag(ctx, e.x, e.y, e.r, t + e.ph); break;
+      case 'robek': A.tornBag(ctx,e.x,e.y,e.r,t+e.ph,false); break;
+      case 'serpih': A.tornBag(ctx,e.x,e.y,e.r,t+e.ph,true); break;
       case 'botol': A.bottle(ctx, e.x, e.y, e.r, t, e.rot); break;
       case 'sedotan': A.straw(ctx, e.x, e.y, e.r, e.rot); break;
       case 'tutup': A.cap(ctx, e.x, e.y, e.r, e.col); break;
@@ -1132,6 +1159,7 @@
       this.food = [];
       this.trash = [];
       this.preds = [];
+      this.divers = [];
       this.nets = [];
       this.birds = [];
       this.boats = [];
@@ -1149,19 +1177,17 @@
       const sp = G.run.sp;
       this.sp = sp;
       this.p = { x: W * 0.5, y: H * 0.45, vx: 0, vy: 0, facing: 1, tilt: 0, inv: 2, slow: 0, full: 0, net: null, netMash: 0, netT: 0, netCool: 0, hidden: false };
-      this.tm = { food: 0, trash: 2.5, kakap: 2.5, kerapu: 3.5, hiu: 6, tiger: 5, bird: 5, sarg: 0.5, boat: 8, net: 7 };
-      const extra = sp.plastikEkstra || 1;
-      this.trashEvery = [0, 4.0, 3.5, 3.2][stage];
-      this.trashW = stage === 1 ? { sedotan: 1, tutup: 1, botol: 5, kantong: 7 * extra } : stage === 2 ? { kantong: 8 * extra, botol: 6, sedotan: 1, tutup: 1 } : { kantong: 9 * extra, botol: 7, sedotan: 1, tutup: 1 };
-      this.diet = stage === 1 ? (sp.id === 'belimbing' ? ['ubur'] : ['plankton', 'udang', 'telur', 'ubur']) : sp.dietRemaja.slice();
-      this.trashW.kaleng = 2; this.trashW.tali = 2;
-      if (stage === 3 && sp.id === 'belimbing') this.diet = ['ubur', 'uburBesar'];
+      this.tm = { food: 0, trash: 2.5, kakap: 2.5, kerapu: 3.5, hiu: 6, tiger: 5, diver: 13, bird: 5, sarg: 0.5, boat: 8, net: 7 };
+      this.trashEvery=[0,1.35,1.15,1.0][stage];
+      this.trashW={kantong:8,botol:10,robek:8,serpih:5,sedotan:1,tutup:1,kaleng:1,tali:1};
+      this.diet=stage===1?sp.dietTukik.slice():sp.dietRemaja.slice();
+      if(stage===3 && sp.id==='belimbing')this.diet=['ubur','uburBesar','salpa'];
       const staticShare = this.diet.filter((k) => FOOD[k].mv === 'static').length / this.diet.length;
       this.foodTarget = [0, 14, 12, 11][stage] + Math.round(staticShare * 2);
       for (let i = 0; i < this.foodTarget; i++) this.spawnFood(true);
       if (stage === 1) { this.spawnSarg(rand(200, 500)); }
-      const initialTrash = stage === 1 ? 2 : 3;
-      for (let i = 0; i < initialTrash; i++) this.spawnTrash(true);
+      const initialTrash=[0,10,13,16][stage];
+      for(let attempt=0;attempt<initialTrash*8 && this.trash.length<initialTrash;attempt++)this.spawnTrash(true);
       this.breathWarn = false;
       this.plasticTip = false;
       buildOceanBG(stage);
@@ -1174,9 +1200,9 @@
     danger: function (e) { const p = PRED[e.type]; return !!(p.always || this.shellCm() < p.maxPreyCm); },
     canHazard: function (area) {
       const l = LIMITS[this.stage];
-      const count = this.trash.length + this.preds.length + this.nets.length + this.boats.length + this.warns.length;
+      const count = this.trash.length + this.preds.length + this.nets.length + this.boats.length + this.divers.length + this.warns.length;
       const occupied = this.trash.reduce((n,e) => n + Math.PI * e.r * e.r, 0) + [...this.preds, ...this.warns.filter(w=>w.then).map(w=>w.then)].reduce((n,e) => n + Math.PI * e.r * e.r * .6, 0) + this.nets.reduce((n,e) => n + e.w * e.h, 0);
-      return count < l.total && occupied + area < W * (FLOOR - SURF) * .14;
+      return count < l.total && occupied + this.divers.length*15000 + this.warns.filter(w=>w.thenDiver).length*15000 + area < W * (FLOOR - SURF) * .22;
     },
     spawnFood: function (inside) {
       const type = pick(this.diet), F = FOOD[type];
@@ -1223,13 +1249,13 @@
       this.food.push(f);
     },
     spawnTrash: function (inside) {
-      if (this.trash.length >= LIMITS[this.stage].trash || !this.canHazard(1800)) return;
+      if (this.trash.length >= LIMITS[this.stage].trash || !this.canHazard(2200)) return;
       const type = weighted(this.trashW);
       const e = { type, r: TRASH[type], ph: rand(0,6), rot: rand(0,6), spin: rand(-.4,.4), col: pick(['#db975a','#7ca6ac','#c66b62']), settle: 0, age: 0 };
       const left = Math.random() < .5;
       e.x = inside ? rand(100,W-100) : left ? -35 : W+35;
       e.y = rand(SURF+60,FLOOR-60);
-      if (inside && (dist(e.x,e.y,this.p.x,this.p.y)<200 || this.food.some(f=>dist(e.x,e.y,f.x,f.y)<65) || this.trash.some(f=>dist(e.x,e.y,f.x,f.y)<100))) return;
+      if (inside && (dist(e.x,e.y,this.p.x,this.p.y)<155 || this.food.some(f=>dist(e.x,e.y,f.x,f.y)<42) || this.trash.some(f=>dist(e.x,e.y,f.x,f.y)<65))) return;
       e.vx = rand(22,38)*(left?1:-1); e.vy=rand(-3,7);
       this.trash.push(e);
     },
@@ -1254,6 +1280,12 @@
       if (P.warn) this.warns.push({ x: left ? 26 : W - 26, y: y, t: 2.2, then: e });
       else this.preds.push(e);
     },
+    spawnDiver: function() {
+      if(this.stage<2 || this.divers.length || this.warns.some(w=>w.thenDiver) || !this.canHazard(15000))return;
+      const dir=this.p.x<W/2?-1:1;
+      const e={x:dir===1?-110:W+110,y:rand(SURF+150,FLOOR-110),dir,age:0,chase:4,size:170*PIXELS_CM[this.stage]/3.4};
+      this.warns.push({x:dir===1?26:W-26,y:e.y,t:2.4,thenDiver:e});
+    },
     spawnBoat: function () {
       if (this.boats.length || this.warns.some(w=>w.thenBoat) || !this.canHazard(0)) return;
       const left = Math.random() < 0.5;
@@ -1277,6 +1309,7 @@
       p.slow = 0;
       this.preds = this.preds.filter((e) => !(this.danger(e) && dist(e.x, e.y, p.x, p.y) < 360));
       this.birds = [];
+      this.divers = [];
       this.trash = this.trash.filter(e=>dist(e.x,e.y,p.x,p.y)>200);
       this.nets = this.nets.filter(e=>dist(e.x,e.y,p.x,p.y)>250);
     },
@@ -1322,6 +1355,7 @@
         const d = dist(p.x, p.y, e.x, e.y);
         if (d < pr + 50) { ax += (p.x - e.x) / d * 300; ay += (p.y - e.y) / d * 300; }
       }
+      for(const d of this.divers){const dd=Math.max(1,dist(p.x,p.y,d.x,d.y));if(dd<260){ax+=(p.x-d.x)/dd*400;ay+=(p.y-d.y)/dd*400;}}
       for (const n of this.nets) {
         if (Math.abs(p.x - n.x) < n.w / 2 + 70 && Math.abs(p.y - n.y) < n.h / 2 + 70) ay += (p.y < n.y ? -1 : 1) * 400;
       }
@@ -1392,7 +1426,7 @@
         run.breath = Math.max(0, run.breath - CFG.breathDrain[st] * sp.stat.breath * dt);
       }
       if (run.breath < 25 && !this.breathWarn) { this.breathWarn = true; G.toast(D.pesan.napas, 3, 'bad'); SFX.warn(); }
-      if (run.breath <= 0) run.health -= 14 * dt;
+      if (run.breath <= 0) run.health -= 22 * dt;
 
       // sembunyi di Sargassum
       p.hidden = false;
@@ -1407,7 +1441,7 @@
       }
       if (tm.trash <= 0) { tm.trash = this.trashEvery * rand(.85,1.2); this.spawnTrash(); }
       if (st === 1) {
-        if (tm.kakap <= 0) { tm.kakap = rand(7,10); this.spawnPred('kakap'); }
+        if (tm.kakap <= 0) { tm.kakap = rand(7,10); this.spawnPred(Math.random()<.45?'barakuda':'kakap'); }
         if (tm.bird <= 0) { tm.bird = rand(12,16); if (!this.birds.length) this.birds.push({ x:rand(100,W-100), y:-40, st:'terbang', tt:1.8, tx:0, vx:100 }); }
         if (tm.sarg <= 0) { tm.sarg = rand(12,16); if (this.sargs.length<2) this.spawnSarg(); }
       } else if (st === 2) {
@@ -1419,12 +1453,15 @@
         if (tm.net <= 0) { tm.net = rand(20,25); this.spawnNet(); }
       }
 
+      if(st>=2 && tm.diver<=0){tm.diver=rand(24,30);this.spawnDiver();}
+
       // peringatan → muncul
       for (const w of this.warns) {
         w.t -= dt;
         if (w.t <= 0) {
           if (w.then) this.preds.push(w.then);
           if (w.thenBoat) this.boats.push(w.thenBoat);
+          if (w.thenDiver) this.divers.push(w.thenDiver);
         }
       }
       this.warns = this.warns.filter((w) => w.t > 0);
@@ -1450,12 +1487,10 @@
           this.comboT = 3.4;
           if (this.combo === 3 || this.combo === 5 || this.combo === 8 || this.combo === 12) SFX.combo(this.combo);
           if (this.combo >= 12) this.frenzyT = Math.max(this.frenzyT, 5);
-          const comboMult = this.combo >= 12 ? 3 : this.combo >= 8 ? 2 : this.combo >= 5 ? 1.5 : this.combo >= 3 ? 1.25 : 1;
           const frenzyMult = this.frenzyT > 0 ? 1.3 : 1;
           this.growth += f.val * sp.stat.growth * frenzyMult;
-          const eatPts = Math.round(10 * st * comboMult);
-          run.raw.makan += eatPts;
-          run.health = Math.min(100, run.health + (f.val >= 4 ? 2.8 : 1.5));
+          const eatPts = G.recordFood(run);
+          run.health = Math.min(100, run.health + .45);
           const isJelly = f.type === 'ubur' || f.type === 'uburBesar';
           if (isJelly) SFX.eatJelly(this.combo, f.val >= 4);
           else if (f.val >= 3) SFX.eatMedium(this.combo);
@@ -1463,7 +1498,7 @@
           this.eatPulse = f.val >= 4 ? 1 : 0.65;
           gulp(this.fx, f.x, f.y, f.r, isJelly ? '200,235,255' : '255,245,185');
           sparkle(this.fx, f.x, f.y, f.val >= 4 ? '255,225,120' : '255,250,190', f.val >= 4 ? 13 : 7);
-          addText(this.fx, f.x, f.y - 14, '+' + Math.round(eatPts * run.ht.pengali), f.val >= 4 ? '#ffe17a' : '#fff6a8', f.val >= 4 ? 25 : 20);
+          addText(this.fx, f.x, f.y - 14, '+' + eatPts, f.val >= 4 ? '#ffe17a' : '#fff6a8', f.val >= 4 ? 25 : 20);
         }
       }
       this.food = this.food.filter((f) => !f.eaten && f.x > -80 && f.x < W + 80 && f.life > 0);
@@ -1481,19 +1516,17 @@
         }
         if (!this.done && p.inv <= 0 && !p.net && d2(e.x, e.y, p.x, p.y) < Math.pow(pr * 0.66 + e.r * 0.58, 2)) {
           e.gone = true;
-          run.health -= e.type === 'kantong' ? 19 : 14;
-          p.full = 2.7;
-          p.slow = 2.7;
-          p.inv = Math.max(p.inv, 1.0);
-          run.plasticFree = false;
-          run.plastic++;
+          G.recordTrash(run,e.type);
+          p.full = 1.8;
+          p.slow = 1.8;
+          p.inv = Math.max(p.inv,.75);
           this.combo = 0; this.comboT = 0; this.frenzyT = 0;
           SFX.bad();
           addText(this.fx, p.x, p.y - pr - 12, D.pesan.plastik, '#ff9aa8', 22);
           if (!this.plasticTip && run.plastic === 1) { this.plasticTip = true; G.toast(D.pesan.plastikTips, 4, 'bad'); }
         }
       }
-      this.trash = this.trash.filter((e) => !e.gone && e.age < 28 && e.x > -60 && e.x < W + 60 && !(e.settle <= 0 && e.life !== undefined && e.vy === 0 && e.y >= seabedY(e.x, st) - 8));
+      this.trash = this.trash.filter((e) => !e.gone && e.age < 36 && e.x > -60 && e.x < W + 60 && !(e.settle <= 0 && e.life !== undefined && e.vy === 0 && e.y >= seabedY(e.x, st) - 8));
 
       // jaring
       for (const n of this.nets) {
@@ -1558,6 +1591,17 @@
       }
       this.preds = this.preds.filter((e) => e.age < 22 && e.x > -e.r * 3 && e.x < W + e.r * 3);
 
+      // Illegal capture: slower than the turtle, warned before entry, never a patrol.
+      for(const d of this.divers){
+        d.age+=dt;
+        const facing=d.dir;
+        if(!this.done && p.inv<=0 && d.chase>0 && dist(d.x,d.y,p.x,p.y)<340){
+          d.chase-=dt;d.y+=clamp(p.y-d.y,-55,55)*dt;
+        }
+        d.x+=facing*90*dt;
+        if(!this.done && p.inv<=0 && !p.net && dist(d.x+facing*d.size*.9,d.y,p.x,p.y)<pr*.62+19)this.hurt('pemburu');
+      }
+      this.divers=this.divers.filter(d=>d.age<23 && d.x>-250 && d.x<W+250);
       // burung
       for (const b of this.birds) {
         b.tt -= dt;
@@ -1631,6 +1675,9 @@
       for (const f of this.food) drawFood(ctx, f, t);
       for (const e of this.trash) drawTrash(ctx, e, t);
       for (const e of this.preds) drawPred(ctx, e, t, this.danger(e));
+      for(const d of this.divers){
+        A.diver(ctx,d.x,d.y,d.size,t,d.dir);ctx.font='700 14px system-ui';ctx.textAlign='center';ctx.fillStyle='#ffb5a0';ctx.fillText('! Pemburu ilegal',d.x,d.y-d.size*.8-15);
+      }
       // pemain
       const blink = p.inv > 0 && Math.floor(t * 10) % 2;
       if (!blink) {
@@ -1656,7 +1703,7 @@
         ctx.font = '800 16px "Trebuchet MS", system-ui, sans-serif';
         ctx.textAlign = 'center';
         ctx.fillStyle = '#ffb3be';
-        ctx.fillText('Kenyang palsu', p.x, p.y - pr - 12);
+        ctx.fillText('Sulit makan', p.x, p.y - pr - 12);
       } else if (p.hidden) {
         ctx.font = '800 16px "Trebuchet MS", system-ui, sans-serif';
         ctx.textAlign = 'center';
@@ -1700,7 +1747,7 @@
       ctx.save();
       rr(ctx, 18, H-44, 625, 30, 12); ctx.fillStyle='rgba(3,31,42,.82)'; ctx.fill();
       ctx.font='600 13px system-ui'; ctx.textAlign='left'; ctx.fillStyle='#d8f6ec';
-      ctx.fillText('Cangkang ~' + Math.round(this.shellCm()) + ' cm  ·  Mint: makanan  /  !: bahaya  ·  Shift: melesat',32,H-24);
+      ctx.fillText('Cangkang ~' + Math.round(this.shellCm()) + ' cm  ·  Makanan +5 / Sampah −4  ·  Shift: melesat',32,H-24);
       ctx.restore();
       const card = D.tahap.kartu[st];
       drawHUD(ctx, { meters: true, center: { label: card.label + ' · ' + card.nama + ' — Tumbuh', v: this.growth / this.goal, icon: 'leaf' } });
@@ -1790,23 +1837,23 @@
       if (p.y - pr * 0.5 <= SURF + 8) { run.breath = Math.min(100, run.breath + 48 * dt); this.breathWarn = false; }
       else run.breath = Math.max(0, run.breath - 2.6 * sp.stat.breath * dt);
       if (run.breath < 25 && !this.breathWarn) { this.breathWarn = true; G.toast(D.pesan.napas, 2.5, 'bad'); SFX.warn(); }
-      if (run.breath <= 0) run.health -= 14 * dt;
+      if (run.breath <= 0) run.health -= 22 * dt;
 
       // spawn
       const tm = this.tm;
       for (const k in tm) tm[k] -= dt;
       if (!this.done && this.prog < 0.96) {
         if (tm.trash <= 0) {
-          tm.trash = lerp(3.4, 2.5, this.prog);
-          const cy = rand(SURF + 40, FLOOR - 40), n = 1;
-          for (let i = 0; i < n; i++) {
-            const type = weighted({ kantong: 3 * (sp.plastikEkstra || 1), botol: 2, sedotan: 2, tutup: 1 });
+          tm.trash = lerp(1.25,.9,this.prog);
+          const cy = rand(SURF + 40, FLOOR - 40), n = 2+Math.floor(Math.random()*2);
+          for (let i = 0; i < n && this.items.filter(it=>it.bad).length<18; i++) {
+            const type = weighted({kantong:6,botol:8,robek:6,serpih:4,sedotan:1,tutup:1});
             this.items.push({ bad: true, type: type, r: TRASH[type], x: W + 40 + i * rand(30, 60), y: clamp(cy + rand(-50, 50), SURF + 20, FLOOR - 20), vx: rand(-20, 20), ph: rand(0, 6), rot: rand(0, 6), spin: rand(-1.5, 1.5), col: pick(['#ff8a3d', '#3498db', '#e74c3c']) });
           }
         }
         if (tm.food <= 0) {
           tm.food = rand(1.6, 2.4);
-          const type = sp.dietLaut;
+          const type = pick(sp.dietMigration);
           this.items.push({ bad: false, type: type, r: FOOD[type].r, x: W + 40, y: rand(SURF + 60, FLOOR - 60), vx: rand(-10, 10), ph: rand(0, 6), fade: 1 });
         }
         if (tm.net <= 0) {
@@ -1830,19 +1877,17 @@
           if (it.bad) {
             if (p.inv > 0) continue;
             it.gone = true;
-            run.health -= 12;
-            run.plasticFree = false;
-            run.plastic++;
-            p.slow = 1.2;
+            G.recordTrash(run,it.type);
+            p.slow = 1.8; p.inv=Math.max(p.inv,.75);
             SFX.bad();
             addText(this.fx, p.x, p.y - pr - 12, D.pesan.plastik, '#ff9aa8', 22);
           } else {
             it.gone = true;
-            run.health = Math.min(100, run.health + 6);
-            run.raw.makan += 30;
+            run.health = Math.min(100,run.health+.45);
+            G.recordFood(run);
             SFX.eat();
             sparkle(this.fx, it.x, it.y, '255,250,190', 6);
-            addText(this.fx, it.x, it.y - 14, '+' + Math.round(30 * run.ht.pengali), '#fff6a8', 20);
+            addText(this.fx, it.x, it.y - 14, '+5', '#fff6a8', 20);
           }
         }
       }
@@ -1938,7 +1983,7 @@
         ctx.textAlign = 'center';
         ctx.fillText('!', w.x, w.y + 5);
       }
-      drawHUD(ctx, { meters: true, center: { label: 'Tahap 4 · Pulang — ' + Math.round((1 - this.prog) * 1500).toLocaleString('id-ID') + ' km lagi ke Banyuwangi', v: this.prog, col: '#7fd8ff' } });
+      drawHUD(ctx, { meters: true, center: { label: 'Tahap 4 · Pulang — ' + Math.round(this.prog*100) + '% perjalanan ke Banyuwangi', v: this.prog, col: '#7fd8ff' } });
       // peta mini
       const mx = W / 2 - 184, my = 84;
       ctx.save();
@@ -1991,13 +2036,12 @@
       this.p = { x: this.start.x, y: this.start.y, vx: 0, vy: 0, angle: -Math.PI / 2, inv: 1.5, hold: 0 };
       this.state = 'naik';
       this.disturb = 0;
-      this.lamps = [{ x: 150, y: 250, R: 200 }, { x: 1130, y: 300, R: 210 }];
-      this.people = [
-        { x: -60, y: 345, dir: 1, v: 75, ph: 0 },
-        { x: W + 60, y: 480, dir: -1, v: 62, ph: 2 }
+      this.lights=[
+        {x:145,y:330,angle:-.08,len:780,spread:.17,power:65,kind:'cafe'},
+        {x:1135,y:455,angle:Math.PI+.13,len:760,spread:.14,power:60,kind:'kota'}
       ];
       this.piles = [];
-      const spots = [[420, 300], [860, 420], [300, 520], [980, 230], [640, 400]];
+      const spots = [[300, 300], [860, 420], [300, 520], [980, 230], [640, 400]];
       for (const s of spots) this.piles.push({ x: s[0] + rand(-30, 30), y: s[1] + rand(-20, 20), r: rand(22, 28), seed: Math.floor(rand(1, 99)) });
       this.zone = { y1: 150, y2: 240 };
       this.mash = 0;
@@ -2016,36 +2060,36 @@
     },
     debugSkip: function () { this.p.y = this.zone.y2 - 2; },
     debugHurt: function () { this.disturb = 100; },
-    botTarget: function () {
-      const p = this.p;
-      let ax = 0;
-      for (const L of this.lamps) { const d = dist(p.x, p.y, L.x, L.y); if (d < L.R + 60) ax += (p.x - L.x) / d * 300; }
-      for (const pe of this.people) { if (Math.abs(pe.y - p.y) < 120 && Math.abs(pe.x - p.x) < 260) return { x: p.x, y: p.y + (pe.y < p.y ? 40 : -10) }; }
-      for (const pl of this.piles) { const d = dist(p.x, p.y, pl.x, pl.y); if (d < 90) ax += (p.x - pl.x >= 0 ? 1 : -1) * 260; }
-      return { x: clamp(p.x + ax, 300, W - 300), y: this.zone.y1 };
+    lightAt: function(x,y) {
+      let strength=0;
+      for(const l of this.lights){
+        const dx=x-l.x,dy=y-l.y,d=Math.hypot(dx,dy);
+        const diff=Math.abs(Math.atan2(Math.sin(Math.atan2(dy,dx)-l.angle),Math.cos(Math.atan2(dy,dx)-l.angle)));
+        if(d<l.len && diff<l.spread) strength+=(1-d/l.len)*(1-diff/l.spread)*l.power;
+      }
+      return strength;
+    },
+    botTarget: function() {
+      // A continuous route remains clear even for the largest turtle.
+      return this.p.y>535?{x:450,y:520}:{x:450,y:this.zone.y1};
     },
     update: function (dt) {
       if (this.frozen) return;
       this.t += dt;
       const p = this.p, run = G.run, sp = this.sp;
       p.inv -= dt;
-      for (const pe of this.people) {
-        pe.x += pe.dir * pe.v * dt;
-        if (pe.x > W + 80) pe.dir = -1;
-        if (pe.x < -80) pe.dir = 1;
-        pe.ang = (pe.dir > 0 ? 0 : Math.PI) + Math.sin(this.t * 1.2 + pe.ph) * 0.7;
-      }
       if (this.state === 'naik') {
         if (p.hold > 0) p.hold -= dt;
         else {
-          steer(p, dt, 64 * sp.stat.speed, 5, G.bot ? this.botTarget() : null);
+          crawlSand(p,dt,34*sp.stat.speed,G.bot?this.botTarget():{x:p.x,y:this.zone.y1});
+          if(sandHeld() && Math.random()<dt*9)sand(this.fx,p.x,p.y+this.r*.5,2);
         }
         takeMash();
         for (const pl of this.piles) {
           const rr2 = pl.r + this.r * 0.7, d = dist(p.x, p.y, pl.x, pl.y);
           if (d < rr2 && d > 0.01) { p.x = pl.x + (p.x - pl.x) / d * rr2; p.y = pl.y + (p.y - pl.y) / d * rr2; }
         }
-        p.x = clamp(p.x, 40, W - 40);
+        p.x = clamp(p.x,210,W-210);
         p.y = clamp(p.y, this.zone.y1, 690);
         if (Math.hypot(p.vx, p.vy) > 6) p.angle = Math.atan2(p.vy, p.vx);
         if (dist(p.x, p.y, this.lastTrail.x, this.lastTrail.y) > 10) {
@@ -2054,22 +2098,10 @@
           this.lastTrail = { x: p.x, y: p.y };
         }
         // gangguan cahaya
-        let lit = 0;
-        if (p.inv <= 0) {
-          for (const L of this.lamps) { const d = dist(p.x, p.y, L.x, L.y); if (d < L.R) lit += (1 - d / L.R) * 80; }
-          for (const pe of this.people) {
-            const d = dist(p.x, p.y, pe.x, pe.y);
-            if (d < 200) {
-              let diff = Math.atan2(p.y - pe.y, p.x - pe.x) - pe.ang;
-              while (diff > Math.PI) diff -= TAU;
-              while (diff < -Math.PI) diff += TAU;
-              if (Math.abs(diff) < 0.5) lit += 95;
-            }
-          }
-        }
+        const lit=p.inv<=0?this.lightAt(p.x,p.y):0;
         if (lit > 0) {
           this.disturb += lit * dt;
-          if (!this.lightHint) { this.lightHint = true; G.toast('Cahaya membuat penyu terganggu! Cari jalur yang gelap.', 3, 'bad'); }
+          if (!this.lightHint) { this.lightHint = true; G.toast('Cahaya kafe / kota mencapai pasir! Cari jalur yang gelap.', 3, 'bad'); }
         } else this.disturb = Math.max(0, this.disturb - 18 * dt);
         if (this.disturb >= 100) {
           this.disturb = 0;
@@ -2086,11 +2118,10 @@
           G.toast(D.pesan.gali, 3);
         }
       } else if (this.state === 'gali') {
-        const m = G.bot ? (Math.random() < dt * 10 ? 1 : 0) : takeMash();
+        const m=G.bot?dt*4:takeMash()+(sandHeld()?dt*4:0);
         if (m > 0) {
           this.mash += m;
-          SFX.mash();
-          sand(this.fx, p.x - Math.cos(p.angle) * this.r, p.y - Math.sin(p.angle) * this.r, 8);
+          if(Math.floor(this.t*8)!==Math.floor((this.t-dt)*8)){SFX.mash();sand(this.fx,p.x-Math.cos(p.angle)*this.r,p.y-Math.sin(p.angle)*this.r,6);}
         }
         if (this.mash >= CFG.nestMash) {
           this.state = 'telur';
@@ -2159,19 +2190,18 @@
         const crawl = this.state === 'naik' ? Math.min(1, Math.hypot(p.vx, p.vy) / 30) : this.state === 'gali' ? 0.8 : 0;
         A.turtleTop(ctx, p.x, p.y, this.r, sp, { angle: p.angle, t: t, crawl: crawl });
       }
-      for (const pe of this.people) A.person(ctx, pe.x, pe.y, 18, pe.ang, t, '#5a6b7d');
       if (this.relawan) A.person(ctx, this.relawan.x, this.relawan.y, 18, 0, t, '#ff8a3d');
       drawFx(ctx, this.fx);
       // malam & cahaya
       ctx.fillStyle = 'rgba(8,16,40,0.32)';
       ctx.fillRect(0, 0, W, H);
-      for (const L of this.lamps) { A.lampGlow(ctx, L.x, L.y, L.R, t, 1); A.lampPost(ctx, L.x, L.y); }
-      for (const pe of this.people) A.cone(ctx, pe.x, pe.y, pe.ang, 200, 0.5, '255,245,200', 1);
-      if (this.relawan) A.cone(ctx, this.relawan.x, this.relawan.y, 0, 120, 0.35, '255,60,60', 0.7);
+      A.coastalBuildings(ctx,this.lights,t);
+      for(const l of this.lights)A.cone(ctx,l.x,l.y,l.angle,l.len,l.spread,'255,235,180',.7);
+      if(this.state==='naik')sandHint(ctx);
       // HUD
       let center;
-      if (this.state === 'naik') center = { label: 'Tahap 5 · Bertelur — Gangguan cahaya', v: this.disturb / 100, col: this.disturb > 60 ? '#ff5d73' : '#ffd166' };
-      else if (this.state === 'gali') center = { label: 'Menggali sarang — ketuk berulang!', v: this.mash / CFG.nestMash, col: '#d9b46a' };
+      if (this.state === 'naik') center = { label: 'Tahap 5 · Bertelur — Cahaya kafe / kota', v: this.disturb / 100, col: this.disturb > 60 ? '#ff5d73' : '#ffd166' };
+      else if (this.state === 'gali') center = { label: 'Menggali sarang — tahan klik / Spasi', v: this.mash / CFG.nestMash, col: '#d9b46a' };
       else center = { label: 'Telur: ' + (this.state === 'relawan' ? this.eggs : this.shown) + ' butir', v: (this.state === 'relawan' ? 1 : this.shown / Math.max(1, this.eggs)), col: '#f8f3e3' };
       drawHUD(ctx, { meters: true, breath: false, center: center });
       if (this.state === 'gali') {
@@ -2180,7 +2210,7 @@
         ctx.fillStyle = '#fff';
         ctx.strokeStyle = 'rgba(0,0,0,0.5)';
         ctx.lineWidth = 5;
-        const s = 'KETUK! KETUK!';
+        const s = 'TAHAN KLIK / SPASI';
         ctx.strokeText(s, p.x, p.y + this.r + 50);
         ctx.fillText(s, p.x, p.y + this.r + 50);
       }

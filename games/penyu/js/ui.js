@@ -100,7 +100,7 @@
         <div class="row"><b>Tingkat penetasan:</b> ${esc(ht.tingkatPenetasan)}</div>
         <div class="row"><b>Di game:</b> ${esc(ht.diGame)}</div>
         <div class="row"><b>Saudara tukik (nyawa):</b> <span class="lives">${'🐢'.repeat(ht.nyawa)}</span></div>
-        <div class="row"><b>Pengali skor:</b> ${mult(ht.pengali)}</div>
+        <div class="row"><b>Pengali bonus perjalanan:</b> ${mult(ht.pengali)}</div>
         <div class="fact">${esc(ht.peran)}</div>`;
       b.addEventListener('click', () => {
         SFX.click();
@@ -275,19 +275,19 @@
 
   function showResult() {
     const run = U.run, raw = run.raw;
-    const sub = raw.makan + raw.tahap + raw.jarak + raw.telur + raw.bebas;
-    const base = Math.round(sub * run.ht.pengali);
-    const quizPts = (run.quiz || 0) * D.kuisBonus;
-    run.total = base + quizPts;
+    const bonus=raw.tahap+raw.jarak+raw.telur+raw.bebas;
+    const quizPts=(run.quiz||0)*D.kuisBonus;
+    run.total=G.scoreRun(run,true);
     $('resultTitle').textContent = run.finished ? 'Penyumu berhasil bertelur!' : 'Hasil Perjalanan';
     const rows = [
-      ['Makan', fmt(raw.makan)],
+      ['Makanan benar (' + run.eaten + ' × 5)', '+' + fmt(raw.makan)],
+      ['Sampah (' + run.plastic + ' × −4)', fmt(raw.sampah)],
       ['Naik tahap', fmt(raw.tahap)],
       ['Perjalanan pulang', fmt(raw.jarak)],
       [run.finished ? `Telur (${run.eggs} butir × 10)` : 'Telur', fmt(raw.telur)],
       ['Bonus Bebas Plastik' + (run.plastic > 0 ? ` (insiden plastik ${run.plastic}×)` : ''), raw.bebas ? fmt(raw.bebas) : '–'],
-      ['Subtotal', fmt(sub), 'sub'],
-      [`Pengali tingkat ${run.ht.tingkat}`, mult(run.ht.pengali), 'sub'],
+      ['Subtotal bonus perjalanan', fmt(bonus), 'sub'],
+      [`Pengali bonus perjalanan ${run.ht.tingkat}`, mult(run.ht.pengali), 'sub'],
       [`Kuis (${run.quiz || 0} benar)`, '+' + fmt(quizPts)],
       ['TOTAL', fmt(run.total), 'total']
     ];

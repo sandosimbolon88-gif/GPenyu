@@ -1,4 +1,4 @@
-/* Konten edukasi v7. Sumber dan keputusan fact check: docs/FACT_CHECK.md. */
+/* Konten edukasi v8. Sumber: docs/FACT_CHECK.md. */
 window.PB_DATA = {
   "judul": "Pulang ke Banyuwangi",
   "subjudul": "Satu penyu. Samudra penuh cerita. Makan, tumbuh, dan temukan jalan pulang.",
@@ -11,7 +11,7 @@ window.PB_DATA = {
       "iucn": "VU",
       "iucnLabel": "Rentan",
       "ukuran": "Cangkang dewasa ±60–75 cm",
-      "makanan": "Udang, kepiting, ubur-ubur",
+      "makanan": "Udang, kepiting, moluska, tunikata, ubur-ubur",
       "gaya": "Lincah. Cari udang, kepiting, dan ubur-ubur.",
       "fakta": "Lekang termasuk penyu terkecil. Ukuran dewasa berbeda antarwilayah.",
       "faktaRemaja": "Penyu lekang adalah omnivora: ia memakan udang, kepiting, kerang, dan ubur-ubur.",
@@ -33,12 +33,28 @@ window.PB_DATA = {
       "dietRemaja": [
         "udang",
         "kepiting",
-        "ubur"
+        "kerang",
+        "siput",
+        "salpa",
+        "ubur",
+        "alga"
       ],
       "dietLaut": "ubur",
       "adultCm": [
         60,
         70
+      ],
+      "dietTukik": [
+        "plankton",
+        "telur",
+        "udang",
+        "salpa",
+        "ubur"
+      ],
+      "dietMigration": [
+        "udang",
+        "salpa",
+        "ubur"
       ]
     },
     {
@@ -48,7 +64,7 @@ window.PB_DATA = {
       "iucn": "LC",
       "iucnLabel": "Risiko Rendah",
       "ukuran": "Cangkang dewasa ±90–120 cm",
-      "makanan": "Lamun dan alga",
+      "makanan": "Lamun, alga hijau dan alga merah",
       "gaya": "Seimbang. Di fase pesisir, cari lamun dan alga.",
       "fakta": "Namanya berasal dari warna lemak tubuhnya yang kehijauan, bukan dari warna cangkangnya.",
       "faktaRemaja": "Penyu hijau muda dapat omnivor. Saat tumbuh, banyak populasi terutama memakan lamun dan alga.",
@@ -69,12 +85,25 @@ window.PB_DATA = {
       },
       "dietRemaja": [
         "lamun",
-        "alga"
+        "lamunDaun",
+        "alga",
+        "algaMerah"
       ],
       "dietLaut": "alga",
       "adultCm": [
-        80,
+        90,
         110
+      ],
+      "dietTukik": [
+        "plankton",
+        "telur",
+        "udang",
+        "salpa",
+        "ubur"
+      ],
+      "dietMigration": [
+        "alga",
+        "algaMerah"
       ]
     },
     {
@@ -84,7 +113,7 @@ window.PB_DATA = {
       "iucn": "CR",
       "iucnLabel": "Kritis",
       "ukuran": "Cangkang ±60–90 cm",
-      "makanan": "Spons di terumbu karang",
+      "makanan": "Terutama spons; juga tunikata dan moluska",
       "gaya": "Gesit dan cepat berbelok. Paruhnya yang runcing pas untuk mengambil spons di dasar karang.",
       "fakta": "Paruhnya runcing seperti paruh elang. Cangkangnya yang indah sering diburu, padahal penyu sisik dilindungi.",
       "faktaRemaja": "Penyu sisik memakan spons di terumbu karang dan ikut menjaga terumbu tetap sehat.",
@@ -106,12 +135,27 @@ window.PB_DATA = {
       "dietRemaja": [
         "spons",
         "spons",
+        "spons",
+        "spons",
+        "tunikata",
+        "kerang",
+        "udang",
         "ubur"
       ],
       "dietLaut": "spons",
       "adultCm": [
         60,
         90
+      ],
+      "dietTukik": [
+        "plankton",
+        "udang",
+        "salpa",
+        "ubur"
+      ],
+      "dietMigration": [
+        "ubur",
+        "salpa"
       ]
     },
     {
@@ -121,7 +165,7 @@ window.PB_DATA = {
       "iucn": "VU",
       "iucnLabel": "Rentan",
       "ukuran": "Cangkang dewasa ±1,5–1,8 m",
-      "makanan": "Ubur-ubur",
+      "makanan": "Ubur-ubur dan salpa",
       "gaya": "Tubuh terbesar dan sirip panjang. Cari ubur-ubur; hindari plastik.",
       "fakta": "Belimbing memiliki punggung berkulit dengan tujuh lunas memanjang, tanpa sisik keras seperti penyu lain.",
       "faktaRemaja": "Belimbing terutama memakan hewan bertubuh lunak, termasuk ubur-ubur dan salpa.",
@@ -141,16 +185,26 @@ window.PB_DATA = {
         "breath": 0.7
       },
       "dietRemaja": [
-        "ubur"
+        "ubur",
+        "uburBesar",
+        "salpa"
       ],
       "dietLaut": "ubur",
       "adultCm": [
-        120,
+        150,
         170
+      ],
+      "dietTukik": [
+        "ubur",
+        "salpa"
+      ],
+      "dietMigration": [
+        "ubur",
+        "salpa"
       ]
     }
   ],
-  "catatanPenetasan": "Nyawa dan pengali adalah aturan game. Keberhasilan penetasan di alam bergantung pada lokasi, suhu, dan pengelolaan; metode ini bukan peringkat keberhasilan.",
+  "catatanPenetasan": "Nyawa dan pengali adalah aturan game. Keberhasilan penetasan di alam bergantung pada lokasi, suhu, dan pengelolaan; metode ini bukan peringkat keberhasilan. Jarak lintasan dan mekanik menahan tombol adalah rancangan permainan, bukan prosedur pelepasliaran atau jarak anjuran konservasi.",
   "penetasan": [
     {
       "id": "intan",
@@ -161,7 +215,7 @@ window.PB_DATA = {
       "tingkatPenetasan": "Hasil bergantung pada pengelolaan",
       "penjelasan": "Inkubator tanpa pasir buatan Banyuwangi Sea Turtle Foundation (BSTF) yang didukung Bakti BCA. Suhu dan kelembapannya diatur.",
       "peran": "Intan Box mendukung pengaturan kondisi inkubasi. Suhu memengaruhi jenis kelamin, tetapi satu rentang suhu tidak menjamin rasio jantan dan betina yang seimbang untuk semua spesies.",
-      "diGame": "Petugas melepas tukik di bibir pantai. Perjalanan ke laut pendek."
+      "diGame": "Lintasan pasir diperpanjang. Tahan klik / sentuhan atau Spasi dan arahkan ke laut; hadapi kepiting dan rintangan."
     },
     {
       "id": "semi",
@@ -172,7 +226,7 @@ window.PB_DATA = {
       "tingkatPenetasan": "Bervariasi antar sarang dan lokasi",
       "penjelasan": "Telur dipindahkan ke sarang buatan di area penetasan yang dijaga, misalnya di Pantai Boom dan Pantai Cemara, Banyuwangi.",
       "peran": "Telur dipindahkan ke area penetasan yang dijaga bila sarangnya terancam abrasi, pasang air laut, predator, atau pencurian telur.",
-      "diGame": "Jarak ke laut cukup dekat, dan relawan ikut menjaga."
+      "diGame": "Lintasan pasir lebih jauh dengan kepiting dan burung. Relawan mendampingi perjalananmu."
     },
     {
       "id": "alami",
@@ -183,14 +237,14 @@ window.PB_DATA = {
       "tingkatPenetasan": "Bervariasi antar sarang dan lokasi",
       "penjelasan": "Telur dibiarkan di sarang aslinya di pantai. Tantangannya predator, pasang air laut, suhu, dan gangguan manusia.",
       "peran": "Sarang alami adalah cara alam. Memindahkan telur adalah pilihan terakhir, hanya bila sarang alami tidak bisa dilindungi.",
-      "diGame": "Perjalanan jauh ke laut: hindari kepiting hantu, burung, dan cahaya lampu."
+      "diGame": "Lintasan pasir terjauh. Hindari kepiting, burung, dan cahaya dari daratan."
     }
   ],
   "tahap": {
     "menetas": {
-      "intan": "Petugas melepas tukik di bibir pantai. Ayo merangkak ke laut!",
-      "semi": "Relawan menjaga area penetasan. Merangkaklah ke laut dan hindari kepiting hantu!",
-      "alami": "Merangkaklah ke laut! Hindari kepiting hantu dan bayangan burung, dan jangan ikuti cahaya lampu."
+      "intan": "Tahan klik / sentuhan atau Spasi untuk mengais pasir. Arahkan mouse atau WASD menuju laut.",
+      "semi": "Lintasan pasir lebih panjang! Tahan klik / sentuhan atau Spasi sambil menghindari kepiting dan burung.",
+      "alami": "Tahan klik / sentuhan atau Spasi dan arahkan ke laut. Hindari predator serta cahaya dari daratan."
     },
     "kartu": [
       null,
@@ -198,11 +252,11 @@ window.PB_DATA = {
         "label": "Tahap 1",
         "nama": "Tukik",
         "lokasi": "Laut lepas",
-        "teks": "Laut pertamamu! Cari makanan bertanda mint, sambung kombo, dan tumbuh. Belimbing mencari ubur-ubur; penyu lain mendapat pilihan makanan hewani kecil.",
+        "teks": "Makan sesuai diet untuk +5 poin. Sampah memberi −4 poin dan melukai penyu. Ubur-ubur pucat dan plastik terapung bisa terlihat serupa!",
         "tips": [
-          "Arahkan mouse, sentuh dan geser, atau gunakan WASD / tombol panah.",
-          "Makan berurutan untuk kombo. Naik ke permukaan saat napas menipis.",
-          "Partikel zooplankton diperbesar agar terlihat. Pertumbuhan bertahun-tahun diringkas menjadi beberapa menit."
+          "Arahkan mouse, sentuh dan geser, atau gunakan WASD / panah. Shift atau Melesat untuk menghindar.",
+          "Perhatikan detail: lonceng ubur berdenyut, sedangkan plastik memiliki lipatan, tepi robek, atau bentuk botol.",
+          "Kombo mempercepat pertumbuhan, tetapi setiap makanan tetap +5. Makanan kecil diperbesar dan waktu tumbuh dipersingkat."
         ],
         "fakta": "Banyak penyu muda hidup di laut lepas. Rakit alga terapung dapat memberi tempat berlindung dan mencari makan; pola hidup berbeda antarspesies."
       },
@@ -212,9 +266,9 @@ window.PB_DATA = {
         "lokasi": "Pesisir atau laut lepas, sesuai spesies",
         "teks": "Kamu tumbuh menjadi penyu muda. Hijau dan sisik mencari makan di pesisir; belimbing tetap menjelajah perairan terbuka.",
         "tips": [
-          "Cari {makanan}. Makanan bertanda mint memberi energi.",
-          "Ikan besar terutama mengancam tukik kecil. Hiu macan tetap perlu dihindari.",
-          "Ukuran cangkang ditampilkan di bawah. Zoom berubah antar fase agar tukik tetap terlihat."
+          "Makananmu: {makanan}. Perhatikan bentuk, lipatan, dan gerak sebelum mendekat.",
+          "Ikan besar dan barakuda terutama mengancam tukik. Hiu macan tetap berbahaya.",
+          "Waspadai karakter bertanda Pemburu ilegal. Penyelam biasa dan petugas konservasi bukan musuh."
         ],
         "fakta": "{faktaRemaja}"
       },
@@ -222,11 +276,11 @@ window.PB_DATA = {
         "label": "Tahap 3",
         "nama": "Dewasa",
         "lokasi": "Laut lepas",
-        "teks": "Kamu sudah dewasa! Laut lepas penuh tantangan: hiu macan, baling-baling kapal, dan jaring hantu.",
+        "teks": "Plastik dan botol makin banyak. Cari makanan yang benar, hindari hiu macan, pemburu ilegal, kapal, dan jaring hantu.",
         "tips": [
-          "Hindari hiu macan. Ukuran besar tidak membuat penyu kebal predator.",
-          "Jaring memperlambatmu: ketuk atau tekan Spasi berulang untuk lepas di game.",
-          "Di dunia nyata, jangan menarik penyu yang terjerat; hubungi petugas konservasi."
+          "Makanan selalu +5; sampah selalu −4 pada semua tingkat. Health turun lebih cepat saat terkena sampah.",
+          "Pemburu ilegal memiliki peringatan sebelum masuk. Melesat untuk menjaga jarak.",
+          "Ketuk atau tekan Spasi berulang untuk lepas jaring di game. Di alam, hubungi petugas untuk penyu terjerat."
         ],
         "fakta": "Jaring hantu adalah jaring ikan yang hilang atau dibuang di laut. Jaring ini terus menjerat penyu dan hewan laut lainnya."
       },
@@ -236,8 +290,8 @@ window.PB_DATA = {
         "lokasi": "Menuju Banyuwangi",
         "teks": "Saatnya pulang! Banyak penyu betina kembali ke kawasan pantai asal untuk bertelur. Ikuti arus dan hindari sampah.",
         "tips": [
-          "Geser ke atas dan ke bawah untuk menghindar.",
-          "Makan sesekali untuk menjaga kesehatan."
+          "Makanan sesuai diet +5, sampah −4. Jangan tertipu plastik robek yang menyerupai ubur-ubur.",
+          "Ambil udara di permukaan dan hindari buritan kapal."
         ],
         "fakta": "Banyak penyu betina kembali ke kawasan pantai asal untuk bertelur. Medan magnet bumi membantu navigasi; mereka tidak selalu memilih titik pasir yang persis sama."
       },
@@ -245,12 +299,13 @@ window.PB_DATA = {
         "label": "Tahap 5",
         "nama": "Bertelur",
         "lokasi": "Pantai Banyuwangi, malam hari",
-        "teks": "Kamu sampai di Banyuwangi! Merangkaklah ke pasir dekat pandan laut, lalu gali sarang untuk bertelur.",
+        "teks": "Kamu tiba di pantai! Tahan klik / sentuhan atau Spasi untuk mengais pasir, lalu cari jalur gelap ke area bertelur.",
         "tips": [
-          "Hindari cahaya lampu dan senter.",
-          "Sampai di area bertelur, ketuk berulang untuk menggali."
+          "Hindari cahaya dari jendela kafe dan bangunan kota yang mengarah ke pasir.",
+          "Gunakan mouse atau WASD untuk arah. Tahan klik / sentuhan atau Spasi juga saat menggali sarang.",
+          "Relawan konservasi membantu memantau sarang; mereka tidak menjadi rintangan dalam tahap ini."
         ],
-        "fakta": "Betina naik ke pantai untuk bertelur. Hindari lampu, sentuhan, dan keramaian agar penyu tidak terganggu."
+        "fakta": "Cahaya buatan yang terlihat dari pantai dapat mengganggu betina yang bertelur dan mengacaukan arah tukik. Lampu bangunan perlu diredupkan serta diarahkan dan dilindungi dengan tepat."
       }
     ]
   },
@@ -262,15 +317,16 @@ window.PB_DATA = {
     "dimangsa": "Dimangsa predator yang lebih besar!",
     "jaring": "Terjerat jaring hantu terlalu lama!",
     "kapal": "Tertabrak baling-baling kapal!",
-    "sehat": "Kesehatanmu habis karena plastik dan kurang napas.",
-    "plastik": "Terkena plastik! Energi berkurang",
-    "plastikTips": "Plastik dapat tertelan atau menjerat penyu, menyebabkan luka dan gangguan pencernaan.",
+    "sehat": "Health habis karena sampah atau kehabisan napas.",
+    "plastik": "Sampah! −4 poin",
+    "plastikTips": "Plastik dapat menyerupai makanan, tertelan, atau menjerat penyu. Potongan plastik tetap berbahaya walau sudah robek dan terfragmentasi.",
     "napas": "Napasmu hampir habis! Naik ke permukaan.",
     "sembunyi": "Bersembunyi",
     "terganggu": "Penyu terganggu dan kembali ke laut!",
-    "gali": "Ketuk berulang untuk menggali sarang!",
+    "gali": "Tahan klik / sentuhan atau Spasi untuk menggali sarang!",
     "lepasJaring": "Ketuk berulang untuk lepas!",
-    "relawan": "Relawan konservasi akan memantau dan menjaga sarangmu. Siklus kehidupan berlanjut!"
+    "relawan": "Relawan konservasi akan memantau dan menjaga sarangmu. Siklus kehidupan berlanjut!",
+    "pemburu": "Tertangkap pemburu ilegal!"
   },
   "fakta": [
     {
@@ -290,7 +346,7 @@ window.PB_DATA = {
       "source": "noaa-green"
     },
     {
-      "text": "Lama inkubasi dan jumlah telur berbeda antarspesies, sarang, dan suhu. Tidak ada satu angka yang berlaku untuk semua penyu.",
+      "text": "Lekang memakan beragam krustasea, moluska, tunikata dan alga. Kerang dan siput laut di game mewakili kelompok moluska.",
       "source": "noaa-olive"
     },
     {
@@ -298,7 +354,7 @@ window.PB_DATA = {
       "source": "noaa-green"
     },
     {
-      "text": "Penyu sisik di banyak terumbu memakan spons. Jangan mengambil atau merusak spons dan karang.",
+      "text": "Sisik terutama memakan spons di banyak terumbu. Dietnya juga dapat mencakup tunikata, moluska, krustasea dan ubur-ubur.",
       "source": "noaa-hawksbill"
     },
     {
@@ -340,6 +396,22 @@ window.PB_DATA = {
     {
       "text": "Menurut rilis BCA Agustus 2026, dukungan program mencakup lebih dari 63.000 tukik dan lebih dari 900 sarang di Banyuwangi, Yogyakarta, dan Bali.",
       "source": "bca"
+    },
+    {
+      "text": "Kantong plastik terapung dapat menyerupai ubur-ubur atau makanan lain. Kemiripan ini menjadi salah satu bahaya plastik bagi penyu.",
+      "source": "plastic"
+    },
+    {
+      "text": "Plastik yang lapuk dapat pecah menjadi fragmen lebih kecil, termasuk mikroplastik. Terfragmentasi tidak berarti berubah menjadi makanan yang aman.",
+      "source": "fragment"
+    },
+    {
+      "text": "Perburuan ilegal juga dapat berlangsung di air. Polri melaporkan dugaan kasus di Raja Ampat beserta peralatan selam dan alat berburu. Karakter pemburu di game bukan gambaran semua penyelam atau patroli konservasi.",
+      "source": "poaching"
+    },
+    {
+      "text": "Ikan seperti barakuda termasuk predator potensial tukik. Jenis dan risiko predator berbeda antarwilayah dan tahap hidup; tidak semua ikan besar memangsa penyu dewasa.",
+      "source": "pred-fish"
     }
   ],
   "kuisJumlah": 3,
@@ -452,6 +524,15 @@ window.PB_DATA = {
         "Ya, semua hiu lebih kecil"
       ],
       "j": 1
+    },
+    {
+      "t": "Apakah plastik yang pecah menjadi potongan kecil sudah aman?",
+      "p": [
+        "Ya, sudah menjadi makanan",
+        "Tidak, fragmennya masih dapat membahayakan",
+        "Ya, semua plastik larut di laut"
+      ],
+      "j": 1
     }
   ],
   "ajakan": {
@@ -488,7 +569,7 @@ window.PB_DATA = {
     "tampilkanBooth": false,
     "teksBooth": "Program 10 Bottles for 1 Egg mengonversi 10 botol plastik bekas menjadi dukungan pendanaan penyelamatan satu telur penyu. Ikuti ketentuan periode kegiatan."
   },
-  "versi": "7.0",
+  "versi": "8.0",
   "diperiksa": "6 November 2026",
   "sources": [
     {
@@ -550,6 +631,26 @@ window.PB_DATA = {
       "id": "fwslight",
       "label": "FWC · Kriteria lampu ramah satwa",
       "url": "https://myfwc.com/conservation/you-conserve/lighting/criteria/"
+    },
+    {
+      "id": "plastic",
+      "label": "NOAA · Plastik menyerupai makanan",
+      "url": "https://www.fisheries.noaa.gov/feature-story/what-can-you-do-help-sea-turtles"
+    },
+    {
+      "id": "fragment",
+      "label": "NOAA · Plastik terfragmentasi",
+      "url": "https://marinedebris.noaa.gov/what-marine-debris/microplastics"
+    },
+    {
+      "id": "poaching",
+      "label": "Polri · Dugaan perburuan penyu di Raja Ampat",
+      "url": "https://inp.polri.go.id/artikel/immigration-office-handed-over-the-chinese-turtle-poacher-to-the-southwest-papua-regional-police"
+    },
+    {
+      "id": "pred-fish",
+      "label": "Zoological Survey of India · Predator tukik",
+      "url": "https://faunaofindia.nic.in/PDFVolumes/hpg/014/index.pdf"
     }
   ]
 };

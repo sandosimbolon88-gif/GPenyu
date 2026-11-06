@@ -1,7 +1,7 @@
 /* Cache file game agar tetap bisa dibuka tanpa internet setelah kunjungan pertama.
  * Perubahan file akan terlihat pada pembukaan berikutnya. Naikkan VERSI bila ingin
  * memaksa semua perangkat membuang cache lama. */
-const VERSI = 'penyu-v7-20261106';
+const VERSI = 'penyu-v8-20261106';
 const FILES = [
   './', './index.html', './style.css', './manifest.webmanifest', './icon.svg',
   './js/data.js', './js/qr.js', './js/art.js', './js/audio.js', './js/storage.js', './js/game.js', './js/ui.js'
