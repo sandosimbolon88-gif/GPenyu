@@ -2,7 +2,7 @@
  * Disimpan di perangkat (localStorage), jadi tetap jalan tanpa internet. */
 (function () {
   'use strict';
-  const KEY_LB = 'pb_penyu_papan_v1';
+  const KEY_LB = 'pb_penyu_papan_v7';
   const KEY_STAT = 'pb_penyu_stat_v1';
   const KEY_SET = 'pb_penyu_atur_v1';
   const MAX_ENTRIES = 1000;
@@ -104,3 +104,5 @@
 
   window.PB_STORE = Store;
 })();
+
+

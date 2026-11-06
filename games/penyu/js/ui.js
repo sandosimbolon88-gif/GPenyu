@@ -25,7 +25,7 @@
 
   /* ---------------- Judul ---------------- */
   function renderTitle() {
-    $('titleText').textContent = D.judul;
+    $('titleText').innerHTML = 'Pulang ke<br><em>Banyuwangi.</em>';
     $('subtitleText').textContent = D.subjudul;
     $('programLabel').textContent = D.labelProgram;
     const top = ST.top('hari', 5);
@@ -58,7 +58,7 @@
         <canvas width="560" height="300"></canvas>
         <h3>${esc(sp.nama)}</h3>
         <div class="latin">${esc(sp.latin)}</div>
-        <div><span class="badge iucn-${esc(sp.iucn)}">${esc(sp.iucnLabel)} (${esc(sp.iucn)})</span></div>
+        <div><span class="badge iucn-${esc(sp.iucn)}">${esc(sp.iucnLabel)} (${esc(sp.iucn)}) · global</span></div>
         <div class="row"><b>Ukuran:</b> ${esc(sp.ukuran)}</div>
         <div class="row"><b>Makanan:</b> ${esc(sp.makanan)}</div>
         <div class="row"><b>Gaya main:</b> ${esc(sp.gaya)}</div>
@@ -132,8 +132,9 @@
     pauseBtn(false);
     $('cardLabel').textContent = card.label + ' dari 5';
     $('cardName').textContent = card.nama;
-    $('cardPlace').textContent = card.lokasi;
+    $('cardPlace').textContent = idx===2 && sp.id==='belimbing' ? 'Laut lepas · habitat pelagis' : card.lokasi;
     $('cardText').textContent = fill(card.teks, sp);
+    $('cardSource').href = D.sources.find(s=>s.id===({'lekang':'noaa-olive','hijau':'noaa-green','sisik':'noaa-hawksbill','belimbing':'noaa-leather'}[sp.id])).url;
     $('cardTips').innerHTML = card.tips.map((t) => `<li>${esc(fill(t, sp))}</li>`).join('');
     $('cardFact').textContent = fill(card.fakta, sp);
     show('scrCard');
@@ -284,7 +285,7 @@
       ['Naik tahap', fmt(raw.tahap)],
       ['Perjalanan pulang', fmt(raw.jarak)],
       [run.finished ? `Telur (${run.eggs} butir × 10)` : 'Telur', fmt(raw.telur)],
-      ['Bonus Bebas Plastik' + (run.plastic > 0 ? ` (plastik tertelan ${run.plastic}×)` : ''), raw.bebas ? fmt(raw.bebas) : '–'],
+      ['Bonus Bebas Plastik' + (run.plastic > 0 ? ` (insiden plastik ${run.plastic}×)` : ''), raw.bebas ? fmt(raw.bebas) : '–'],
       ['Subtotal', fmt(sub), 'sub'],
       [`Pengali tingkat ${run.ht.tingkat}`, mult(run.ht.pengali), 'sub'],
       [`Kuis (${run.quiz || 0} benar)`, '+' + fmt(quizPts)],
@@ -374,7 +375,10 @@
 
   /* ---------------- Fakta ---------------- */
   function showFacts() {
-    $('factList').innerHTML = D.fakta.map((f, i) => `<div class="fact-item"><b>${i + 1}.</b>${esc(f)}</div>`).join('');
+    $('factList').innerHTML = D.fakta.map((f, i) => {
+      const source=D.sources.find(s=>s.id===f.source);
+      return `<div class="fact-item"><b>${String(i+1).padStart(2,'0')}</b><p>${esc(f.text)}</p><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)} ↗</a></div>`;
+    }).join('');
     show('scrFacts');
   }
 
@@ -389,7 +393,7 @@
       `Jumlah main: <b>${s.main}</b> · Sampai bertelur: <b>${s.selesai}</b><br>` +
       `Rata-rata skor (sebelum kuis): <b>${s.main ? fmt(s.totalSkor / s.main) : 0}</b> · Skor tersimpan: <b>${all.length}</b><br>` +
       `Penyu dipilih: ${esc(sp)}<br>Cara menetas dipilih: ${esc(ht)}<br>` +
-      `Kuis benar: <b>${s.kuisBenar}</b> dari ${s.kuisTotal} soal · Rata-rata plastik tertelan: <b>${s.main ? (s.plastik / s.main).toFixed(1) : 0}</b> per permainan`;
+      `Kuis benar: <b>${s.kuisBenar}</b> dari ${s.kuisTotal} soal · Rata-rata insiden plastik: <b>${s.main ? (s.plastik / s.main).toFixed(1) : 0}</b> per permainan`;
     $('opQuick').checked = !!G.settings.cepat;
     $('opMute').checked = !!G.settings.bisu;
     show('scrOp');
@@ -463,6 +467,7 @@
     SFX.setMuted(G.settings.bisu);
     $('btnSound').textContent = G.settings.bisu ? '🔇' : '🔊';
     G.init($('game'));
+    $('btnDash').addEventListener('pointerdown',e=>{e.preventDefault();G.input.dash=true;G.lastInput=Date.now();});
     G.onStageCard = stageCard;
     G.onRunEnd = runEnded;
 
@@ -542,3 +547,5 @@
   window.PB_UI = U;
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', init); else init();
 })();
+
+

@@ -66,7 +66,27 @@
     setMuted: function (m) { muted = !!m; },
     isMuted: function () { return muted; },
     click: function () { tone(660, 0.07, 'triangle', 0.18); },
-    eat: function () { tone(520 + Math.random() * 120, 0.09, 'sine', 0.22, 1.6); },
+    eat: function () { tone(560 + Math.random() * 100, 0.085, 'sine', 0.2, 1.45); },
+    eatSmall: function (combo) {
+      const k = Math.min(10, combo || 0);
+      tone((690 + Math.random() * 120) * (1 + k * 0.018), 0.065, 'triangle', 0.16, 1.25);
+    },
+    eatMedium: function (combo) {
+      const k = Math.min(10, combo || 0);
+      tone((500 + Math.random() * 90) * (1 + k * 0.016), 0.10, 'sine', 0.22, 1.45);
+      noise(0.045, 0.055, 1700);
+    },
+    eatJelly: function (combo, big) {
+      const k = Math.min(10, combo || 0);
+      tone((big ? 300 : 430) * (1 + k * 0.014), big ? 0.16 : 0.12, 'sine', big ? 0.27 : 0.22, 1.55);
+      tone((big ? 510 : 620) * (1 + k * 0.012), 0.07, 'triangle', 0.095, 1.25, 0.025);
+      noise(big ? 0.10 : 0.065, big ? 0.09 : 0.06, 1250);
+    },
+    combo: function (level) {
+      const base = level >= 12 ? 1047 : level >= 8 ? 880 : level >= 5 ? 784 : 698;
+      tone(base, 0.13, 'triangle', 0.15, 1.22);
+      tone(base * 1.25, 0.15, 'triangle', 0.11, 1.1, 0.07);
+    },
     bad: function () { tone(220, 0.25, 'sawtooth', 0.16, 0.5); },
     hurt: function () { tone(330, 0.35, 'square', 0.14, 0.35); noise(0.25, 0.2, 600); },
     level: function () { [523, 659, 784, 1047].forEach((f, i) => tone(f, 0.18, 'triangle', 0.2, 1, i * 0.09)); },
@@ -77,3 +97,5 @@
     win: function () { [392, 523, 659, 784, 1047, 1319].forEach((f, i) => tone(f, 0.25, 'triangle', 0.18, 1, i * 0.11)); }
   };
 })();
+
+

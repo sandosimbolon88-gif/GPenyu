@@ -30,17 +30,17 @@
     <section id="scrTitle" class="screen">
       <div class="title-wrap">
         <div class="title-main">
-          <div class="chip">Game Edukasi Konservasi Penyu</div>
+          <div class="chip">BAKTI LINGKUNGAN &nbsp; / &nbsp; EKSPLORASI 01</div>
           <h1 id="titleText">Pulang ke Banyuwangi</h1>
           <p id="subtitleText" class="lead"></p>
-          <div class="btn-col">
-            <button class="btn primary big" data-go="species">Mulai Main</button>
+          <p class="title-meta">4 SPESIES &nbsp; · &nbsp; 5 TAHAP &nbsp; · &nbsp; 1 PERJALANAN PULANG</p><div class="btn-col">
+            <button class="btn primary big" data-go="species">Mulai petualangan &nbsp; →</button>
             <button class="btn" data-go="board">Papan Juara</button>
             <button class="btn" data-go="facts">Fakta Penyu</button>
           </div>
         </div>
         <aside class="title-board panel-soft">
-          <h3>Juara Hari Ini</h3>
+          <div class="chip tiny">JEJAK PENJELAJAH</div><h3>Juara hari ini</h3>
           <ol id="titleTop" class="mini-board"></ol>
         </aside>
       </div>
@@ -51,8 +51,8 @@
     <section id="scrSpecies" class="screen hidden">
       <div class="panel wide">
         <h2>Pilih Penyumu</h2>
-        <p class="muted">Keempat penyu ini bertelur di pantai-pantai Banyuwangi.</p>
-        <div id="speciesCards" class="cards four"></div>
+        <p class="muted">Empat spesies yang tercatat bertelur di Banyuwangi. Setiap penyu punya makanan dan perjalanan berbeda.</p>
+        <div id="speciesCards" class="cards four"></div><p class="tiny muted">Status IUCN global; kondisi populasi lokal dapat berbeda. <a class="source-inline" href="https://www.iucn-mtsg.org/statuses" target="_blank" rel="noopener noreferrer">Lihat sumber IUCN ↗</a></p>
         <div class="btn-row">
           <button class="btn" data-go="title">Kembali</button>
           <button id="btnSpeciesNext" class="btn primary" disabled>Lanjut</button>
@@ -63,8 +63,8 @@
     <!-- PILIH CARA MENETAS -->
     <section id="scrHatch" class="screen hidden">
       <div class="panel wide">
-        <h2>Pilih Cara Menetas</h2>
-        <p class="muted">Cara menetas menentukan tingkat kesulitan permainan.</p>
+        <h2>Awal perjalananmu</h2>
+        <p class="muted">Pilih tantangan permainan. Mode ini tidak membandingkan keberhasilan metode konservasi di alam.</p>
         <div id="hatchCards" class="cards three"></div>
         <p id="hatchNote" class="note"></p>
         <div class="btn-row">
@@ -82,7 +82,7 @@
         <p id="cardPlace" class="muted"></p>
         <p id="cardText" class="lead-sm"></p>
         <ul id="cardTips" class="tips"></ul>
-        <div class="fact-box"><b>Tahukah kamu?</b><span id="cardFact"></span></div>
+        <div class="fact-box"><b>Tahukah kamu?</b><span id="cardFact"></span><a id="cardSource" class="source-link" target="_blank" rel="noopener noreferrer">Sumber biologi · NOAA ↗</a></div>
         <div class="btn-row center">
           <button id="btnCardGo" class="btn primary big">Lanjut</button>
         </div>
@@ -105,7 +105,7 @@
       <div class="panel small center-text">
         <h2>Perjalanan Berakhir</h2>
         <p id="overReason" class="lead-sm"></p>
-        <div class="fact-box"><b>Tahukah kamu?</b><span>Di alam, diperkirakan hanya sekitar 1 dari 1.000 tukik yang bertahan hingga dewasa. Itulah sebabnya setiap tukik sangat berharga.</span></div>
+        <div class="fact-box"><b>Tahukah kamu?</b><span>Tukik menghadapi banyak ancaman sebelum dewasa. Peluang hidup berbeda antarspesies dan populasi; menjaga habitat membantu mereka bertahan.</span></div>
         <div class="btn-row center"><button id="btnOverNext" class="btn primary big">Lanjut ke Kuis</button></div>
       </div>
     </section>
@@ -179,7 +179,7 @@
     <!-- FAKTA -->
     <section id="scrFacts" class="screen hidden dim">
       <div class="panel wide">
-        <h2>Fakta Penyu</h2>
+        <div class="chip">CATATAN SAMUDRA</div><h2>Kenali yang kamu jaga.</h2><p class="muted">Diperiksa 6 November 2026. Ketuk sumber di setiap kartu untuk membaca lebih lanjut.</p>
         <div id="factList" class="fact-list"></div>
         <div class="btn-row center"><button class="btn primary" data-go="title">Kembali</button></div>
       </div>
@@ -206,6 +206,7 @@
     </section>
   </div>
 
+  <button id="btnDash" aria-label="Melesat, jeda tiga detik">➤ <span>Melesat</span></button>
   <div id="rotate" class="hidden">
     <div>
       <div class="rotate-icon">📱↻</div>

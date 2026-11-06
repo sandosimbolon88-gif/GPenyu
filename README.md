@@ -1,60 +1,47 @@
-# gamesBaktiBCA
-game edukasi untuk program Bakti Lingkungan Bakti BCA
+# Games Bakti Lingkungan — Pulang ke Banyuwangi v7
 
-- Plan & riset: [docs/PLAN.md](docs/PLAN.md)
-- Game pertama: **Pulang ke Banyuwangi** (konservasi penyu) di [games/penyu/](games/penyu/)
+Game konservasi penyu untuk browser, berbasis HTML lampiran v6. Visual digambar dengan Canvas; game tidak membutuhkan CDN, akun, atau koneksi internet saat file mandiri dibuka.
 
-## Cara memainkan
+**Mulai:** buka `games/penyu/index.html`, atau jalankan server lokal:
 
-Game dibuat dengan HTML, CSS, dan JavaScript biasa: tanpa install, tanpa proses build, dan tanpa library dari internet.
-
-**1. Lewat alamat web (paling praktis untuk banyak perangkat)**
-Upload isi repo ini ke hosting statis apa pun, misalnya GitHub Pages, Netlify, atau server kantor. Cukup buka alamatnya di browser tablet, HP, laptop, atau TV sentuh.
-Untuk GitHub Pages: buka *Settings → Pages*, pilih *Deploy from a branch*, pilih branch dan folder `/ (root)`. Alamatnya nanti seperti `https://<akun>.github.io/gamesBaktiBCA/`.
-Setelah dibuka sekali, game tersimpan di perangkat dan tetap bisa dimainkan tanpa internet.
-
-**2. Tanpa internet sama sekali (laptop/PC)**
-Pakai versi satu file: jalankan `python tools/buat_satu_file.py`, lalu salin `dist/pulang-ke-banyuwangi.html` ke laptop/PC (flashdisk, Google Drive, WhatsApp) dan klik dua kali untuk membukanya di Chrome atau Edge.
-Bisa juga mengunduh seluruh repo: di GitHub pilih branch, klik *Code → Download ZIP*, ekstrak, lalu buka `games/penyu/index.html`.
-
-> Di tablet dan HP (Android/iPad), membuka file HTML dari penyimpanan sering tidak berjalan sempurna. Untuk perangkat ini pakai cara 1 (alamat web): cukup buka sekali saat ada internet, setelah itu game tetap bisa dimainkan tanpa internet.
-
-**3. Menjalankan di laptop untuk dites**
 ```bash
-python3 -m http.server 8000
+python -m http.server 8000 --bind 127.0.0.1
 ```
-Lalu buka `http://localhost:8000/games/penyu/`.
+
+Lalu buka `http://127.0.0.1:8000/games/penyu/`. Untuk HP/tablet, gunakan hosting statis melalui HTTPS. Versi hosting menyimpan file untuk bermain offline setelah cache selesai.
+
+**Satu HTML:** jalankan `python tools/buat_satu_file.py`. Hasilnya `dist/pulang-ke-banyuwangi.html`, dapat dibuka langsung di laptop tanpa internet. Folder `dist/` adalah keluaran build dan tidak disimpan di Git.
+
+## Yang berubah
+
+- Penyu dengan pola cangkang per spesies dan sirip beranimasi; material baru untuk ikan, ubur-ubur, plastik, kapal dan alga, tambahan kaleng/tali.
+- Laut berlapis, cahaya air, relief dasar laut, dan menu bernuansa pesisir.
+- Makan berurutan memberi kombo; 12 makanan mengaktifkan frenzy. Melesat mempunyai cooldown tiga detik. Tetap makan sesuai diet penyu.
+- Ukuran cangkang dan panjang predator memakai skala per fase; belimbing dewasa lebih besar daripada penyu lain. Hiu macan tetap berbahaya. Makanan mikroskopis diperbesar dan pertumbuhan dipercepat.
+- Sampah, predator, jaring dan kapal dibatasi agar ada ruang berenang; hiu diperingatkan sebelum masuk.
+- Fakta dan kuis diperiksa ulang. Sumber dapat dibuka dari kartu fakta. Status hijau LC global diperbarui; data capaian BCA bertanggal Agustus 2026.
+
+Dasar sumber, koreksi, ukuran dan batas penyederhanaan: **[docs/FACT_CHECK.md](docs/FACT_CHECK.md)**. `docs/PLAN.md` adalah arsip rancangan awal.
 
 ## Kontrol
 
-- **Layar sentuh:** sentuh dan geser, penyu mengikuti jari.
-- **Mouse:** penyu mengikuti kursor.
-- **Keyboard:** tombol panah atau WASD. Spasi/Enter untuk "ketuk berulang" (lepas dari jaring, menggali sarang). Esc atau P untuk jeda.
+Mouse: arahkan untuk berenang. Sentuh: tahan dan geser. Keyboard: WASD/panah. Shift atau tombol Melesat untuk dash di tiga fase laut. Spasi/Enter atau ketuk berulang untuk lepas jaring dan menggali. Esc/P untuk jeda.
 
-## Untuk operator pameran
+## Operator dan skor
 
-- **Menu operator:** di layar judul, tahan tulisan *Bakti Lingkungan · Bakti BCA* di bagian bawah selama 1,5 detik (atau tekan huruf `O`). Isinya:
-  - Mode Cepat (sesi sekitar 3 menit), matikan suara
-  - Statistik perangkat: jumlah main, penyu dan tingkat yang paling sering dipilih, hasil kuis, rata-rata plastik tertelan
-  - Unduh papan juara (CSV), reset papan hari ini, reset semua papan, reset statistik
-- **Layar penuh:** tombol ⛶ di pojok kanan atas. Untuk kiosk di PC, jalankan Chrome dengan `--kiosk`.
-- **Otomatis kembali ke judul:** setelah 45 detik tanpa sentuhan saat bermain, atau 60 detik di layar menu. Di layar judul, papan juara tampil bergantian sebagai mode *attract*.
-- **Papan juara disimpan per perangkat.** Ada papan Hari Ini dan Sepanjang Pameran. Yang dicatat hanya nama panggilan (tanpa data pribadi). Kalau browser dibuka dalam mode samaran (incognito), skor hilang saat browser ditutup.
+Tahan label Bakti Lingkungan di judul selama 1,5 detik, atau tekan O. Menu menyediakan mode cepat, suara, statistik, ekspor CSV dan reset. Skor disimpan per perangkat; gunakan nama panggilan. Papan v7 terpisah dari papan v1 karena keseimbangan skor berubah; data lama tidak dihapus. Statistik penggunaan tetap dilanjutkan.
 
-## Mengubah teks, fakta, dan angka
+Ubah konten di `games/penyu/js/data.js`; gaya dan renderer masing-masing di `style.css` dan `js/art.js`. Bila memperbarui aplikasi hosting, naikkan versi cache di `sw.js`. Teks booth opsional harus sesuai periode kegiatan; nilai default nonaktif.
 
-Semua teks ada di [`games/penyu/js/data.js`](games/penyu/js/data.js): data penyu, metode penetasan, kartu tiap tahap, bank fakta, kuis, dan teks ajakan Bakti BCA. Edit teksnya, simpan, lalu muat ulang browser.
+## Pengujian
 
-- Untuk menampilkan ajakan *10 botol plastik untuk 1 tukik* di layar akhir, ubah `tampilkanBooth` menjadi `true`.
-- Untuk mengganti alamat QR di layar ajakan:
-  ```bash
-  pip install qrcode
-  python tools/buat_qr.py "https://alamat-baru"
-  ```
+```bash
+npm install --ignore-scripts
+npx playwright install chromium
+# Jalankan server lokal di terminal lain, lalu:
+npm test
+```
 
-> Angka capaian dan fakta di game diambil dari pemberitaan media dan publikasi kampus/mitra. Mohon diverifikasi oleh tim Bakti BCA dan Banyuwangi Sea Turtle Foundation sebelum pameran. Sumbernya ada di `docs/PLAN.md`.
+Jika memakai Chromium sistem: `CHROMIUM_PATH=/usr/bin/chromium npm test`. `GAME_URL` dapat menunjuk server lain. Uji meliputi empat spesies/tiga fase laut, batas rintangan, diet, napas, kombo, lepas jaring, satu nyawa per kontak, alur lima tahap, kuis, penyimpanan skor, tautan sumber, sentuh, dan cache offline.
 
-## Mode uji
-
-- `games/penyu/index.html?debug=1` → tombol `N` melompat ke tahap berikutnya, `K` mengurangi nyawa.
-- `games/penyu/index.html?bot=1` → penyu bergerak sendiri (untuk mengetes alur dari awal sampai akhir).
+`?debug=1` mengaktifkan N untuk melewati tahap dan K untuk mengurangi nyawa. `?bot=1` mengaktifkan pemain otomatis untuk inspeksi; keduanya melewati registrasi service worker.
