@@ -3,7 +3,7 @@
   'use strict';
   const D = window.PB_DATA, G = window.PB_GAME, ST = window.PB_STORE, SFX = window.PB_SFX, A = window.PB_ART;
   const $ = (id) => document.getElementById(id);
-  const SCREENS = ['scrTitle', 'scrSpecies', 'scrHatch', 'scrCard', 'scrPause', 'scrOver', 'scrQuiz', 'scrResult', 'scrBoard', 'scrCta', 'scrFacts', 'scrOp'];
+  const SCREENS = ['scrTitle', 'scrSpecies', 'scrHatch', 'scrCard', 'scrPause', 'scrOver', 'scrQuiz', 'scrResult', 'scrBoard', 'scrCta', 'scrFacts', 'scrGuide', 'scrOp'];
   const U = { cur: null, sel: { sp: null, ht: null }, run: null, quiz: null, name: '', board: { mode: 'hari', hi: null, next: 'title', attract: false, since: 0 }, cardTimer: null, rotateOk: false };
 
   const esc = (s) => String(s).replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
@@ -40,7 +40,9 @@
     G.paused = false;
     if (G.scene !== G.Idle) G.setScene(G.Idle);
     pauseBtn(false);
+    $('btnMenu').classList.add('hidden');
     clearInterval(U.cardTimer);
+    $('btnCardGo').onclick = null;
     U.board.attract = false;
     renderTitle();
     show('scrTitle');
@@ -119,6 +121,7 @@
     hideAll();
     pauseBtn(true);
     G.newRun(U.sel.sp, U.sel.ht);
+    $('btnMenu').classList.remove('hidden');
   }
 
   /* ---------------- Kartu tahap ---------------- */
@@ -160,6 +163,7 @@
   /* ---------------- Akhir permainan ---------------- */
   function runEnded(run) {
     pauseBtn(false);
+    $('btnMenu').classList.add('hidden');
     U.run = run;
     if (!run.finished) {
       $('overReason').textContent = (D.pesan[run.reason] || 'Perjalanan penyumu terhenti.') + ' Semua saudara tukik sudah berusaha sebaik mungkin.';
@@ -275,7 +279,7 @@
 
   function showResult() {
     const run = U.run, raw = run.raw;
-    const bonus=raw.tahap+raw.jarak+raw.telur+raw.bebas;
+    const bonus=raw.tahap+raw.telur+raw.bebas;
     const quizPts=(run.quiz||0)*D.kuisBonus;
     run.total=G.scoreRun(run,true);
     $('resultTitle').textContent = run.finished ? 'Penyumu berhasil bertelur!' : 'Hasil Perjalanan';
@@ -283,7 +287,6 @@
       ['Makanan benar (' + run.eaten + ' × 5)', '+' + fmt(raw.makan)],
       ['Sampah (' + run.plastic + ' × −4)', fmt(raw.sampah)],
       ['Naik tahap', fmt(raw.tahap)],
-      ['Perjalanan pulang', fmt(raw.jarak)],
       [run.finished ? `Telur (${run.eggs} butir × 10)` : 'Telur', fmt(raw.telur)],
       ['Bonus Bebas Plastik' + (run.plastic > 0 ? ` (insiden plastik ${run.plastic}×)` : ''), raw.bebas ? fmt(raw.bebas) : '–'],
       ['Subtotal bonus perjalanan', fmt(bonus), 'sub'],
@@ -380,6 +383,20 @@
       return `<div class="fact-item"><b>${String(i+1).padStart(2,'0')}</b><p>${esc(f.text)}</p><a href="${esc(source.url)}" target="_blank" rel="noopener noreferrer">${esc(source.label)} ↗</a></div>`;
     }).join('');
     show('scrFacts');
+  }
+
+  function showGuide() {
+    const stages = ['Tukik', 'Remaja', 'Dewasa', 'Pulang'];
+    $('dietGuide').innerHTML = D.spesies.map(sp => {
+      const foods = G.foodGuide(sp).map((food, i) => `<p><strong>${stages[i]}</strong><br>${esc(food)}</p>`).join('');
+      return `<div class="fact-item"><b>${esc(sp.nama)}</b>${foods}</div>`;
+    }).join('');
+    show('scrGuide');
+  }
+
+  function quitGame() {
+    SFX.click();
+    if (confirm('Kembali ke menu utama? Sesi ini akan diakhiri tanpa menyimpan skor.')) toTitle();
   }
 
   /* ---------------- Operator ---------------- */
@@ -486,12 +503,14 @@
       else if (go === 'species') show('scrSpecies');
       else if (go === 'board') showBoard('hari', null, 'title');
       else if (go === 'facts') showFacts();
+      else if (go === 'guide') showGuide();
     });
     $('btnSpeciesNext').addEventListener('click', () => { SFX.click(); show('scrHatch'); });
     $('btnHatchStart').addEventListener('click', startGame);
     $('btnPause').addEventListener('click', () => { SFX.click(); pauseGame(); });
     $('btnResume').addEventListener('click', () => { SFX.click(); resumeGame(); });
-    $('btnQuit').addEventListener('click', () => { SFX.click(); toTitle(); });
+    $('btnMenu').addEventListener('click', quitGame);
+    $('btnQuit').addEventListener('click', quitGame);
     $('btnOverNext').addEventListener('click', () => { SFX.click(); startQuiz(); });
     $('btnQuizSkip').addEventListener('click', () => { SFX.click(); finishQuiz(); });
     $('btnSave').addEventListener('click', saveScore);

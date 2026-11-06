@@ -20,7 +20,7 @@ Makanan benar selalu **+5**, sampah selalu **−4**, termasuk saat frenzy dan pa
 
 Makanan mencakup moluska (kerang/siput), tunikata, salpa, alga merah dan lamun dengan bentuk berbeda, sesuai diet spesies. Barakuda mengancam tukik; satu pemburu ilegal dapat muncul pada fase laut muda/dewasa, didahului peringatan. Penyelam biasa serta relawan konservasi bukan musuh.
 
-Intan Box dan semi alami mempunyai lintasan pasir lebih panjang. Gerak pasir perlu tahan klik/sentuhan atau Spasi, dengan kecepatan lebih rendah. Gangguan pada tahap bertelur berasal dari cahaya kafe/kota yang mengarah ke pasir. Jarak dan kontrol tersebut merupakan aturan game, bukan petunjuk pelepasliaran.
+Intan Box dan semi alami mempunyai lintasan pasir lebih panjang. Gerak pasir perlu tahan klik/sentuhan atau Spasi, dengan kecepatan lebih rendah. Pada tahap bertelur, jalur tengah bebas sorot lampu bangunan. Jarak tahap Pulang menunjukkan progres dan makanan memberi satu-satunya tambahan skor di tahap itu. Menu utama menyediakan panduan makanan per spesies dan ancaman. Tombol Menu saat bermain mengakhiri sesi setelah konfirmasi. Jarak dan kontrol tersebut merupakan aturan game, bukan petunjuk pelepasliaran.
 
 Dasar visual dan alur dari v7 tetap dipakai:
 
@@ -52,6 +52,6 @@ npx playwright install chromium
 npm test
 ```
 
-Jika memakai Chromium sistem: `CHROMIUM_PATH=/usr/bin/chromium npm test`. `GAME_URL` dapat menunjuk server lain. Uji meliputi empat spesies/tiga fase laut, batas rintangan, diet, +5/−4 di seluruh mode/fase termasuk migrasi, tombol tahan/lepas, pemburu ilegal, geometri cahaya bangunan, napas, kombo, lepas jaring, satu nyawa per kontak, alur lima tahap, kuis, penyimpanan skor, tautan sumber, sentuh, dan cache offline.
+Jika memakai Chromium sistem: `CHROMIUM_PATH=/usr/bin/chromium npm test`. `GAME_URL` dapat menunjuk server lain. Uji meliputi empat spesies/tiga fase laut, batas rintangan, diet, +5/−4 di seluruh mode/fase termasuk migrasi, tombol tahan/lepas, pemburu ilegal, akses ke area bertelur, napas, kombo, lepas jaring, satu nyawa per kontak, alur lima tahap, kuis, penyimpanan skor, tautan sumber, sentuh, dan cache offline.
 
 `?debug=1` mengaktifkan N untuk melewati tahap dan K untuk mengurangi nyawa. `?bot=1` mengaktifkan pemain otomatis untuk inspeksi; keduanya melewati registrasi service worker.

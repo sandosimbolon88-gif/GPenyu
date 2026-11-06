@@ -1035,21 +1035,6 @@
     for(let i=-1;i<=1;i++){ctx.beginPath();ctx.moveTo(r*1.4,r*i*.14);ctx.lineTo(r*1.78,r*i*.14);ctx.stroke();}
     ctx.restore();
   };
-  A.coastalBuildings=function(ctx,lights,t) {
-    ctx.save();
-    // Buildings sit along the edge of the beach; their windows cast the light.
-    ctx.fillStyle='#142c3b';ctx.fillRect(0,235,135,205);ctx.fillStyle='#26404a';ctx.fillRect(0,226,145,24);
-    ctx.fillStyle='#1a333e';ctx.fillRect(12,252,102,160);ctx.fillStyle='#e5c185';ctx.fillRect(118,292,17,60);ctx.fillRect(16,270,28,35);ctx.fillRect(57,270,28,35);
-    ctx.fillStyle='#d5b182';ctx.font='600 15px system-ui';ctx.textAlign='center';ctx.fillText('KAFE',63,385);
-    for(let i=0;i<3;i++){
-      const bx=1145+i*43,by=260+(i%2)*75;ctx.fillStyle=i%2?'#1c3444':'#243d49';ctx.fillRect(bx,by,43,270);
-      for(let row=0;row<7;row++)for(let col=0;col<2;col++){ctx.fillStyle=(row+col+i)%3?'#dcbd794f':'#e3c9999e';ctx.fillRect(bx+8+col*17,by+15+row*31,9,14);}
-    }
-    ctx.fillStyle='#c8b991';ctx.font='600 13px system-ui';ctx.textAlign='center';ctx.fillText('KOTA',1210,560);
-    for(const l of lights){const glow=ctx.createRadialGradient(l.x,l.y,0,l.x,l.y,50);glow.addColorStop(0,'#ffe7a066');glow.addColorStop(1,'#ffe7a000');ctx.fillStyle=glow;ctx.fillRect(l.x-50,l.y-50,100,100);}
-    ctx.restore();
-  };
-
   window.PB_ART = A;
 })();
 

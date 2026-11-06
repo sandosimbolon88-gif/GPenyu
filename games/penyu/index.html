@@ -22,6 +22,7 @@
   <div id="corner">
     <button id="btnSound" class="icon-btn" aria-label="Suara">🔊</button>
     <button id="btnFull" class="icon-btn" aria-label="Layar penuh">⛶</button>
+    <button id="btnMenu" class="icon-btn hidden" aria-label="Kembali ke menu utama" title="Kembali ke menu utama">Menu</button>
     <button id="btnPause" class="icon-btn hidden" aria-label="Jeda">❚❚</button>
   </div>
 
@@ -37,6 +38,7 @@
             <button class="btn primary big" data-go="species">Mulai petualangan &nbsp; →</button>
             <button class="btn" data-go="board">Papan Juara</button>
             <button class="btn" data-go="facts">Fakta Penyu</button>
+            <button class="btn" data-go="guide">Makanan &amp; Ancaman</button>
           </div>
         </div>
         <aside class="title-board panel-soft">
@@ -182,6 +184,24 @@
         <div class="chip">CATATAN SAMUDRA</div><h2>Kenali yang kamu jaga.</h2><p class="muted">Diperiksa 6 November 2026. Ketuk sumber di setiap kartu untuk membaca lebih lanjut.</p>
         <div id="factList" class="fact-list"></div>
         <div class="btn-row center"><button class="btn primary" data-go="title">Kembali</button></div>
+      </div>
+    </section>
+
+    <!-- PANDUAN -->
+    <section id="scrGuide" class="screen hidden dim">
+      <div class="panel wide">
+        <h2>Makanan &amp; Ancaman</h2>
+        <p class="muted">Makanan yang sesuai spesies dan tahap memberi +5. Sampah di laut mengurangi 4 poin dan melukai penyu.</p>
+        <h3>Makanan tiap penyu</h3>
+        <div id="dietGuide" class="cards four"></div>
+        <h3>Ancaman dalam game</h3>
+        <ul class="tips">
+          <li><b>Pantai awal:</b> kepiting hantu, burung, dan lampu daratan pada mode Alami.</li>
+          <li><b>Laut:</b> ikan besar, barakuda, hiu macan, pemburu ilegal, jaring hantu, baling-baling kapal, dan kehabisan napas.</li>
+          <li><b>Sampah laut:</b> kantong, botol, sedotan, tutup botol, kaleng, tali, plastik robek, dan serpihan plastik. Plastik robek bisa menyerupai ubur-ubur.</li>
+          <li><b>Pantai bertelur:</b> tumpukan sampah menghalangi jalan. Lewati lewat jalur tengah.</li>
+        </ul>
+        <div class="btn-row center"><button class="btn primary" data-go="title">Kembali ke Menu</button></div>
       </div>
     </section>
 

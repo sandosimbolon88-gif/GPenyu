@@ -38,6 +38,12 @@ module.exports = async function v8Checks(page) {
       verify(G.score()-before===5,`migration food +5 ${mode}`);
       const beforeTrash=G.score();m.p.inv=0;G.run.health=100;m.items=[{bad:true,type:'robek',r:23,x:m.p.x+230*.016,y:m.p.y,vx:0,ph:0,rot:0,spin:0}];m.update(.016);
       verify(G.score()-beforeTrash===-4 && G.run.health===68,`migration torn plastic -4 and health -32 ${mode}`);
+      const afterTrash = G.score();
+      m.dur = 1;
+      m.update(.5);
+      verify(m.prog >= .5 && G.score() === afterTrash, `distance is progress only ${mode}`);
+      m.update(.5);
+      verify(m.done && G.run.stage === 5 && G.score() === afterTrash, `arrival adds no points ${mode}`);
     }
     G.newRun('hijau','intan');G.paused=true;G.setScene(G.scenes.Ocean,3);
     const o=G.scene;cleanOcean(o);o.spawnDiver();o.spawnDiver();
@@ -46,16 +52,20 @@ module.exports = async function v8Checks(page) {
     verify(o.divers.length===1,'hunter enters after warning');
     const hunter=o.divers[0];hunter.x=500;hunter.y=350;o.p.x=hunter.x+hunter.dir*hunter.size*.9;o.p.y=hunter.y;o.p.inv=0;const lives=G.run.lives;o.update(.001);
     verify(G.run.lives===lives-1,'illegal capture costs one life');
-    G.newRun('hijau','intan');G.paused=true;G.setScene(G.scenes.Nest);
-    const n=G.scene;
-    verify(!n.people && !n.lamps,'no hostile flashlight people in nesting');
-    verify(n.lights.some(l=>l.kind==='cafe') && n.lights.some(l=>l.kind==='kota'),'cafe and city are light sources');
-    const light=n.lights[0];verify(n.lightAt(light.x+Math.cos(light.angle)*250,light.y+Math.sin(light.angle)*250)>0,'lit sand matches beam geometry');
-    verify(n.lightAt(640,160)===0,'dark nesting area remains available');
-    G.input.keys={};G.input.inside=false;G.input.active=false;const y=n.p.y;n.update(.2);verify(n.p.y===y,'nesting crawl also requires hold');
-    G.input.keys.Space=true;n.update(.2);verify(n.p.y<y,'Space alone crawls toward nesting area');
-    G.input.keys={};n.state='gali';n.mash=0;G.input.active=true;for(let i=0;i<180 && n.state==='gali';i++)n.update(.02);
-    verify(n.state==='telur','held pointer digs the nest');
+    for (const sp of PB_DATA.spesies) {
+      G.newRun(sp.id, 'intan');G.paused=true;G.setScene(G.scenes.Nest);
+      const n=G.scene;
+      G.input.keys={};G.input.inside=false;G.input.active=false;
+      const y=n.p.y;n.update(.2);verify(n.p.y===y,`nesting crawl requires hold ${sp.id}`);
+      G.input.keys.Space=true;
+      for(let i=0;i<1500 && n.state==='naik';i++)n.update(.02);
+      verify(n.state==='gali' && n.p.x===640,`Space alone reaches nesting area ${sp.id}`);
+      G.input.keys={};G.input.active=true;
+      for(let i=0;i<200 && n.state==='gali';i++)n.update(.02);
+      verify(n.state==='telur',`held pointer digs the nest ${sp.id}`);
+      for(let i=0;i<400 && !G.run.ended;i++)n.update(.02);
+      verify(G.run.finished && G.run.eggs>0,`egg-laying completes the run ${sp.id}`);
+    }
     G.input.active=false;G.input.keys={};G.newRun('hijau','intan');G.paused=true;
     return checks;
   });

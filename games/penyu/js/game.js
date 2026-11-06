@@ -333,11 +333,11 @@
 
   /* ---------------- Skor & alur ---------------- */
   G.rawTotal = function () {
-    const r=G.run.raw; return r.makan+r.sampah+r.tahap+r.jarak+r.telur+r.bebas;
+    const r=G.run.raw; return r.makan+r.sampah+r.tahap+r.telur+r.bebas;
   };
   G.scoreRun = function(run,withQuiz=false) {
     const r=run.raw;
-    const bonus=Math.round((r.tahap+r.jarak+r.telur+r.bebas)*run.ht.pengali);
+    const bonus=Math.round((r.tahap+r.telur+r.bebas)*run.ht.pengali);
     return bonus+r.makan+r.sampah+(withQuiz?(run.quiz||0)*D.kuisBonus:0);
   };
   G.score = function() { return G.run ? G.scoreRun(G.run) : 0; };
@@ -352,9 +352,9 @@
     const ht = D.penetasan.find((h) => h.id === htId) || D.penetasan[0];
     G.run = {
       sp: sp, ht: ht, lives: ht.nyawa, maxLives: ht.nyawa,
-      raw: { makan: 0, sampah: 0, tahap: 0, jarak: 0, telur: 0, bebas: 0 },
+      raw: { makan: 0, sampah: 0, tahap: 0, telur: 0, bebas: 0 },
       eaten: 0, health: 100, breath: 100, plasticFree: true, plastic: 0,
-      eggs: 0, disturbed: 0, stage: 0, finished: false, reason: '', start: Date.now()
+      eggs: 0, stage: 0, finished: false, reason: '', start: Date.now()
     };
     ST.track((s) => {
       s.main++;
@@ -1061,6 +1061,17 @@
   const PIXELS_CM = [0, 4.0, 1.7, 1.1];
   const LIMITS = [null, { trash: 16, preds: 3, total: 22 }, { trash: 20, preds: 3, total: 27 }, { trash: 24, preds: 3, total: 31 }];
   const FOOD_NAMES = { plankton: 'Zooplankton · diperbesar', telur: 'Telur ikan · diperbesar', ubur: 'Ubur-ubur', uburBesar: 'Ubur-ubur', udang: 'Udang', kepiting: 'Kepiting', lamun: 'Lamun', alga: 'Alga', spons: 'Spons', kerang:'Kerang', siput:'Siput laut',salpa:'Salpa',tunikata:'Tunikata',algaMerah:'Alga merah',lamunDaun:'Lamun daun lebar' };
+  function oceanDiet(sp, stage) {
+    if (stage === 1) return sp.dietTukik;
+    if (stage === 3 && sp.id === 'belimbing') return ['ubur', 'uburBesar', 'salpa'];
+    return sp.dietRemaja;
+  }
+
+  G.foodGuide = function (sp) {
+    return [oceanDiet(sp, 1), oceanDiet(sp, 2), oceanDiet(sp, 3), sp.dietMigration]
+      .map(diet => [...new Set(diet.map(type => FOOD_NAMES[type].replace(' · diperbesar', '')))].join(', '));
+  };
+
   // Fish are illustrative potential hatchling predators, not named local species.
   const PRED = {
     kakap: { label: 'Ikan besar', draw: 'fish', body: '#559ca7', belly: '#d2e5cc', fin: '#246175', cm: [25, 40], span: 2.6, visual: 1, hit: .9, spd: [85, 115], maxPreyCm: 15 },
@@ -1180,8 +1191,7 @@
       this.tm = { food: 0, trash: 2.5, kakap: 2.5, kerapu: 3.5, hiu: 6, tiger: 5, diver: 13, bird: 5, sarg: 0.5, boat: 8, net: 7 };
       this.trashEvery=[0,1.35,1.15,1.0][stage];
       this.trashW={kantong:8,botol:10,robek:8,serpih:5,sedotan:1,tutup:1,kaleng:1,tali:1};
-      this.diet=stage===1?sp.dietTukik.slice():sp.dietRemaja.slice();
-      if(stage===3 && sp.id==='belimbing')this.diet=['ubur','uburBesar','salpa'];
+      this.diet = oceanDiet(sp, stage).slice();
       const staticShare = this.diet.filter((k) => FOOD[k].mv === 'static').length / this.diet.length;
       this.foodTarget = [0, 14, 12, 11][stage] + Math.round(staticShare * 2);
       for (let i = 0; i < this.foodTarget; i++) this.spawnFood(true);
@@ -1776,7 +1786,6 @@
       this.r = this.sp.adultCm[1] * PIXELS_CM[3] / 2;
       this.p = { x: 320, y: H * 0.5, vx: 0, vy: 0, inv: 2, slow: 0, net: null, netMash: 0, netT: 0, netCool: 0, tilt: 0 };
       this.tm = { trash: 1, net: 4, boat: 6, food: 1.5 };
-      this.jarakAwal = G.run.raw.jarak;
       this.breathWarn = false;
     },
     hurt: function (reason) {
@@ -1806,7 +1815,6 @@
       const run = G.run, p = this.p, sp = this.sp, pr = this.r;
       const V = 230;
       if (!this.done) this.prog = Math.min(1, this.prog + dt / this.dur);
-      run.raw.jarak = this.jarakAwal + Math.round(this.prog * 1500);
       p.inv -= dt; p.slow -= dt; p.netCool -= dt;
 
       if (p.net) {
@@ -1927,7 +1935,6 @@
       if (!this.done && this.prog >= 1) {
         this.done = true;
         SFX.level();
-        run.raw.tahap += 500;
         run.stage = 5;
         G.toast('Kamu sampai di perairan Banyuwangi!', 2, 'good');
         G.later(() => G.stageCard(5, () => G.setScene(Nest)), 1100);
@@ -2032,16 +2039,10 @@
       this.sp = G.run.sp;
       this.r = 35 * this.sp.stat.size;
       this.seaY = 620;
-      this.start = { x: W / 2, y: 660 };
-      this.p = { x: this.start.x, y: this.start.y, vx: 0, vy: 0, angle: -Math.PI / 2, inv: 1.5, hold: 0 };
+      this.p = { x: W / 2, y: 660, vx: 0, vy: 0, angle: -Math.PI / 2 };
       this.state = 'naik';
-      this.disturb = 0;
-      this.lights=[
-        {x:145,y:330,angle:-.08,len:780,spread:.17,power:65,kind:'cafe'},
-        {x:1135,y:455,angle:Math.PI+.13,len:760,spread:.14,power:60,kind:'kota'}
-      ];
       this.piles = [];
-      const spots = [[300, 300], [860, 420], [300, 520], [980, 230], [640, 400]];
+      const spots = [[300, 300], [860, 420], [300, 520], [980, 230], [760, 400]];
       for (const s of spots) this.piles.push({ x: s[0] + rand(-30, 30), y: s[1] + rand(-20, 20), r: rand(22, 28), seed: Math.floor(rand(1, 99)) });
       this.zone = { y1: 150, y2: 240 };
       this.mash = 0;
@@ -2051,24 +2052,13 @@
       this.trail = [];
       this.lastTrail = { x: this.p.x, y: this.p.y };
       this.relawan = null;
-      this.lightHint = false;
     },
     calcEggs: function () {
       const r = G.run;
-      const q = 0.55 * (r.health / 100) + (r.plasticFree ? 0.25 : 0) + 0.2 * (r.lives / r.maxLives) - 0.12 * r.disturbed;
+      const q = 0.55 * (r.health / 100) + (r.plasticFree ? 0.25 : 0) + 0.2 * (r.lives / r.maxLives);
       return Math.round(50 + 70 * clamp(q, 0, 1));
     },
     debugSkip: function () { this.p.y = this.zone.y2 - 2; },
-    debugHurt: function () { this.disturb = 100; },
-    lightAt: function(x,y) {
-      let strength=0;
-      for(const l of this.lights){
-        const dx=x-l.x,dy=y-l.y,d=Math.hypot(dx,dy);
-        const diff=Math.abs(Math.atan2(Math.sin(Math.atan2(dy,dx)-l.angle),Math.cos(Math.atan2(dy,dx)-l.angle)));
-        if(d<l.len && diff<l.spread) strength+=(1-d/l.len)*(1-diff/l.spread)*l.power;
-      }
-      return strength;
-    },
     botTarget: function() {
       // A continuous route remains clear even for the largest turtle.
       return this.p.y>535?{x:450,y:520}:{x:450,y:this.zone.y1};
@@ -2077,13 +2067,9 @@
       if (this.frozen) return;
       this.t += dt;
       const p = this.p, run = G.run, sp = this.sp;
-      p.inv -= dt;
       if (this.state === 'naik') {
-        if (p.hold > 0) p.hold -= dt;
-        else {
-          crawlSand(p,dt,34*sp.stat.speed,G.bot?this.botTarget():{x:p.x,y:this.zone.y1});
-          if(sandHeld() && Math.random()<dt*9)sand(this.fx,p.x,p.y+this.r*.5,2);
-        }
+        crawlSand(p,dt,34*sp.stat.speed,G.bot?this.botTarget():{x:p.x,y:this.zone.y1});
+        if(sandHeld() && Math.random()<dt*9)sand(this.fx,p.x,p.y+this.r*.5,2);
         takeMash();
         for (const pl of this.piles) {
           const rr2 = pl.r + this.r * 0.7, d = dist(p.x, p.y, pl.x, pl.y);
@@ -2096,20 +2082,6 @@
           this.trail.push({ x: p.x, y: p.y, a: p.angle });
           if (this.trail.length > 160) this.trail.shift();
           this.lastTrail = { x: p.x, y: p.y };
-        }
-        // gangguan cahaya
-        const lit=p.inv<=0?this.lightAt(p.x,p.y):0;
-        if (lit > 0) {
-          this.disturb += lit * dt;
-          if (!this.lightHint) { this.lightHint = true; G.toast('Cahaya kafe / kota mencapai pasir! Cari jalur yang gelap.', 3, 'bad'); }
-        } else this.disturb = Math.max(0, this.disturb - 18 * dt);
-        if (this.disturb >= 100) {
-          this.disturb = 0;
-          run.disturbed++;
-          SFX.hurt();
-          G.toast(D.pesan.terganggu, 2.8, 'bad');
-          p.x = this.start.x; p.y = this.start.y; p.vx = p.vy = 0; p.inv = 1.8; p.hold = 0.8;
-          this.trail = [];
         }
         if (p.y <= this.zone.y2) {
           this.state = 'gali';
@@ -2186,21 +2158,17 @@
         const show = this.state === 'relawan' ? this.eggs : this.shown;
         for (let i = 0; i < Math.min(show, 40); i++) A.egg(ctx, p.x + ((i * 37) % 50) - 25, p.y + this.r * 0.9 + Math.floor(i / 8) * 5, 4);
       }
-      if (!(p.inv > 0 && Math.floor(t * 10) % 2)) {
-        const crawl = this.state === 'naik' ? Math.min(1, Math.hypot(p.vx, p.vy) / 30) : this.state === 'gali' ? 0.8 : 0;
-        A.turtleTop(ctx, p.x, p.y, this.r, sp, { angle: p.angle, t: t, crawl: crawl });
-      }
+      const crawl = this.state === 'naik' ? Math.min(1, Math.hypot(p.vx, p.vy) / 30) : this.state === 'gali' ? 0.8 : 0;
+      A.turtleTop(ctx, p.x, p.y, this.r, sp, { angle: p.angle, t: t, crawl: crawl });
       if (this.relawan) A.person(ctx, this.relawan.x, this.relawan.y, 18, 0, t, '#ff8a3d');
       drawFx(ctx, this.fx);
-      // malam & cahaya
+      // suasana malam
       ctx.fillStyle = 'rgba(8,16,40,0.32)';
       ctx.fillRect(0, 0, W, H);
-      A.coastalBuildings(ctx,this.lights,t);
-      for(const l of this.lights)A.cone(ctx,l.x,l.y,l.angle,l.len,l.spread,'255,235,180',.7);
       if(this.state==='naik')sandHint(ctx);
       // HUD
       let center;
-      if (this.state === 'naik') center = { label: 'Tahap 5 · Bertelur — Cahaya kafe / kota', v: this.disturb / 100, col: this.disturb > 60 ? '#ff5d73' : '#ffd166' };
+      if (this.state === 'naik') center = { label: 'Tahap 5 · Menuju area bertelur', v: clamp((660 - p.y) / (660 - this.zone.y2), 0, 1), col: '#8ae4ae' };
       else if (this.state === 'gali') center = { label: 'Menggali sarang — tahan klik / Spasi', v: this.mash / CFG.nestMash, col: '#d9b46a' };
       else center = { label: 'Telur: ' + (this.state === 'relawan' ? this.eggs : this.shown) + ' butir', v: (this.state === 'relawan' ? 1 : this.shown / Math.max(1, this.eggs)), col: '#f8f3e3' };
       drawHUD(ctx, { meters: true, breath: false, center: center });

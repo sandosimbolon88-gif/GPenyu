@@ -353,6 +353,11 @@ button:focus-visible,a:focus-visible { outline:3px solid #c9ffe6; outline-offset
 .title-meta { color:#a1cbbf; letter-spacing:.13em; font-size:.62rem; margin-top:1.3rem; }
 .title-main .btn-col { display:grid; grid-template-columns:1fr 1fr; max-width:25rem; margin-top:1.7rem; gap:.65rem; }
 .title-main .primary { grid-column:1/-1; text-align:left; }
+.title-main [data-go="guide"] { grid-column:1/-1; }
+#btnMenu { width:auto; padding:0 .65rem; border-radius:.7rem; font-size:.85rem; }
+#scrGuide .panel { margin:auto; }
+#scrGuide h3 { margin-top:1rem; }
+#scrGuide .fact-item p { margin:.3rem 0; flex:none; }
 .title-board { position:absolute; right:0; bottom:0; width:20rem; border:1px solid #d2e5c82a; padding:.9rem 1.2rem; border-radius:1rem; background:#07333dba; }
 .title-board h3 { font-family:Georgia,serif; font-size:1.25rem; font-weight:400; }
 .title-board .mini-board { font-size:.8rem; }

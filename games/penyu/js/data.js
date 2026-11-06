@@ -291,7 +291,7 @@ window.PB_DATA = {
         "teks": "Saatnya pulang! Banyak penyu betina kembali ke kawasan pantai asal untuk bertelur. Ikuti arus dan hindari sampah.",
         "tips": [
           "Makanan sesuai diet +5, sampah −4. Jangan tertipu plastik robek yang menyerupai ubur-ubur.",
-          "Ambil udara di permukaan dan hindari buritan kapal."
+          "Jarak hanya menunjukkan progres pulang. Ambil udara di permukaan dan hindari buritan kapal."
         ],
         "fakta": "Banyak penyu betina kembali ke kawasan pantai asal untuk bertelur. Medan magnet bumi membantu navigasi; mereka tidak selalu memilih titik pasir yang persis sama."
       },
@@ -299,9 +299,9 @@ window.PB_DATA = {
         "label": "Tahap 5",
         "nama": "Bertelur",
         "lokasi": "Pantai Banyuwangi, malam hari",
-        "teks": "Kamu tiba di pantai! Tahan klik / sentuhan atau Spasi untuk mengais pasir, lalu cari jalur gelap ke area bertelur.",
+        "teks": "Kamu tiba di pantai! Tahan klik / sentuhan atau Spasi untuk bergerak ke area bertelur dekat pandan laut.",
         "tips": [
-          "Hindari cahaya dari jendela kafe dan bangunan kota yang mengarah ke pasir.",
+          "Ikuti jalur pasir di tengah pantai dan lewati tumpukan sampah.",
           "Gunakan mouse atau WASD untuk arah. Tahan klik / sentuhan atau Spasi juga saat menggali sarang.",
           "Relawan konservasi membantu memantau sarang; mereka tidak menjadi rintangan dalam tahap ini."
         ],
@@ -322,7 +322,6 @@ window.PB_DATA = {
     "plastikTips": "Plastik dapat menyerupai makanan, tertelan, atau menjerat penyu. Potongan plastik tetap berbahaya walau sudah robek dan terfragmentasi.",
     "napas": "Napasmu hampir habis! Naik ke permukaan.",
     "sembunyi": "Bersembunyi",
-    "terganggu": "Penyu terganggu dan kembali ke laut!",
     "gali": "Tahan klik / sentuhan atau Spasi untuk menggali sarang!",
     "lepasJaring": "Ketuk berulang untuk lepas!",
     "relawan": "Relawan konservasi akan memantau dan menjaga sarangmu. Siklus kehidupan berlanjut!",
