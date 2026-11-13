@@ -180,7 +180,7 @@ td.neg{color:var(--neg)}
 .toc .col:nth-child(4) h4,.toc .col:nth-child(5) h4{background:var(--accent-2)}
 .toc .col:nth-child(6) h4{background:#0a3a32}
 .toc-sdg{display:flex;gap:6px;flex-wrap:wrap;align-items:center;margin-top:10px;font-size:.84rem}
-.sdgb{display:inline-block;background:var(--accent-soft);color:var(--accent-2);border:1px solid #b9dccf;border-radius:999px;padding:1px 9px;font-size:.78rem;font-weight:600;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.sdgb{display:inline-block;background:var(--accent-soft);color:var(--accent-2);border:1px solid #b9dccf;border-radius:999px;padding:1px 9px;font-size:.78rem;font-weight:600;white-space:normal;max-width:100%;-webkit-print-color-adjust:exact;print-color-adjust:exact}
 .sdgb.utama{background:var(--accent);color:#fff;border-color:var(--accent)}
 
 /* Panel panduan "?" */
@@ -213,6 +213,67 @@ body.is-dragging .grip{cursor:grabbing}
 .toc .col[data-sort]{min-height:60px;border-radius:6px}
 body.is-dragging .toc .col[data-sort]{background:var(--soft)}
 td.gripcell{width:26px;padding-left:2px;padding-right:0;vertical-align:middle}
+
+details.secopt > summary{cursor:pointer;list-style:none;display:flex;gap:10px;align-items:baseline;flex-wrap:wrap}
+details.secopt > summary::-webkit-details-marker{display:none}
+details.secopt > summary h4{margin:0}
+details.secopt > summary::before{content:"▸";color:var(--muted)}
+details.secopt[open] > summary::before{content:"▾"}
+/* Theory of Change: kotak, panah, editor, panduan */
+.toc-wrap{position:relative}
+.toc-arrows{position:absolute;left:0;top:0;pointer-events:none;overflow:visible;z-index:0}
+.toc-arrows path{fill:none;stroke:#a9bdb5;stroke-width:1.5}
+.toc-arrows path.hl{stroke:var(--accent);stroke-width:2.6}
+.toc-wrap .toc .col{z-index:1}
+.toc .it{position:relative;z-index:1;flex-wrap:wrap}
+.toc .it.hl{outline:2px solid var(--accent);outline-offset:1px}
+.toc .it.card-node{border-color:#9fd1c4;background:#f3faf7}
+.toc .it-t{flex:1;min-width:0;overflow-wrap:anywhere}
+.it-ed{border:0;background:none;cursor:pointer;color:var(--muted);padding:0 2px;font-size:.85rem;line-height:1}
+.it-ed:hover{color:var(--accent-2)}
+.it-ind{flex-basis:100%;font-size:.72rem;color:var(--info);margin-top:2px}
+.it-to{flex-basis:100%;font-size:.72rem;color:var(--muted);margin-top:2px}
+.has-arrows .it-to{display:none}
+.has-arrows .toc .col:not(:last-child)::after{display:none}
+.tm{display:inline-block;font-size:.66rem;border-radius:999px;padding:0 6px;background:var(--soft);color:var(--muted);white-space:nowrap;vertical-align:1px}
+.tm-ok{background:var(--accent-soft);color:var(--accent-2)} .tm-neg{background:var(--err-soft);color:var(--err)} .tm-warn{background:var(--warn-soft);color:var(--warn)}
+.tocadd{width:100%;border:1px dashed #b9c4bf;background:none;border-radius:6px;padding:4px;color:var(--muted);cursor:pointer;font-size:.8rem;margin-top:2px}
+.tocadd:hover{border-color:var(--accent);color:var(--accent-2)}
+.to-list{max-height:220px;overflow:auto;border:1px solid var(--line);border-radius:8px;padding:4px 8px;background:#fcfdfc}
+.to-list .chk{font-size:.84rem;margin:3px 0;align-items:flex-start}
+.tocpop textarea,.tocpop input[type=text]{width:100%;border:1px solid #cdd3cf;border-radius:8px;padding:6px 8px}
+.tocpop .f label{display:flex;gap:6px;align-items:center;font-size:.8rem;font-weight:600;margin-bottom:3px}
+.wiz{border:2px solid var(--accent)}
+.wiz-bar{height:6px;background:var(--soft);border-radius:4px;margin:8px 0 10px;overflow:hidden}
+.wiz-bar span{display:block;height:100%;background:var(--accent)}
+.wiz-ta{width:100%;border:1px solid #cdd3cf;border-radius:8px;padding:7px 9px}
+.wl-link{border-bottom:1px solid var(--soft);padding:6px 0}
+@media print{ .toc-arrows{display:none} .it-to{display:block!important} }
+/* Ikhtisar, tahap, status */
+.hero{background:linear-gradient(180deg,#f3f9f6,#fff)}
+.stage{display:inline-block;border-radius:999px;padding:2px 10px;font-size:.75rem;font-weight:700;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.stage-u{background:var(--warn-soft);color:var(--warn)} .stage-e{background:var(--accent-soft);color:var(--accent-2)}
+.story{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:14px}
+@media (max-width:900px){.story{grid-template-columns:1fr 1fr}}
+@media (max-width:560px){.story{grid-template-columns:1fr}}
+.st-col{background:var(--soft);border-radius:8px;padding:8px 10px;font-size:.86rem}
+.st-col h4{font-size:.72rem;text-transform:uppercase;letter-spacing:.5px;color:var(--muted);margin-bottom:4px}
+.st-col ul{margin:0;padding-left:1.05em} .st-col li{margin:2px 0} .st-col .big{font-size:1.5rem;font-weight:700;margin:0;color:var(--accent-2)}
+.st-col .neg{color:var(--neg)}
+.st-col .sdgb{white-space:normal;max-width:100%;margin:0 0 4px}
+.stb{display:inline-block;border-radius:999px;padding:0 7px;font-size:.7rem;font-weight:600;border:1px solid;vertical-align:1px;white-space:nowrap;-webkit-print-color-adjust:exact;print-color-adjust:exact}
+.stb-potensi{color:#6b6b6b;border-color:#c9c9c9;background:#f4f4f4}
+.stb-proyeksi{color:var(--warn);border-color:#f0d9b0;background:var(--warn-soft)}
+.stb-terukur{color:var(--info);border-color:#c8daec;background:var(--info-soft)}
+.stb-terverifikasi{color:var(--accent-2);border-color:#b9dccf;background:var(--accent-soft)}
+.steps{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:8px}
+.step{display:flex;flex-direction:column;align-items:flex-start;gap:2px;text-align:left;border:1px solid var(--line);border-left:4px solid #9aa5a0;border-radius:8px;background:#fff;padding:8px 10px;cursor:pointer}
+.step:hover{border-color:var(--accent)} .step-n{font-weight:600} .step-s{font-size:.78rem;color:var(--muted)}
+.step.st-ok{border-left-color:var(--accent)} .step.st-warn{border-left-color:#e0a63a} .step.st-err{border-left-color:var(--err)} .step.st-todo{border-left-color:#c5ccc8}
+.tabpick{display:grid;grid-template-columns:repeat(auto-fill,minmax(230px,1fr));gap:6px 14px}
+nav.tabs button.tab-set{margin-left:auto}
+.wf .b{grid-template-columns:minmax(150px,38%) 1fr 92px}
+.wf .fill.wf-tot{background:var(--accent)} .wf .fill.wf-neg{background:#e6a19c} .wf .fill.wf-pos{background:#9fd1c4}
 
 /* How-to boxes & examples */
 details.howto{background:var(--info-soft);border:1px solid #c8daec;border-radius:var(--r);padding:0;margin-bottom:14px}
@@ -262,7 +323,7 @@ details.howto > summary .tiny{font-weight:400;color:var(--muted);margin-left:aut
 @media print{
   @page{size:A4;margin:14mm}
   html,body{background:#fff;font-size:11.5px}
-  .top,.banner,.noprint,.toast{display:none!important}
+  .top,.tabbar,.banner,.noprint,.toast,#hpop,#tocpop{display:none!important}
   main{padding:0;max-width:none}
   .card{box-shadow:none;break-inside:avoid;border-color:#ccc}
   .printonly{display:block}
@@ -322,8 +383,8 @@ details.howto > summary .tiny{font-weight:400;color:var(--muted);margin-left:aut
 'use strict';
 
 /* ================= Basics ================= */
-const APP_VERSION = '2.1';
-const SCHEMA = 4;
+const APP_VERSION = '2.2';
+const SCHEMA = 5;
 const LS_KEY = 'sroi-app-v2';
 const LS_KEY_V1 = 'sroi-app-v1';
 const $ = s => document.querySelector(s);
@@ -404,6 +465,7 @@ function evalExpr(raw){
 }
 const NUM = {
   nilai:{min:0,money:true,expr:true,label:'Nilai'},
+  budgetAsk:{min:0,money:true,expr:true,label:'Dukungan yang diminta'},
   jumlah:{min:0,int:true,label:'Jumlah'},
   dw:{min:0,max:100,label:'Deadweight'},
   attr:{min:0,max:100,label:'Attribution'},
@@ -812,16 +874,52 @@ Object.assign(GUIDE, {
   ckBukti:{apa:'Bukti bahwa prinsip ini sudah dipenuhi: dokumen, tanggal, siapa.', contoh:'Direview tim M&E (Sari) 12 Mei 2025; catatan revisi di file v2.', cara:['Belum terpenuhi? Tulis rencananya di sini, jangan dicentang dulu.']},
   sensSet:{apa:'Besar perubahan asumsi yang dipakai di tabel "Uji satu per satu".', cara:['Poin %: deadweight 20% ± 10 poin → diuji 10% dan 30%.','Persen: nilai manfaat ± 25% → diuji 75% dan 125% dari nilai semula.','Rate rendah/tinggi: rentang rate yang diuji.']},
 });
+Object.assign(GUIDE, {
+  jenis:{apa:'Tahap program. <b>Usulan</b>: program masih direncanakan; angka berupa target dan perkiraan. <b>Evaluasi</b>: program sudah berjalan; angka berupa realisasi.',
+    cara:['Usulan → tab yang tampil disusun untuk menyusun proposal.','Evaluasi → tab disusun untuk menilai hasil. Saat pindah dari usulan, pakai tombol <b>Mulai evaluasi</b> di Ikhtisar supaya angka usulan disimpan sebagai pembanding.','Rasio SROI dihitung dengan cara yang sama di kedua tahap.'],
+    contoh:'Proposal ke mitra 2026 → Usulan. Menilai program 2024–2025 → Evaluasi.'},
+  tujuan:{apa:'Apa yang ingin dicapai program, ditulis terukur: siapa, berubah apa, berapa, kapan.', cara:['Satu sampai tiga tujuan.','Pakai angka target kalau sudah ada.'],
+    contoh:'40 ibu rumah tangga di 2 desa mendapat penghasilan tambahan minimal Rp 250.000 per bulan dari bank sampah pada akhir 2025.', hindari:'Tujuan umum seperti "meningkatkan kesejahteraan masyarakat".'},
+  budgetAsk:{apa:'Dana yang diminta dari mitra/perusahaan. Bisa berbeda dari total anggaran di tab Input, karena input juga mencakup kontribusi pihak lain.',
+    cara:['Boleh angka atau rumus.'], contoh:'<code>75.000.000</code>'},
+  keberlanjutan:{apa:'Bagaimana manfaat program tetap berjalan setelah pendanaan selesai.', cara:['Siapa yang melanjutkan, dari mana biayanya, apa yang sudah disiapkan.'],
+    contoh:'Bank sampah dikelola BUMDes; hasil penjualan menutup biaya operasional; pendamping melatih 2 kader lokal.'},
+  baseline:{apa:'Kondisi awal indikator sebelum program.', contoh:'Rata-rata penghasilan tambahan Rp 0; 8 dari 40 ibu sudah memilah sampah.', hindari:'Mengosongkan baseline padahal datanya ada; tanpa baseline perubahan sulit dibuktikan.'},
+  target:{apa:'Kondisi indikator yang ingin dicapai.', cara:['Isi saat tahap usulan.','Saat evaluasi, target dibandingkan dengan realisasi.'], contoh:'Rata-rata penghasilan tambahan Rp 250.000 per bulan pada Desember 2025'},
+  realisasi:{apa:'Kondisi indikator yang benar-benar tercapai, diisi saat evaluasi.', cara:['Tulis angka, waktu pengukuran, dan jumlah responden.'], contoh:'Rp 300.000 per bulan (buku setoran Jan–Nov 2025, 25 peserta aktif)'},
+  oStatus:{apa:'Seberapa kuat bukti angka outcome ini.',
+    cara:['<b>Proyeksi</b>: perkiraan atau target, belum diukur.','<b>Terukur</b>: sudah ada data pengukuran (kuesioner, catatan program).','<b>Terverifikasi</b>: data sudah dicek pihak lain (reviewer, auditor, mitra).'],
+    hindari:'Menandai "terukur" kalau angkanya masih dari asumsi.'},
+  uOutcome:{apa:'Outcome sosial yang menjadi dasar manfaat bisnis ini. Shared value harus berawal dari perubahan sosial yang nyata.'},
+  uMekanisme:{apa:'Rantai sebab-akibat dari outcome sosial ke manfaat bisnis.', cara:['Tulis dengan pola: outcome sosial → perubahan perilaku/kondisi → manfaat bisnis.'],
+    contoh:'Ibu punya penghasilan dari bank sampah → mulai menabung → menjadi nasabah tabungan di kantor cabang terdekat.', hindari:'Menulis manfaat reputasi saja sebagai shared value.'},
+  uStatusBukti:{apa:'Seberapa kuat bukti manfaat bisnis ini.',
+    cara:['<b>Potensi</b>: baru gagasan.','<b>Proyeksi</b>: ada perkiraan angka.','<b>Terukur</b>: ada data realisasi (isi kolom bukti).','<b>Terverifikasi</b>: sudah dicek unit terkait atau pihak lain.']},
+  uBukti:{apa:'Realisasi dan buktinya, wajib untuk status terukur atau terverifikasi.', contoh:'32 rekening baru dari peserta, data kantor cabang Jan–Nov 2025.'},
+  rvNama:{apa:'Siapa yang memeriksa analisis ini.', contoh:'Sari (M&E), konsultan PT X'},
+  rvTanggal:{apa:'Tanggal pemeriksaan.', contoh:'12 Mei 2026'},
+  rvRevisi:{apa:'Nomor atau nama versi dokumen yang diperiksa.', contoh:'Revisi 2'},
+  rvTemuan:{apa:'Temuan, koreksi, dan hal yang belum selesai.', contoh:'Proxy outcome 3 belum punya sumber; deadweight outcome 1 perlu data pembanding.'},
+  rvKeputusan:{apa:'Keputusan dan tindak lanjut dari hasil analisis (prinsip "Responsif").', contoh:'Program dilanjutkan 2026 dengan tambahan pendampingan di Desa Mekarsari.'},
+  laporanUntuk:{apa:'Nama penerima laporan; tampil di halaman depan laporan.', contoh:'Calon mitra CSR: PT Contoh Abadi'},
+  tiText:{apa:'Isi kotak. Satu kotak = satu hal.', cara:['Kegiatan pakai kata kerja; output berupa jumlah; outcome berupa perubahan.']},
+  tiTo:{apa:'Kotak di kolom berikutnya yang dihasilkan atau dipengaruhi kotak ini. Muncul sebagai panah di diagram.',
+    cara:['Centang satu atau beberapa kotak tujuan.','Setiap kegiatan sebaiknya mengarah ke output, setiap output ke outcome.']},
+  tiIndikator:{apa:'Cara mengukur kotak ini (opsional), untuk rencana monitoring.', contoh:'Jumlah peserta yang lulus uji praktik'},
+});
 const GUIDE_GROUPS = [
-  ['Program', ['nama','jenis','organisasi','penyusun','tahunAwal','tahunAkhir','rate','bulan','rateAlasan','siteNama','lingkup','catatan']],
+  ['Program', ['nama','jenis','organisasi','penyusun','tujuan','budgetAsk','keberlanjutan','tahunAwal','tahunAkhir','rate','bulan','rateAlasan','siteNama','lingkup','catatan']],
   ['Stakeholder', ['sNama','sJenis','jumlah','sLibat','sMaterial','alasanMaterial']],
   ['Input', ['iTahun','iSite','iUraian','nilai','iSumber']],
-  ['Outcome & fiksasi dampak', ['oStk','oSite','aspek','outcome','indikator','jenisOutcome','metode','deskripsi','proxySumber','nilaiY','dw','attr','disp','drop']],
-  ['Theory of Change', ['tocMasalah','tocSasaran','tocInput','tocKegiatan','tocOutput','tocPendek','tocMenengah','tocImpact','tocAsumsi','tocRisiko','tocBukti']],
-  ['Keselarasan', ['regNama','regSifat','regPasal','regKaitan','sdgGoal','sdgTarget','sdgKontribusi','csvCatatan','uNama','uJenis','uManfaat','uCsv','uIndikator']],
-  ['Checklist & sensitivitas', ['ckBukti','sensSet']]
+  ['Outcome & fiksasi dampak', ['oStk','oSite','aspek','outcome','indikator','baseline','target','realisasi','oStatus','jenisOutcome','metode','deskripsi','proxySumber','nilaiY','dw','attr','disp','drop']],
+  ['Theory of Change', ['tiText','tiTo','tiIndikator','tocMasalah','tocSasaran','tocInput','tocKegiatan','tocOutput','tocPendek','tocMenengah','tocImpact','tocAsumsi','tocRisiko','tocBukti']],
+  ['Keselarasan', ['regNama','regSifat','regPasal','regKaitan','sdgGoal','sdgTarget','sdgKontribusi','csvCatatan','uNama','uJenis','uManfaat','uOutcome','uMekanisme','uStatusBukti','uBukti','uCsv','uIndikator']],
+  ['Review & sensitivitas', ['rvNama','rvTanggal','rvRevisi','rvTemuan','rvKeputusan','ckBukti','sensSet','laporanUntuk']]
 ];
-const GUIDE_TITLE = {nama:'Nama program', jenis:'Jenis analisis', organisasi:'Organisasi / unit', penyusun:'Disusun oleh', tahunAwal:'Tahun awal', tahunAkhir:'Tahun akhir',
+const GUIDE_TITLE = {nama:'Nama program', jenis:'Tahap program', tujuan:'Tujuan terukur', budgetAsk:'Dukungan yang diminta', keberlanjutan:'Keberlanjutan setelah pendanaan',
+  baseline:'Baseline', target:'Target', realisasi:'Realisasi', oStatus:'Status bukti', uOutcome:'Outcome sosial terkait', uMekanisme:'Bagaimana outcome menghasilkan manfaat bisnis',
+  uStatusBukti:'Status bukti bisnis', uBukti:'Realisasi & bukti', rvNama:'Reviewer', rvTanggal:'Tanggal review', rvRevisi:'Revisi dokumen', rvTemuan:'Temuan & koreksi',
+  rvKeputusan:'Keputusan & tindak lanjut', laporanUntuk:'Laporan untuk', tiText:'Isi kotak', tiTo:'Mengarah ke', tiIndikator:'Indikator kotak', organisasi:'Organisasi / unit', penyusun:'Disusun oleh', tahunAwal:'Tahun awal', tahunAkhir:'Tahun akhir',
   rate:'Rate / BI Rate', bulan:'Bulan dihitung', rateAlasan:'Alasan / sumber rate', siteNama:'Lokasi / sub-program', lingkup:'Lingkup analisis', catatan:'Catatan',
   sNama:'Nama stakeholder', sJenis:'Jenis stakeholder', jumlah:'Jumlah', sLibat:'Cara dilibatkan', sMaterial:'Material?', alasanMaterial:'Alasan materialitas',
   iTahun:'Tahun', iSite:'Lokasi', iUraian:'Uraian', nilai:'Nilai (Rp)', iSumber:'Sumber',
@@ -833,7 +931,9 @@ const GUIDE_TITLE = {nama:'Nama program', jenis:'Jenis analisis', organisasi:'Or
   csvCatatan:'Ringkasan shared value', uNama:'Nama unit', uJenis:'Jenis keterkaitan', uStatus:'Status koordinasi', uPeran:'Peran dalam program', uManfaat:'Manfaat bagi unit / bisnis', uCsv:'Tingkat creating shared value', uIndikator:'Indikator bisnis', uPic:'PIC / kontak',
   ckBukti:'Bukti', sensSet:'Pengaturan uji'};
 /* path → kunci panduan */
-const HK = {'s:nama':'sNama','s:jenis':'sJenis','s:libat':'sLibat','s:material':'sMaterial','i:tahun':'iTahun','i:siteId':'iSite','i:uraian':'iUraian','i:sumber':'iSumber',
+const HK = {'o:status':'oStatus','u:outcomeId':'uOutcome','u:mekanisme':'uMekanisme','u:statusBukti':'uStatusBukti','u:bukti':'uBukti',
+  'rv:nama':'rvNama','rv:tanggal':'rvTanggal','rv:revisi':'rvRevisi','rv:temuan':'rvTemuan','rv:keputusan':'rvKeputusan','dp:untuk':'laporanUntuk','ti:text':'tiText','ti:indikator':'tiIndikator',
+  's:nama':'sNama','s:jenis':'sJenis','s:libat':'sLibat','s:material':'sMaterial','i:tahun':'iTahun','i:siteId':'iSite','i:uraian':'iUraian','i:sumber':'iSumber',
   'o:stakeholderId':'oStk','o:siteId':'oSite','oy:nilai':'nilaiY','st:nama':'siteNama','r:nama':'regNama','r:sifat':'regSifat','r:pasal':'regPasal','r:kaitan':'regKaitan','r:bukti':'regBukti',
   'g:goal':'sdgGoal','g:peran':'sdgPeran','g:target':'sdgTarget','g:outcomeId':'sdgOutcome','g:kontribusi':'sdgKontribusi','u:nama':'uNama','u:jenis':'uJenis','u:status':'uStatus','u:peran':'uPeran',
   'u:manfaat':'uManfaat','u:csv':'uCsv','u:indikator':'uIndikator','u:pic':'uPic','ck:bukti':'ckBukti','y:rate':'rate','y:bulan':'bulan',
@@ -870,8 +970,11 @@ function blankProgram(name){
     jenis:'evaluatif', tahunAwal:String(THIS_YEAR-1), tahunAkhir:String(THIS_YEAR), tahunAcuan:String(THIS_YEAR),
     rateMode:'rata', rateTetap:'3,5', rateAlasan:'', years:{},
     penyusun:'', lingkup:'', catatan:'', isContoh:false,
+    tujuan:'', budgetAsk:'', keberlanjutan:'',
     sites:[], stakeholders:[], inputs:[], outcomes:[],
-    toc:{masalah:'', sasaran:'', input:'', kegiatan:'', output:'', outcomePendek:'', outcome:'', impact:'', asumsi:'', risiko:'', bukti:''},
+    toc:{masalah:'', sasaran:'', asumsi:'', risiko:'', bukti:'', items:[]},
+    review:{nama:'', tanggal:'', revisi:'', temuan:'', keputusan:''},
+    display: defaultDisplay(), usulan:null,
     regulasi:[], sdgs:[], units:[], csvCatatan:'',
     checklist: PRINCIPLES.map(()=>({done:false,bukti:''})),
     sens:{dwPP:'10', attrPP:'10', dispPP:'10', dropPP:'10', proxyPct:'25', drLow:'0', drHigh:'10'},
@@ -883,11 +986,25 @@ const blankInput = (tahun, siteId) => ({id:uid(), tahun:tahun?String(tahun):'', 
 function blankOutcome(stakeholderId){
   return {id:uid(), stakeholderId: stakeholderId||'', siteId:'', aspek:'', output:'', outcome:'', indikator:'', sumberData:'', negatif:false, kualitatif:false,
     metode:'', proxyUraian:'', deskripsi:'', proxySumber:'', years:{},
+    baseline:'', target:'', realisasi:'', status:'proyeksi', tocTo:[],
     dwAlasan:'', attrAlasan:'', dispAlasan:'', dropAlasan:'', collapsed:false};
 }
 const blankReg = () => ({id:uid(), nama:'', sifat:'wajib', pasal:'', kaitan:'', bukti:''});
 const blankSdg = () => ({id:uid(), goal:'', peran:'utama', target:'', outcomeId:'', kontribusi:''});
-const blankUnit = () => ({id:uid(), nama:'', jenis:'bisnis', peran:'', manfaat:'', csv:'', indikator:'', pic:'', status:'belum'});
+const blankUnit = () => ({id:uid(), nama:'', jenis:'bisnis', peran:'', manfaat:'', csv:'', indikator:'', pic:'', status:'belum', outcomeId:'', mekanisme:'', statusBukti:'potensi', bukti:''});
+const blankTi = (col, text) => ({id:uid(), col, text:text||'', to:[], indikator:''});
+/* Tahap usulan = jenis 'prakiraan', tahap evaluasi = jenis 'evaluatif' */
+const tahapOf = p => p.jenis==='prakiraan' ? 'usulan' : 'evaluasi';
+const REPORT_PARTS = [
+  ['cerita','Ringkasan & cerita program'],['hasil','Hasil SROI (rasio, per tahun, kalimat ringkas)'],['outcomes','Outcome: target, realisasi & indikator'],
+  ['banding','Usulan vs evaluasi'],['grafik','Grafik dari nilai kotor ke nilai saat ini'],['lokasi','Hasil per lokasi'],['rincian','Rincian valuasi & fiksasi dampak per outcome'],
+  ['anggaran','Anggaran & dukungan yang diminta'],['stakeholder','Stakeholder'],['toc','Theory of Change'],['selaras','Regulasi & SDGs'],['bisnis','Manfaat bisnis & CSV'],
+  ['keberlanjutan','Keberlanjutan, asumsi & risiko'],['sens','Analisis sensitivitas'],['metode','Cara hitung & rate'],['review','Review & checklist prinsip SROI'],['kelengkapan','Catatan kelengkapan (internal)']];
+const REPORT_MITRA = ['cerita','hasil','outcomes','banding','grafik','lokasi','anggaran','toc','selaras','bisnis','keberlanjutan','metode'];
+function defaultDisplay(){
+  const report = {}; REPORT_PARTS.forEach(([k])=>{ report[k] = REPORT_MITRA.includes(k); });
+  return {hidden:{usulan:{sens:true, checklist:true}, evaluasi:{}}, report, untuk:''};
+}
 const Y = (nilai, dw, attr, disp, drop) => ({nilai, dw:String(dw), attr:String(attr), disp:String(disp), drop:String(drop)});
 
 function sampleProgram(){
@@ -976,11 +1093,28 @@ function sampleProgram(){
   p.csvCatatan = 'CONTOH: Program menyelesaikan masalah sampah dan penghasilan ibu rumah tangga, sekaligus membuka jalan bagi warga untuk punya rekening bank.';
   p.outcomes.forEach(o=>{ o.output = ''; });   // output contoh sudah ada di Theory of Change
   p.schema = 3;            // lewat migrasi v2.1 supaya kolom contoh ikut digabung
-  return toV4(p);
+  const q = toV5(toV4(p)), T = q.toc;
+  T.items = T.items.filter(x=>x.col!=='outcome');          // outcome menengah = kartu outcome
+  const ti = txt => T.items.find(x=>x.text===txt), oc = o => q.outcomes.find(x=>x.id===o.id);
+  const L = (a, bs) => bs.forEach(b=>{ if (a && b && !a.to.includes(b.id)) a.to.push(b.id); });
+  const LO = (o, bs) => { const c = oc(o); bs.forEach(b=>{ if (c && b && !c.tocTo.includes(b.id)) c.tocTo.push(b.id); }); };
+  const latih = ti('40 ibu dilatih'), bank = ti('2 bank sampah beroperasi'), paham = ti('Ibu paham cara memilah sampah'), harga = ti('Ibu tahu harga jual tiap jenis sampah');
+  const sejahtera = ti('Kesejahteraan keluarga meningkat'), bersih = ti('Lingkungan desa lebih bersih');
+  L(ti('Pelatihan pemilahan sampah'), [latih]); L(ti('Pengadaan alat bank sampah'), [bank]); L(ti('Pendampingan'), [bank, latih]);
+  L(latih, [paham, harga]); L(bank, [harga]);
+  L(paham, [oc(o3), oc(o4)]); L(harga, [oc(o1), oc(o2)]);
+  LO(o1, [sejahtera]); LO(o2, [sejahtera]); LO(o3, [sejahtera]); LO(o4, [bersih]); LO(o6, [bersih]);
+  q.outcomes.forEach(o=>{ o.target = {[o1.id]:'Rata-rata Rp 300.000 per bulan', [o2.id]:'Rata-rata Rp 250.000 per bulan', [o3.id]:'Skor keterampilan naik 40%', [o4.id]:'18 ton sampah per tahun terpilah'}[o.id] || o.target; });
+  oc(o1).baseline = 'Rp 0 (belum ada bank sampah)'; oc(o1).realisasi = 'Rp 300.000 per bulan (buku setoran, 25 peserta aktif)'; oc(o1).status = 'terukur';
+  q.tujuan = 'CONTOH: 40 ibu rumah tangga di 2 desa mendapat penghasilan tambahan Rp 250.000–300.000 per bulan dari bank sampah, dan 18 ton sampah per tahun tidak lagi dibuang ke sungai, pada akhir 2025.';
+  q.keberlanjutan = 'CONTOH: bank sampah dikelola BUMDes; hasil penjualan menutup biaya operasional; pendamping melatih 2 kader lokal.';
+  q.budgetAsk = '88.500.000';
+  q.review = {nama:'CONTOH: Sari (M&E)', tanggal:'12 Mei 2026', revisi:'Revisi 1', temuan:'CONTOH: proxy outcome 4 perlu data biaya angkut terbaru dari DLH.', keputusan:'CONTOH: program dilanjutkan 2026 dengan pendampingan tambahan di Desa Mekarsari.'};
+  return q;
 }
 
 let db = null, storageOK = true, lastSaved = null, dirty = false, importedV1 = 0;
-let tab = 'program';
+let tab = 'ikhtisar';
 let scen = {dwAdd:0, attrAdd:0, dispAdd:0, dropAdd:0, proxyPct:0, r:null};
 
 /* ---- v1 / v1.1 (schema 1–2) → v2 (schema 3). Hasilnya sama persis dengan rumus v1:
@@ -1034,20 +1168,44 @@ function toV4(p){
   p.schema = 4;
   return p;
 }
+/* v2.1 (schema 4) → v2.2 (schema 5): Theory of Change jadi kotak terstruktur (bisa diberi panah & indikator).
+   Outcome jangka menengah di ToC = kartu outcome; baris yang tidak cocok dengan kartu disimpan sebagai kotak ToC. */
+function toV5(p){
+  p = Object.assign({}, p);
+  const t = Object.assign({}, p.toc||{});
+  if (!Array.isArray(t.items)){
+    const items = [], names = (p.outcomes||[]).map(o=>String(o.outcome||'').trim().toLowerCase());
+    ['input','kegiatan','output','outcomePendek','outcome','impact'].forEach(col=>{
+      lines(t[col]).forEach(x=>{ if (col==='outcome' && names.includes(x.trim().toLowerCase())) return; items.push(blankTi(col, x)); });
+    });
+    t.items = items;
+  }
+  ['input','kegiatan','output','outcomePendek','outcome','impact'].forEach(k=>delete t[k]);
+  p.toc = t;
+  p.schema = 5;
+  return p;
+}
 function migrate(p){
   if (!p) return blankProgram();
   if ((p.schema||1) < 3) p = fromV1(p);
   if ((p.schema||1) < 4) p = toV4(p);
+  if ((p.schema||1) < 5) p = toV5(p);
   const b = blankProgram(p.nama);
   const out = Object.assign({}, b, p);
   out.toc = Object.assign({}, b.toc, p.toc||{});
+  out.toc.items = (out.toc.items||[]).map(x=>Object.assign(blankTi(x.col||'kegiatan'), x, {to: Array.isArray(x.to) ? x.to.slice() : []}));
+  out.review = Object.assign({}, b.review, p.review||{});
+  const dd = defaultDisplay(), pd = p.display||{};
+  out.display = {hidden:{usulan:Object.assign({}, dd.hidden.usulan, (pd.hidden||{}).usulan||{}), evaluasi:Object.assign({}, dd.hidden.evaluasi, (pd.hidden||{}).evaluasi||{})},
+    report:Object.assign({}, dd.report, pd.report||{}), untuk: pd.untuk||''};
+  out.usulan = p.usulan || null;
   out.sens = Object.assign({}, b.sens, p.sens||{});
   out.years = Object.assign({}, p.years||{});
   out.checklist = PRINCIPLES.map((_,i)=>Object.assign({done:false,bukti:''}, (p.checklist||[])[i]||{}));
   out.sites = (p.sites||[]).map(s=>Object.assign({id:uid(), nama:''}, s));
   out.stakeholders = (p.stakeholders||[]).map(s=>Object.assign(blankStk(), s));
   out.inputs = (p.inputs||[]).map(i=>Object.assign(blankInput(), i));
-  out.outcomes = (p.outcomes||[]).map(o=>Object.assign(blankOutcome(), o, {years: Object.assign({}, o.years||{})}));
+  out.outcomes = (p.outcomes||[]).map(o=>Object.assign(blankOutcome(), o, {years: Object.assign({}, o.years||{}), tocTo: Array.isArray(o.tocTo) ? o.tocTo.slice() : []}));
   out.regulasi = (p.regulasi||[]).map(r=>Object.assign(blankReg(), r));
   out.sdgs = (p.sdgs||[]).map(g=>Object.assign(blankSdg(), g));
   out.units = (p.units||[]).map(u=>Object.assign(blankUnit(), u));
@@ -1107,6 +1265,9 @@ function resolve(path, create){
     return [o.years[b], c]; }
   if (k==='y'){ if (!p.years[a]){ if (!create) return [{}, b]; p.years[a] = {rate:'', bulan:'12'}; } return [p.years[a], b]; }
   if (k==='st') return [p.sites.find(x=>x.id===a), b];
+  if (k==='rv') return [p.review, a];
+  if (k==='dp') return [p.display, a];
+  if (k==='ti') return [p.toc.items.find(x=>x.id===a), b];
   if (k==='r') return [p.regulasi.find(x=>x.id===a), b];
   if (k==='g') return [p.sdgs.find(x=>x.id===a), b];
   if (k==='u') return [p.units.find(x=>x.id===a), b];
@@ -1152,9 +1313,12 @@ function compute(p, ov){
     if (!Yr[y]){ outInput += v; continue; }
     Yr[y].inp += v; Yr[y].inpPV += v*Yr[y].f;
   }
-  const rows = [];
+  const rows = [], excluded = [];
+  const cuts = {gross:0, dw:0, at:0, di:0, dr:0, net:0, negNet:0};
   for (const o of p.outcomes){
     if (ov.exclude === o.id) continue;
+    const sk = p.stakeholders.find(x=>x.id===o.stakeholderId);
+    if (sk && sk.material==='tidak'){ excluded.push(o); continue; }
     if (ov.site!==undefined && (o.siteId||'')!==ov.site) continue;
     const pem = isPem(o, p);
     if (ov.noPem && pem) continue;
@@ -1167,6 +1331,8 @@ function compute(p, ov){
       const dw = clamp(val(d.dw,0)/100 + (ov.dwAdd||0)/100), at = clamp(val(d.attr,0)/100 + (ov.attrAdd||0)/100);
       const di = clamp(val(d.disp,0)/100 + (ov.dispAdd||0)/100), dr = clamp(val(d.drop,0)/100 + (ov.dropAdd||0)/100);
       const net = sign * gross * (1-dw) * (1-at) * (1-di) * (1-dr), pvy = net * Yr[y].f;
+      if (sign>0){ const c1 = gross*dw, v1 = gross-c1, c2 = v1*at, v2 = v1-c2, c3 = v2*di, v3 = v2-c3, c4 = v3*dr;
+        cuts.gross += gross; cuts.dw += c1; cuts.at += c2; cuts.di += c3; cuts.dr += c4; cuts.net += net; } else cuts.negNet += net;
       yrs.push({y, gross:sign*gross, dw, at, di, dr, net, pv:pvy});
       g += sign*gross; n += net; pv += pvy;
       Yr[y].gross += sign*gross; Yr[y].net += net; Yr[y].pv += pvy; if (pem) Yr[y].pvPem += pvy;
@@ -1180,7 +1346,7 @@ function compute(p, ov){
   const pos = rows.filter(x=>x.sign>0);
   const gPos = pos.reduce((s,x)=>s+x.gross,0), nPos = pos.reduce((s,x)=>s+x.net,0);
   const sroi = totalInputPV>0 ? totalPV/totalInputPV : null;
-  return {ys, ref, r, rows, byYear, totalInput, totalInputPV, totalGross, totalNet, totalPV, pvPem, months, outInput,
+  return {ys, ref, r, rows, byYear, totalInput, totalInputPV, totalGross, totalNet, totalPV, pvPem, months, outInput, excluded, cuts,
     sroi, sroiNoPem: (pvPem && totalInputPV>0) ? (totalPV-pvPem)/totalInputPV : null,
     npv: totalPV - totalInputPV, fiksasi: gPos>0 ? 1 - nPos/gPos : 0,
     payback: (totalPV>0 && totalInputPV>0 && months>0) ? totalInputPV/(totalPV/months) : null};
@@ -1256,8 +1422,21 @@ function analyze(p, res){
   if (!p.stakeholders.length) add('warn','stakeholder','Belum ada stakeholder.');
   if (p.outcomes.length && !p.outcomes.some(o=>o.negatif)) add('info','outcome','Belum ada outcome negatif. Kalau memang tidak ada, catat di lingkup analisis.');
   // Theory of Change & keselarasan (dokumentasi, tidak memengaruhi rasio)
-  if (isBlank(p.toc.masalah)) add('info','toc','Theory of Change: masalah/konteks belum diisi.');
-  if (isBlank(p.toc.outcome) && isBlank(p.toc.outcomePendek)) add('info','toc','Theory of Change: outcome belum diisi. Bisa pakai tombol "Ambil dari Input & Outcome".');
+  tocChecks(p, add);
+  const us = tahapOf(p)==='usulan';
+  if (isBlank(p.tujuan)) add('info','program','Tujuan terukur belum ditulis.');
+  if (us && isBlank(p.budgetAsk)) add('info','program','Dukungan yang diminta dari mitra belum diisi.');
+  if (isBlank(p.keberlanjutan)) add('info','program','Rencana keberlanjutan setelah pendanaan belum ditulis.');
+  { const c = checkNum('budgetAsk', p.budgetAsk); if (c.err) add('err','program',`Dukungan yang diminta — ${c.err}`); }
+  (res.excluded||[]).forEach(o=>add('info','outcome',`Outcome "${short(o.outcome||'tanpa nama',40)}" tidak masuk total karena stakeholder-nya ditandai tidak dihitung.`, o.id));
+  p.outcomes.forEach((o,idx)=>{ const n = `Outcome ${idx+1}${o.outcome ? ' ('+short(o.outcome,40)+')' : ''}`;
+    if (isBlank(o.target) && isBlank(o.realisasi)) add('info','outcome',`${n}: target belum diisi.`, o.id);
+    if (!us && isBlank(o.realisasi)) add('info','outcome',`${n}: realisasi belum diisi.`, o.id);
+    if (!us && o.status==='proyeksi' && !o.kualitatif) add('warn','outcome',`${n}: status bukti masih "proyeksi". Perbarui ke "terukur" kalau sudah ada data.`, o.id); });
+  p.units.forEach(u=>{ if (isBlank(u.nama)) return;
+    if (['terukur','terverifikasi'].includes(u.statusBukti) && isBlank(u.bukti)) add('warn','selaras',`Unit ${u.nama}: status "${u.statusBukti}" perlu diisi realisasi & buktinya.`);
+    if (u.jenis==='bisnis' && !u.outcomeId) add('info','selaras',`Unit ${u.nama}: hubungkan dengan outcome sosial supaya klaim shared value jelas.`); });
+  if (!us && isBlank(p.review.nama)) add('info','checklist','Catatan review (siapa yang memeriksa) belum diisi.');
   if (!p.regulasi.length) add('info','selaras','Belum ada regulasi terkait yang dicatat.');
   p.regulasi.forEach((r,idx)=>{ if (!isBlank(r.nama) && isBlank(r.kaitan)) add('info','selaras',`Regulasi ${idx+1}: kaitan dengan program belum dijelaskan.`); });
   const goals = p.sdgs.filter(g=>g.goal);
@@ -1383,7 +1562,14 @@ document.addEventListener('pointerup', endDrag); document.addEventListener('poin
 function applyOrder(box, group){
   const p = cur();
   if (group==='toc'){
-    $$('[data-sort][data-group="toc"]').forEach(b=>{ p.toc[b.dataset.sort.split(':')[1]] = sortItems(b).map(x=>x.dataset.text).join('\n'); });
+    const order = [], cardOrder = [];
+    $$('[data-sort][data-group="toc"]').forEach(b=>{ const col = b.dataset.sort.split(':')[1];
+      sortItems(b).forEach(el=>{ const id = el.dataset.item;
+        if (el.dataset.kind==='card'){ if (col==='outcome') cardOrder.push(id); return; }
+        const it = p.toc.items.find(x=>x.id===id); if (it){ it.col = col; order.push(it); } }); });
+    p.toc.items = order.concat(p.toc.items.filter(x=>!order.includes(x)));
+    if (cardOrder.length) p.outcomes.sort((a,b)=>cardOrder.indexOf(a.id)-cardOrder.indexOf(b.id));
+    pruneLinks(p);
   } else {
     const arr = SORT_LISTS[box.dataset.sort](p), ids = sortItems(box).map(x=>x.dataset.item);
     arr.sort((a,b)=>ids.indexOf(a.id)-ids.indexOf(b.id));
@@ -1405,8 +1591,8 @@ document.addEventListener('keydown', e=>{
 });
 
 /* ================= Preferensi tampilan & kotak "Langkah" per tab ================= */
-let pref = {open:{}};
-try{ const s = JSON.parse(localStorage.getItem(LS_KEY+'-pref')||'null'); if (s && s.open) pref.open = s.open; }catch(_){}
+let pref = {open:{}, tocInd:false};
+try{ const s = JSON.parse(localStorage.getItem(LS_KEY+'-pref')||'null'); if (s && s.open) pref.open = s.open; if (s && s.tocInd) pref.tocInd = true; }catch(_){}
 const savePref = () => { try{ localStorage.setItem(LS_KEY+'-pref', JSON.stringify(pref)); }catch(_){} };
 function applyPref(){ syncSticky(); }
 function howTo(k){
@@ -1489,22 +1675,20 @@ HOWTO.sens = {t:'Cara memakai tab Sensitivitas', b:`<ol>
 </ol>
 <h4>Contoh kesimpulan</h4>
 <div class="exbox">"Rasio paling sensitif terhadap proxy penghasilan. Rasio baru turun ke 1 : 1 kalau proxy turun lebih dari 40%, jadi klaim nilai sosial positif cukup kuat." <span class="tiny">(angka ilustrasi)</span></div>`};
-HOWTO.toc = {t:'Cara isi Theory of Change', b:`<p>Theory of Change (ToC) menjelaskan <b>bagaimana</b> kegiatan program menghasilkan perubahan. Cara paling mudah: mulai dari ujung, lalu mundur.</p>
+HOWTO.toc = {t:'Cara isi Theory of Change', b:`<p>Theory of Change (ToC) menjelaskan <b>bagaimana</b> kegiatan program menghasilkan perubahan. Cara paling mudah: mulai dari ujung (impact), lalu mundur.</p>
 <ol>
-  <li>Tulis <b>masalah</b> dan <b>sasaran</b>. Pakai data kondisi awal kalau ada.</li>
-  <li>Tentukan <b>impact</b>: kondisi jangka panjang yang ingin dicapai.</li>
-  <li>Mundur: <b>outcome jangka menengah</b> apa yang perlu terjadi (perubahan perilaku/kondisi)? Lalu <b>outcome jangka pendek</b> apa yang mendahuluinya (pengetahuan, keterampilan, sikap, akses)?</li>
-  <li>Baru tentukan <b>output</b>, <b>kegiatan</b> dan <b>input</b> yang dibutuhkan.</li>
-  <li>Tulis <b>asumsi</b> (apa yang harus benar supaya panahnya bekerja) dan <b>risiko</b> beserta mitigasinya.</li>
+  <li>Belum pernah menyusun? Klik <b>🧭 Susun dengan panduan</b>: 9 pertanyaan berurutan, jawabannya langsung jadi kotak. Atau pilih <b>template</b> yang paling mirip, lalu sesuaikan.</li>
+  <li>Di diagram, klik <b>✎</b> pada kotak untuk mengubah isinya, menambah panah (<i>mengarah ke</i>), dan indikator. Klik <b>+ Tambah</b> di bawah kolom untuk kotak baru.</li>
+  <li>Kolom <b>Outcome jangka menengah</b> otomatis berisi kartu dari tab Outcome. Outcome yang baru ada di ToC bisa dijadikan kartu lewat ✎ → <b>Jadikan kartu outcome</b>.</li>
+  <li>Baca <b>Cek kualitas</b> di bagian bawah: kotak yang belum terhubung, atau outcome yang terdengar seperti output.</li>
 </ol>
 <h4>Bedanya tiap level (contoh bank sampah)</h4>
 <div class="tw"><table><thead><tr><th>Level</th><th>Pertanyaan</th><th>Contoh</th></tr></thead><tbody>
   <tr><td>Output</td><td>Apa yang dihasilkan kegiatan?</td><td>50 ibu dilatih, 1 bank sampah beroperasi</td></tr>
   <tr><td>Outcome jangka pendek</td><td>Apa yang berubah dalam hitungan bulan?</td><td>Ibu paham cara memilah dan tahu harga jual sampah</td></tr>
-  <tr><td>Outcome jangka menengah</td><td>Perilaku/kondisi apa yang berubah?</td><td>Ibu rutin memilah dan menyetor; penghasilan tambahan Rp 300 rb/bulan</td></tr>
+  <tr><td>Outcome jangka menengah</td><td>Perilaku/kondisi apa yang berubah?</td><td>Ibu rutin menyetor; penghasilan tambahan Rp 300 rb/bulan</td></tr>
   <tr><td>Impact</td><td>Perubahan jangka panjang apa yang lebih luas?</td><td>Kesejahteraan keluarga naik, sampah ke sungai berkurang</td></tr>
-</tbody></table></div>
-<p class="tiny">Outcome jangka menengah biasanya yang dinilai rupiahnya di tab Outcome. Tombol "Ambil dari Input & Outcome" menyalin isi tab Input dan Outcome ke sini.</p>`};
+</tbody></table></div>`};
 HOWTO.selaras = {t:'Cara isi tab Keselarasan', b:`<p>Tab ini mencatat program selaras dengan apa saja: <b>regulasi</b>, <b>SDGs</b>, dan <b>unit lain di kantor</b>. Isinya dokumentasi dan tidak mengubah rasio SROI.</p>
 <h4>A. Regulasi</h4>
 <ol>
@@ -1523,7 +1707,8 @@ HOWTO.selaras = {t:'Cara isi tab Keselarasan', b:`<p>Tab ini mencatat program se
 <p><i>Creating shared value</i> (CSV, Porter & Kramer 2011) = menyelesaikan masalah sosial dengan cara yang sekaligus menciptakan nilai bisnis. Catat unit mana yang terkait, perannya, dan nilai bisnis yang mungkin muncul.</p>
 <div class="exbox"><b>Contoh:</b> Kantor cabang terdekat · <i>Kantor cabang</i> · peran: membuka rekening untuk nasabah bank sampah · manfaat: nasabah baru · CSV tingkat 1 · indikator: jumlah rekening baru dari peserta.</div>
 <p class="tiny">Manfaat bagi perusahaan dicatat terpisah dan <b>tidak</b> ikut dihitung di rasio SROI, supaya tidak klaim berlebihan atau hitung ganda.</p>`};
-HOWTO.checklist = {t:'Cara isi Checklist', b:`<ol>
+HOWTO.checklist = {t:'Cara isi tab Review', b:`<ol>
+  <li>Isi <b>catatan review</b>: siapa yang memeriksa, kapan, temuan, dan keputusan tindak lanjut.</li>
   <li>Centang prinsip yang sudah dipenuhi.</li>
   <li>Tulis bukti singkat: dokumen, tanggal, siapa. Contoh untuk "Verifikasi hasil": "Direview tim M&E (Sari) 12 Mei 2025; catatan revisi di file v2."</li>
   <li>Prinsip yang belum terpenuhi tidak perlu dipaksa dicentang. Tulis rencananya di kolom bukti.</li>
@@ -1531,18 +1716,19 @@ HOWTO.checklist = {t:'Cara isi Checklist', b:`<ol>
 
 /* ---- v2: panduan tab yang berubah ---- */
 HOWTO.program = {t:'Cara isi tab Program', b:`<ol>
-  <li>Isi <b>nama</b> dan pilih <b>jenis analisis</b>: Evaluatif untuk program yang sudah berjalan (seperti worksheet konsultan), Prakiraan untuk rencana.</li>
-  <li>Isi <b>tahun awal</b> dan <b>tahun akhir</b>. Kolom per tahun di tab Input dan Outcome menyesuaikan.</li>
+  <li>Isi <b>nama</b> dan pilih <b>tahap</b>: <i>Usulan</i> untuk proposal, <i>Evaluasi</i> untuk menilai program yang sudah berjalan. Susunan tab mengikuti tahap ini.</li>
+  <li>Tulis <b>tujuan terukur</b>, <b>dukungan yang diminta</b> dari mitra, dan rencana <b>keberlanjutan</b>.</li>
+  <li>Isi <b>tahun awal</b> dan <b>tahun akhir</b>. Kolom per tahun di tab Anggaran dan Outcome menyesuaikan.</li>
   <li>Isi <b>BI Rate</b> dan <b>bulan dihitung</b> tiap tahun. Rate yang dipakai = rata-rata; ingin satu rate tetap, isi tahun pertama lalu klik <b>Samakan rate</b>.</li>
   <li>Program di beberapa tempat atau angkatan? Tambah <b>lokasi</b> supaya hasil keluar per lokasi dan gabungan.</li>
   <li>Tulis <b>lingkup</b>: apa yang dihitung dan tidak.</li>
 </ol>
 <h4>Contoh perhitungan nilai saat ini</h4>
-<div class="exbox">Periode 2024–2025 (evaluatif), BI Rate 2024 = 6% dan 2025 = 4,75% → rata-rata <b>5,375%</b>.<br>
+<div class="exbox">Periode 2024–2025 (evaluasi), BI Rate 2024 = 6% dan 2025 = 4,75% → rata-rata <b>5,375%</b>.<br>
 Manfaat 2024 Rp 100 juta × (1 + 5,375%)<sup>1</sup> = <b>Rp 105,4 juta</b>. Manfaat 2025 Rp 100 juta × (1 + 5,375%)<sup>0</sup> = <b>Rp 100 juta</b>.<br>
 Investasi dibawa dengan cara yang sama, lalu SROI = total manfaat saat ini ÷ total investasi saat ini.</div>
-<h4>Urutan pengisian yang disarankan</h4>
-<p>Program → Theory of Change (tab 7) → Keselarasan (tab 8) → Stakeholder → Input → Outcome → cek Hasil & Sensitivitas → Checklist.</p>`};
+<h4>Urutan pengisian</h4>
+<p>Ikuti nomor tab di atas. Urutannya sudah disusun sesuai tahap; tab bisa disembunyikan lewat <b>⚙ Atur tampilan</b>. Progres tiap langkah terlihat di <b>Ikhtisar</b>.</p>`};
 HOWTO.stakeholder = {t:'Cara isi tab Stakeholder', b:`<ol>
   <li>Daftar semua kelompok yang <b>berubah</b> karena program, termasuk yang dirugikan dan perusahaan sendiri (untuk PR value).</li>
   <li>Pilih <b>jenis</b>, isi <b>jumlah</b>, dan tulis <b>cara dilibatkan</b> (metode + jumlah responden).</li>
@@ -1569,9 +1755,9 @@ HOWTO.input = {t:'Cara isi tab Input', b:`<ol>
   <tr><td>2024</td><td>Pameran (dipakai 2 lokasi)</td><td><code>17.646.640 / 2</code></td><td>Biaya bersama dibagi rata ke tiap lokasi</td></tr>
   <tr><td>2023</td><td>Waktu staf kurasi</td><td><code>2 × 10,75 × 35.000.000 / 22</code></td><td>orang × hari kerja × gaji per bulan ÷ 22 hari</td></tr>
 </tbody></table></div>`};
-HOWTO.outcome = {t:'Cara isi tab Outcome & fiksasi dampak', b:`<p>Satu kartu = satu outcome untuk satu stakeholder (bisa juga per lokasi atau angkatan). Isi dari atas ke bawah; klik <b>?</b> di tiap kolom untuk detailnya.</p>
+HOWTO.outcome = {t:'Cara isi tab Outcome', b:`<p>Satu kartu = satu outcome untuk satu stakeholder (bisa juga per lokasi atau angkatan). Isi dari atas ke bawah; klik <b>?</b> di tiap kolom untuk detailnya.</p>
 <ol>
-  <li><b>Outcome</b>: stakeholder, aspek, perubahan yang dialami, indikator.</li>
+  <li><b>Outcome</b>: stakeholder, aspek, perubahan yang dialami, indikator, <b>baseline</b> dan <b>target</b>. Saat evaluasi, isi juga <b>realisasi</b> dan perbarui <b>status bukti</b> (proyeksi → terukur → terverifikasi).</li>
   <li><b>Valuasi</b>: pilih metode, tulis <b>proxy & cara hitung</b>, dan sumbernya.</li>
   <li><b>Nilai per tahun</b>: isi nilai manfaat kotor tiap tahun. Boleh rumus: <code>harga satuan × faktor × jumlah</code>.</li>
   <li><b>Fiksasi dampak per tahun</b>: deadweight, attribution, displacement, drop-off. Angkanya boleh beda tiap tahun.</li>
@@ -1605,18 +1791,154 @@ HOWTO.hasil = {t:'Cara membaca tab Hasil', b:`<ol>
 <div class="exbox">"Selama Januari 2024 – November 2025, setiap Rp 1 yang diinvestasikan menghasilkan nilai sosial sekitar Rp X (nilai saat ini dengan rata-rata BI Rate 5,375%, setelah fiksasi dampak). Investasi kembali dalam sekitar Y bulan. Dalam uji sensitivitas, rasio berada di kisaran 1 : [terendah] sampai 1 : [tertinggi]."</div>`};
 
 /* ================= Tabs ================= */
-const TABS = [
-  ['program','1. Program'],['stakeholder','2. Stakeholder'],['input','3. Input'],['outcome','4. Outcome & filter'],
-  ['hasil','5. Hasil'],['sens','6. Sensitivitas'],['toc','7. Theory of Change'],['selaras','8. Keselarasan'],['checklist','9. Checklist'],
-  ['ringkasan','Ringkasan (cetak)'],['panduan','Panduan']
-];
+/* ---- Tab: susunan bawaan per tahap, bisa disembunyikan per program ---- */
+const TAB_NAMES = {ikhtisar:'Ikhtisar', program:'Program', toc:'Theory of Change', stakeholder:'Stakeholder', input:'Anggaran / input', outcome:'Outcome',
+  hasil:'Hasil SROI', sens:'Sensitivitas', selaras:'Keselarasan', checklist:'Review', laporan:'Laporan', tampilan:'⚙ Atur tampilan', panduan:'Panduan'};
+const STEP_TABS = ['program','toc','stakeholder','input','outcome','hasil','sens','selaras','checklist'];
+const PRESET = {
+  usulan:  ['ikhtisar','program','toc','stakeholder','outcome','input','selaras','hasil','sens','checklist','laporan','panduan','tampilan'],
+  evaluasi:['ikhtisar','program','stakeholder','input','outcome','hasil','sens','toc','selaras','checklist','laporan','panduan','tampilan']};
+const ALWAYS_TABS = ['ikhtisar','program','laporan','panduan','tampilan'];
+function visibleTabs(p){ const t = tahapOf(p), h = (p.display.hidden||{})[t] || {}; return PRESET[t].filter(k=>ALWAYS_TABS.includes(k) || !h[k]); }
+function tabName(p, k){
+  const us = tahapOf(p)==='usulan';
+  if (k==='hasil') return us ? 'Perkiraan SROI' : 'Hasil SROI';
+  if (k==='outcome') return us ? 'Outcome & target' : 'Outcome & fiksasi';
+  return TAB_NAMES[k] || k;
+}
+function tabLabel(p, k){ const steps = visibleTabs(p).filter(x=>STEP_TABS.includes(x)); const i = steps.indexOf(k); return (i>=0 ? `${i+1}. ` : '') + tabName(p,k); }
+const tabRef = k => `<b>${esc(tabLabel(cur(), k))}</b>`;
 function renderTabs(W){
-  $('#tabs').innerHTML = TABS.map(([k,l])=>{
+  const p = cur();
+  $('#tabs').innerHTML = visibleTabs(p).map(k=>{
     const c = countBy(W,k);
     const n = c.err ? `<span class="n err">${c.err}</span>` : (c.warn ? `<span class="n">${c.warn}</span>` : '');
-    return `<button data-tab="${k}" class="${k===tab?'on':''}">${l}${n}</button>`;
+    return `<button data-tab="${k}" class="${k===tab?'on':''}${k==='tampilan'?' tab-set':''}">${esc(tabLabel(p,k))}${n}</button>`;
   }).join('');
 }
+
+/* ---- ⚙ Atur tampilan ---- */
+function tTampilan(){
+  const p = cur(), t = tahapOf(p), h = p.display.hidden[t];
+  return `<div class="card"><h2>Atur tampilan</h2>
+    <p class="small muted">Tersimpan per program dan ikut di file JSON. Menyembunyikan tab hanya mengubah tampilan; data dan perhitungan tidak berubah.</p>
+    <div class="grid g2">${fld({label:'Tahap program', path:'p:jenis', type:'select', options:[['prakiraan','Usulan (menyusun proposal)'],['evaluatif','Evaluasi (menilai hasil)']]})}</div>
+    <p class="small" style="margin-top:6px">${t==='usulan'
+      ? 'Tahap <b>Usulan</b>: urutan tab mengikuti alur menyusun proposal (masalah → perubahan yang ingin dicapai → siapa → anggaran). Kolom fiksasi dampak ditampilkan sebagai perkiraan opsional.'
+      : 'Tahap <b>Evaluasi</b>: urutan tab mengikuti alur menilai hasil (siapa → investasi → outcome terukur → hasil). Kolom realisasi dan status bukti ditampilkan.'}</p>
+  </div>
+  <div class="card"><h3>Tab yang ditampilkan di tahap ${t==='usulan'?'Usulan':'Evaluasi'}</h3>
+    <div class="tabpick">${PRESET[t].map(k=>{ const fix = ALWAYS_TABS.includes(k);
+      return `<label class="chk"><input type="checkbox" data-disp="${k}" ${fix||!h[k]?'checked':''} ${fix?'disabled':''}> ${esc(tabLabel(p,k))}${fix?' <span class="tiny muted">(selalu tampil)</span>':''}</label>`; }).join('')}</div>
+    <div style="margin-top:10px"><button class="btn sm" data-act="dispReset">Kembalikan ke bawaan</button></div>
+    <p class="tiny muted" style="margin-top:8px">Nomor tab menyesuaikan otomatis. Tab yang disembunyikan tetap bisa dibuka dari tombol "Buka" di daftar peringatan.</p>
+  </div>`;
+}
+
+/* ---- Kalimat ringkas, perbandingan usulan vs evaluasi, grafik nilai ---- */
+const SIMPLE = {dw:'Tetap terjadi tanpa program', attr:'Peran pihak lain', disp:'Menggeser manfaat pihak lain', drop:'Manfaat memudar'};
+const filterLabel = (p, k, lab) => tahapOf(p)==='usulan' ? `${SIMPLE[k]} (${lab.toLowerCase()})` : lab;
+function sensRange(p){ const st = sensTests(p); if (st.base==null) return null; const v = st.tests.flatMap(t=>[t.lo,t.hi]).filter(x=>x!=null && isFinite(x)); return v.length ? [Math.min(...v), Math.max(...v)] : null; }
+function summarySentence(p, res){
+  const us = tahapOf(p)==='usulan', ys = res.ys, per = ys.length>1 ? `${ys[0]}–${ys[ys.length-1]}` : String(ys[0]);
+  const money = res.rows.filter(r=>!r.o.kualitatif).length, kual = p.outcomes.filter(o=>o.kualitatif).length;
+  if (res.sroi==null) return `Rasio SROI belum bisa dihitung. Lengkapi ${tabRef('input')} dan nilai di ${tabRef('outcome')}.`;
+  const rg = sensRange(p);
+  let s = us
+    ? `Program ini <b>diperkirakan</b> menghasilkan nilai sosial sekitar <b>Rp ${fmtNum(res.sroi,2)} untuk setiap Rp 1</b> investasi (proyeksi ${per}, rate ${fmtRate(res.r)}).`
+    : `Selama ${per}, setiap Rp 1 investasi menghasilkan nilai sosial sekitar <b>Rp ${fmtNum(res.sroi,2)}</b> (nilai saat ini dengan rate ${fmtRate(res.r)}, setelah fiksasi dampak).`;
+  if (res.payback!=null) s += ` Investasi ${us?'diperkirakan ':''}kembali dalam sekitar <b>${fmtNum(res.payback,1)} bulan</b>.`;
+  s += ` Angka ini berasal dari ${money} outcome yang dirupiahkan${kual?`; ${kual} outcome lain dicatat kualitatif`:''}.`;
+  if (rg) s += ` Dalam uji sensitivitas, rasio berada di kisaran 1 : ${fmtRatio(rg[0])} sampai 1 : ${fmtRatio(rg[1])}.`;
+  if (res.sroiNoPem!=null) s += ` Tanpa manfaat bagi perusahaan (mis. PR value), rasionya 1 : ${fmtRatio(res.sroiNoPem)}.`;
+  return s;
+}
+const STATUS_O = [['proyeksi','Proyeksi'],['terukur','Terukur'],['terverifikasi','Terverifikasi']];
+const STATUS_B = [['potensi','Potensi'],['proyeksi','Proyeksi'],['terukur','Terukur'],['terverifikasi','Terverifikasi']];
+const statusBadge = (st, list) => st ? `<span class="stb stb-${esc(st)}">${esc(optName(list||STATUS_O, st) || st)}</span>` : '';
+function snapshotUsulan(p, res){
+  return {tanggal: today(), sroi: res.sroi, payback: res.payback, totalNet: res.totalNet, totalInput: res.totalInput,
+    outcomes: res.rows.map(r=>({id:r.o.id, nama:r.o.outcome, target:r.o.target, net:r.net}))};
+}
+function bandingTable(p, res){
+  const u = p.usulan; if (!u) return '';
+  const rows = p.outcomes.map(o=>{ const a = u.outcomes.find(x=>x.id===o.id), r = res.rows.find(x=>x.o.id===o.id);
+    return `<tr><td>${esc(o.outcome||'–')} ${statusBadge(o.status)}</td><td>${esc(o.target || (a&&a.target) || '–')}</td><td>${esc(o.realisasi||'–')}</td>
+      <td class="num">${a && !o.kualitatif ? fmtRp(a.net) : '–'}</td><td class="num">${r && !o.kualitatif ? fmtRp(r.net) : '–'}</td></tr>`; }).join('');
+  return `<p class="small muted">Pembanding: angka usulan yang disimpan tanggal ${esc(u.tanggal)}. Nilai bersih ditulis nominal (belum dibawa ke nilai saat ini) supaya bisa dibandingkan.</p>
+    <div class="tw"><table><thead><tr><th>Outcome</th><th>Target</th><th>Realisasi</th><th class="num">Nilai bersih usulan</th><th class="num">Nilai bersih evaluasi</th></tr></thead>
+    <tbody>${rows}<tr class="tot"><td colspan="3">SROI</td><td class="num">1 : ${fmtRatio(u.sroi)}</td><td class="num">1 : ${fmtRatio(res.sroi)}</td></tr>
+    <tr class="tot"><td colspan="3">Total nilai bersih / investasi nominal</td><td class="num">${fmtRp(u.totalNet)} / ${fmtRp(u.totalInput)}</td><td class="num">${fmtRp(res.totalNet)} / ${fmtRp(res.totalInput)}</td></tr></tbody></table></div>`;
+}
+function fiksasiChart(p, res){
+  const c = res.cuts; if (!(c.gross>0)) return `<p class="small muted">Grafik muncul setelah ada nilai manfaat.</p>`;
+  const time = res.totalPV - res.totalNet;
+  const steps = [['Nilai kotor (outcome positif)', c.gross, 'tot'], [`− ${filterLabel(p,'dw','Deadweight')}`, -c.dw], [`− ${filterLabel(p,'attr','Attribution')}`, -c.at],
+    [`− ${filterLabel(p,'disp','Displacement')}`, -c.di], [`− ${filterLabel(p,'drop','Drop-off')}`, -c.dr], ['= Nilai bersih', c.net, 'tot']];
+  if (c.negNet) steps.push(['− Outcome negatif', c.negNet]);
+  steps.push([`${time>=0?'+':'−'} Penyesuaian ke nilai saat ini (tahun ${res.ref})`, time], ['= Nilai saat ini', res.totalPV, 'tot']);
+  const max = Math.max(c.gross, c.net + Math.max(0,time), res.totalPV, 1);
+  let run = 0;
+  const bars = steps.map(([lab, v, kind])=>{
+    let left, w, cls;
+    if (kind==='tot'){ run = v; left = 0; w = v; cls = 'wf-tot'; }
+    else { const a = run, b = run + v; left = Math.min(a,b); w = Math.abs(v); run = b; cls = v<0 ? 'wf-neg' : 'wf-pos'; }
+    return `<div class="b"><div>${esc(lab)}</div><div class="track"><div class="fill ${cls}" style="left:${(Math.max(0,left)/max*100).toFixed(2)}%;width:${(Math.max(0,w)/max*100).toFixed(2)}%"></div></div><div class="num">${fmtRpShort(v)}</div></div>`;
+  }).join('');
+  return `<div class="bars wf">${bars}</div><div class="tiny muted">Pengurangan dihitung berurutan: deadweight dulu, lalu attribution, displacement, dan drop-off. Penyesuaian ke nilai saat ini memakai rate ${fmtRate(res.r)}.</div>`;
+}
+
+/* ---- Ikhtisar ---- */
+function stepStatus(p, k, W){
+  const ws = W.filter(w=>w.tab===k), e = ws.filter(w=>w.lvl==='err').length, w = ws.filter(w=>w.lvl==='warn').length;
+  const empty = {program: isBlank(p.tujuan) && isBlank(p.lingkup), stakeholder:!p.stakeholders.length, input:!p.inputs.length, outcome:!p.outcomes.length,
+    toc:!p.toc.items.length && isBlank(p.toc.masalah), selaras:!p.sdgs.length && !p.regulasi.length, checklist: !p.checklist.some(c=>c.done) && isBlank(p.review.nama)}[k];
+  if (empty) return ['todo','Belum diisi'];
+  if (e) return ['err', `${e} perlu diperbaiki`];
+  if (w) return ['warn', `${w} perlu dilengkapi`];
+  return ['ok','Beres'];
+}
+function storyFlow(p, res){
+  const us = tahapOf(p)==='usulan';
+  const keg = p.toc.items.filter(x=>x.col==='kegiatan').map(x=>x.text).filter(Boolean);
+  const outs = p.outcomes.filter(o=>!isBlank(o.outcome));
+  const li = (arr, n) => arr.length ? `<ul>${arr.slice(0,n).map(x=>`<li>${x}</li>`).join('')}${arr.length>n?`<li class="muted">+${arr.length-n} lainnya</li>`:''}</ul>` : '<p class="muted">–</p>';
+  const sb = sdgBadges(p);
+  return `<div class="story">
+    <div class="st-col"><h4>Masalah</h4>${isBlank(p.toc.masalah) ? `<p class="muted">Tulis di ${tabRef('toc')}</p>` : `<p>${nl2br(short(p.toc.masalah, 220))}</p>`}</div>
+    <div class="st-col"><h4>Kegiatan</h4>${li(keg.map(esc), 4)}</div>
+    <div class="st-col"><h4>${us?'Perubahan yang ditargetkan':'Perubahan yang terjadi'}</h4>${li(outs.map(o=>`${esc(o.outcome)}${o.negatif?' <span class="neg">(negatif)</span>':''} ${statusBadge(o.status)}`), 5)}</div>
+    <div class="st-col"><h4>${us?'Perkiraan nilai':'Nilai sosial'}</h4>${res.sroi!=null ? `<p class="big">1 : ${fmtRatio(res.sroi)}</p><p class="small">${us?'proyeksi':'hasil evaluasi'}${res.payback!=null?` · kembali ±${fmtNum(res.payback,1)} bln`:''}</p>` : '<p class="muted">Belum bisa dihitung</p>'}</div>
+    <div class="st-col"><h4>SDGs</h4>${sb || `<p class="muted">Pilih di ${tabRef('selaras')}</p>`}</div>
+  </div>`;
+}
+function tIkhtisar(){
+  const p = cur(), res = compute(p), W = analyze(p,res), us = tahapOf(p)==='usulan';
+  const steps = visibleTabs(p).filter(k=>STEP_TABS.includes(k));
+  const meta = [p.sites.map(x=>x.nama).filter(Boolean).join(', '), `${res.ys[0]}–${res.ys[res.ys.length-1]}`, p.organisasi].filter(x=>!isBlank(x)).map(esc).join(' · ');
+  return `<div class="card hero">
+      <div class="row" style="align-items:flex-start;gap:12px">
+        <div style="flex:1;min-width:240px"><span class="stage ${us?'stage-u':'stage-e'}">${us?'Tahap usulan':'Tahap evaluasi'}</span>
+          <h1 style="font-size:1.4rem;margin:.35em 0 .2em">${esc(p.nama)}</h1><div class="small muted">${meta}</div>
+          ${isBlank(p.tujuan) ? '' : `<p style="margin-top:8px"><b>Tujuan:</b> ${nl2br(p.tujuan)}</p>`}</div>
+        <div class="row noprint" style="gap:6px">
+          ${us ? `<button class="btn pri" data-act="mulaiEvaluasi" title="Simpan angka usulan sebagai pembanding, lalu pindah ke tahap evaluasi">Mulai evaluasi →</button>` : ''}
+          <button class="btn" data-tab="laporan">Laporan untuk mitra</button>
+          <button class="btn" data-tab="tampilan">⚙ Atur tampilan</button>
+        </div>
+      </div>
+    </div>
+    <div class="card"><h2>Cerita program</h2>${storyFlow(p,res)}
+      <div class="live" style="margin-top:12px">${summarySentence(p,res)}</div></div>
+    ${p.usulan ? `<div class="card"><h2>Usulan vs evaluasi</h2>${bandingTable(p,res)}
+      <div class="noprint" style="margin-top:6px"><button class="link small" data-act="hapusUsulan">Hapus data pembanding usulan</button></div></div>` : ''}
+    <div class="card"><h2>Langkah pengisian</h2>
+      <div class="steps">${steps.map(k=>{ const [st, txt] = stepStatus(p,k,W);
+        return `<button class="step st-${st}" data-tab="${k}"><span class="step-n">${esc(tabLabel(p,k))}</span><span class="step-s">${st==='ok'?'✓ ':''}${esc(txt)}</span></button>`; }).join('')}</div>
+      <p class="tiny muted" style="margin-top:8px">Klik langkah untuk membukanya. Tab yang tampil dan urutannya bisa diatur di <button class="link tiny" data-tab="tampilan">⚙ Atur tampilan</button>.</p>
+    </div>`;
+}
+
 function renderProgSelect(){
   const ids = Object.keys(db.programs).sort((a,b)=> (db.programs[b].updated||'').localeCompare(db.programs[a].updated||''));
   $('#progSelect').innerHTML = ids.map(id=>`<option value="${id}"${id===db.activeId?' selected':''}>${esc(db.programs[id].nama||'(tanpa nama)')}</option>`).join('');
@@ -1666,9 +1988,17 @@ function tProgram(){
     <h2>Identitas program</h2>
     <div class="grid g3">
       ${fld({label:'Nama program', path:'p:nama', cls:'span2'})}
-      ${fld({label:'Jenis analisis', path:'p:jenis', type:'select', options:[['evaluatif','Evaluatif (dampak yang sudah terjadi)'],['prakiraan','Prakiraan / forecast']]})}
+      ${fld({label:'Tahap program', path:'p:jenis', type:'select', options:[['prakiraan','Usulan (menyusun proposal)'],['evaluatif','Evaluasi (menilai hasil)']]})}
       ${fld({label:'Organisasi / unit', path:'p:organisasi'})}
       ${fld({label:'Disusun oleh', path:'p:penyusun', cls:'span2'})}
+    </div>
+  </div>
+  <div class="card">
+    <h2>Tujuan & pendanaan</h2>
+    <div class="grid g3">
+      ${fld({label:'Tujuan terukur', path:'p:tujuan', type:'textarea', rows:3, cls:'span2', ph:'Siapa, berubah apa, berapa, kapan'})}
+      ${fld({label:'Dukungan yang diminta (Rp)', path:'p:budgetAsk', type:'num', ph:'angka atau rumus'})}
+      ${fld({label:'Keberlanjutan setelah pendanaan', path:'p:keberlanjutan', type:'textarea', rows:2, cls:'span3', ph:'Siapa yang melanjutkan, dari mana biayanya'})}
     </div>
   </div>
   <div class="card">
@@ -1763,6 +2093,7 @@ function ocTitle(o, idx){
 }
 function ocLive(o, res){
   if (o.kualitatif) return `<div class="flow"><span>Outcome kualitatif: dicatat di laporan, tidak dirupiahkan dan tidak ikut rasio.</span></div>`;
+  if ((res.excluded||[]).includes(o)){ const s = findS(o.stakeholderId); return `<div class="flow"><span>Tidak masuk total: stakeholder <b>${esc(s?s.nama:'')}</b> ditandai <i>tidak dihitung</i> di ${tabRef('stakeholder')}.</span></div>`; }
   const r = res.rows.find(x=>x.o.id===o.id); if (!r) return '';
   const cut = r.gross!==0 ? 1 - r.net/r.gross : 0;
   return `<div class="flow">
@@ -1784,7 +2115,7 @@ function ocYearTable(o, res){
   const ys = res.ys, r = res.rows.find(x=>x.o.id===o.id);
   const pc = (y,k,lab) => fld({label:`${lab} ${y}`, path:`oy:${o.id}:${y}:${k}`, type:'num', unit:'%'});
   return `<div class="tw"><table class="edit-table yt">
-    <thead><tr><th>Tahun</th>${thQ('Nilai manfaat kotor (Rp)','nilaiY')}${thQ('Deadweight','dw')}${thQ('Attribution','attr')}${thQ('Displacement','disp')}${thQ('Drop-off','drop')}<th class="num">Nilai bersih</th><th class="num">Nilai saat ini</th></tr></thead>
+    <thead><tr><th>Tahun</th>${thQ('Nilai manfaat kotor (Rp)','nilaiY')}${thQ(filterLabel(cur(),'dw','Deadweight'),'dw')}${thQ(filterLabel(cur(),'attr','Attribution'),'attr')}${thQ(filterLabel(cur(),'disp','Displacement'),'disp')}${thQ(filterLabel(cur(),'drop','Drop-off'),'drop')}<th class="num">Nilai bersih</th><th class="num">Nilai saat ini</th></tr></thead>
     <tbody>${ys.map(y=>{ const [n,pv] = ocYearCells(o,y,res); return `<tr><td><b>${y}</b></td>
       <td style="min-width:230px">${fld({label:'Nilai manfaat '+y, path:`oy:${o.id}:${y}:nilai`, type:'num', ph:'mis. 750.000 × 40% × 25'})}</td>
       <td style="width:92px">${pc(y,'dw','Deadweight')}</td><td style="width:92px">${pc(y,'attr','Attribution')}</td><td style="width:92px">${pc(y,'disp','Displacement')}</td><td style="width:92px">${pc(y,'drop','Drop-off')}</td>
@@ -1797,6 +2128,16 @@ function ocYearTable(o, res){
     <span class="small">Drop-off majemuk <input type="text" inputmode="decimal" class="dof" data-dof="${o.id}" placeholder="15" aria-label="Drop-off per tahun dalam persen" style="width:56px;border:1px solid #cdd3cf;border-radius:6px;padding:3px 6px">% per tahun</span>
     <button class="btn sm" data-act="ocDropComp" data-id="${o.id}">Terapkan</button> ${qBtn('drop','Drop-off majemuk')}
   </div>`;
+}
+function ocValueSection(o, res){
+  const p = cur(), us = tahapOf(p)==='usulan';
+  const body = `${ocYearTable(o,res)}
+        <div class="grid g2" style="margin-top:12px">
+          ${FILTERS.map(F=>fld({label:`Penjelasan: ${filterLabel(p,F.k,F.lab).toLowerCase()}`, path:`o:${o.id}:${F.k}Alasan`, type:'textarea', rows:2, ph:F.q, help:F.k+'Alasan'})).join('')}
+        </div>`;
+  if (!us) return `<div class="sec"><h4>3. Nilai & fiksasi dampak per tahun</h4>${body}</div>`;
+  const has = Object.values(o.years||{}).some(d=>!isBlank(d.nilai));
+  return `<details class="sec secopt"${has?' open':''}><summary><h4>3. Perkiraan nilai (opsional di tahap usulan)</h4><span class="tiny muted">klik untuk ${has?'menutup':'mengisi'} · dipakai untuk perkiraan SROI</span></summary>${body}</details>`;
 }
 function ocCard(o, idx, res, W){
   const hasSite = cur().sites.length>0;
@@ -1820,6 +2161,10 @@ function ocCard(o, idx, res, W){
           ${fld({label:'Aspek', path:`o:${o.id}:aspek`, type:'select', options:[['','— pilih aspek —'],...ASPEK]})}
           ${fld({label:'Outcome (perubahan yang dialami)', path:`o:${o.id}:outcome`, cls:hasSite?'span2':'span2'})}
           ${fld({label:'Indikator', path:`o:${o.id}:indikator`})}
+          ${fld({label:'Baseline', path:`o:${o.id}:baseline`, ph:'kondisi awal'})}
+          ${fld({label:'Target', path:`o:${o.id}:target`, ph:'kondisi yang ingin dicapai'})}
+          ${tahapOf(cur())==='evaluasi' ? fld({label:'Realisasi', path:`o:${o.id}:realisasi`, ph:'yang benar-benar tercapai'}) : ''}
+          ${fld({label:'Status bukti', path:`o:${o.id}:status`, type:'select', options:STATUS_O})}
           <div class="f"><label>Jenis outcome ${qBtn('jenisOutcome','Jenis outcome')}</label>
             <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:negatif" ${o.negatif?'checked':''}> Negatif (mengurangi nilai)</label>
             <label class="chk" style="font-weight:400"><input type="checkbox" data-path="o:${o.id}:kualitatif" ${o.kualitatif?'checked':''}> Kualitatif (tidak dirupiahkan)</label></div>
@@ -1833,12 +2178,7 @@ function ocCard(o, idx, res, W){
           ${fld({label:'Sumber data & referensi', path:`o:${o.id}:proxySumber`, type:'textarea', rows:3, ph:'Tautan harga, kuesioner, laporan'})}
         </div>
       </div>
-      ${o.kualitatif ? '' : `<div class="sec"><h4>3. Nilai & fiksasi dampak per tahun</h4>
-        ${ocYearTable(o,res)}
-        <div class="grid g2" style="margin-top:12px">
-          ${FILTERS.map(F=>fld({label:`Penjelasan ${F.lab.toLowerCase()}`, path:`o:${o.id}:${F.k}Alasan`, type:'textarea', rows:2, ph:F.q})).join('')}
-        </div>
-      </div>`}
+      ${o.kualitatif ? '' : ocValueSection(o, res)}
     </div>
   </div>`;
 }
@@ -1855,7 +2195,7 @@ function tOutcome(){
       </div>
     </div>
   </div>
-  ${p.outcomes.length ? `<div data-sort="out" data-compact>${p.outcomes.map((o,i)=>ocCard(o,i,res,W)).join('')}</div>` : `<div class="card empty">Belum ada outcome. ${p.stakeholders.length?'':'Isi stakeholder dulu di tab 2 (Stakeholder), lalu '}klik <b>+ Tambah outcome</b>.</div>`}
+  ${p.outcomes.length ? `<div data-sort="out" data-compact>${p.outcomes.map((o,i)=>ocCard(o,i,res,W)).join('')}</div>` : `<div class="card empty">Belum ada outcome. ${p.stakeholders.length?'':`Isi stakeholder dulu di ${tabRef('stakeholder')}, lalu `}klik <b>+ Tambah outcome</b>.</div>`}
   ${p.outcomes.length ? `<div class="noprint" style="text-align:center"><button class="btn pri" data-act="addO">+ Tambah outcome</button></div>` : ''}`;
 }
 
@@ -1869,7 +2209,7 @@ function kpis(res){
   const nErr = analyze(cur(), res).filter(w=>w.lvl==='err').length;
   return `${nErr && res.sroi!=null ? `<div class="banner" style="padding:0;margin:0 0 10px"><div class="b-err"><b>Belum valid:</b> ada ${nErr} error (angka tidak valid atau data wajib kosong). Angka di bawah belum bisa dipakai sampai error diperbaiki.</div></div>` : ''}
   <div class="kpis">
-    <div class="kpi big"><div class="l">Rasio SROI ${res.ys[0]}–${res.ys[res.ys.length-1]}</div><div class="v">1 : ${fmtRatio(res.sroi)}</div>
+    <div class="kpi big"><div class="l">${tahapOf(cur())==='usulan'?'Perkiraan rasio SROI':'Rasio SROI'} ${res.ys[0]}–${res.ys[res.ys.length-1]}</div><div class="v">1 : ${fmtRatio(res.sroi)}</div>
       <div class="tiny" style="opacity:.9">${res.sroi!=null?`Tiap Rp 1 investasi → nilai sosial sekitar Rp ${fmtNum(res.sroi,2)}`:'Isi input dan outcome dulu'}${res.sroiNoPem!=null?`<br>Tanpa manfaat pemrakarsa: 1 : ${fmtRatio(res.sroiNoPem)}`:''}</div></div>
     <div class="kpi"><div class="l">Nilai manfaat saat ini</div><div class="v">${fmtRpShort(res.totalPV)}</div><div class="tiny muted">${fmtRp(res.totalPV)}</div></div>
     <div class="kpi"><div class="l">Investasi saat ini</div><div class="v">${fmtRpShort(res.totalInputPV)}</div><div class="tiny muted">nominal ${fmtRp(res.totalInput)}</div></div>
@@ -1950,7 +2290,9 @@ function formulaBox(p, res){
 function tHasil(){
   const p = cur(), res = compute(p), W = analyze(p,res);
   return `${howTo('hasil')}${kpis(res)}
+  <div class="live" style="margin-top:12px;font-size:.92rem">${summarySentence(p,res)}</div>
   <div class="card" style="margin-top:14px"><h2>Peringatan & kelengkapan</h2>${warnList(W,true)}</div>
+  <div class="card"><h2>Dari nilai kotor ke nilai saat ini</h2>${fiksasiChart(p,res)}</div>
   <div class="card"><h2>Per tahun</h2>${yearTable(res)}</div>
   ${siteTable(p)}
   <div class="card"><h2>Rincian per outcome</h2>${outcomeTable(p,res,false)}</div>
@@ -2055,11 +2397,34 @@ function scenLabel(k){
   return (v>0?'+':'') + v + sfx;
 }
 
-/* ---- 7. ToC ---- */
+/* ---- Cek kualitas Theory of Change ---- */
+const OUTPUT_LIKE = /\b(dilatih|mengikuti|hadir|terlaksana|diadakan|dibagikan|disalurkan|diselenggarakan|menerima bantuan|diberikan)\b/i;
+function tocChecks(p, add){
+  const all = nodesOf(p), items = p.toc.items;
+  if (isBlank(p.toc.masalah)) add('info','toc','Theory of Change: masalah/konteks belum diisi.');
+  if (!items.length && !p.outcomes.length){ add('info','toc','Theory of Change belum diisi. Coba "Susun dengan panduan" atau pakai template.'); return; }
+  const incoming = new Set(); all.forEach(n=>validTo(p,n,all).forEach(t=>incoming.add(t)));
+  const has = col => all.some(n=>n.col===col);
+  all.forEach(n=>{ const nm = `"${short(n.text||'(kosong)',45)}"`;
+    if (isBlank(n.text)) return;
+    if (['kegiatan','output','outcomePendek'].includes(n.col) && !validTo(p,n,all).length) add('info','toc',`${colName(n.col)} ${nm} belum mengarah ke kotak mana pun.`);
+    if (n.col==='outcome' && n.kind==='card' && !n.ref.negatif && !isPem(n.ref, p) && (has('kegiatan')||has('output')||has('outcomePendek')) && !incoming.has(n.id)) add('info','toc',`Outcome ${nm} belum punya kotak yang mengarah ke sana.`);
+    if (n.col==='outcome' && !(n.kind==='card' && (n.ref.negatif || isPem(n.ref,p))) && has('impact') && !validTo(p,n,all).length) add('info','toc',`Outcome ${nm} belum dihubungkan ke impact.`);
+    if (['outcomePendek','outcome','impact'].includes(n.col) && OUTPUT_LIKE.test(n.text)) add('warn','toc',`${colName(n.col)} ${nm} terdengar seperti output (kegiatan terjadi), bukan perubahan yang dialami stakeholder.`);
+    if (n.col==='outcome' && n.kind==='item') add('info','toc',`Outcome ${nm} baru ada di Theory of Change. Klik ✎ → "Jadikan kartu outcome" kalau ingin menilainya.`);
+  });
+  if (!has('impact')) add('info','toc','Kolom Impact masih kosong.');
+}
+
+/* ---- 7. ToC ----
+   Kotak ToC tersimpan di p.toc.items ({id, col, text, to:[id], indikator}).
+   Kolom "Outcome jangka menengah" = kartu outcome (satu sumber) + kotak ToC tambahan yang belum punya kartu. */
 const TOC_COLS = [
   ['input','Input','sumber daya','tocInput'],['kegiatan','Kegiatan','yang dikerjakan','tocKegiatan'],['output','Output','hasil langsung','tocOutput'],
   ['outcomePendek','Outcome jangka pendek','pengetahuan, sikap, akses','tocPendek'],['outcome','Outcome jangka menengah','perilaku, kondisi','tocMenengah'],['impact','Impact','jangka panjang','tocImpact']
 ];
+const COL_IX = Object.fromEntries(TOC_COLS.map(([k],i)=>[k,i]));
+const colName = k => (TOC_COLS.find(x=>x[0]===k)||[,''])[1];
 const lines = s => String(s||'').split('\n').map(x=>x.trim()).filter(Boolean);
 const sdgLabel = g => g && SDGS[+g-1] ? `SDG ${g} · ${SDGS[+g-1]}` : '';
 function sdgBadges(p){
@@ -2068,45 +2433,265 @@ function sdgBadges(p){
   return list.filter(g=>{ const k = g.goal+'|'+g.peran; if (seen.has(k)) return false; seen.add(k); return true; })
     .map(g=>`<span class="sdgb${g.peran==='utama'?' utama':''}" title="${g.peran==='utama'?'Tujuan utama':'Tujuan pendukung'}">${esc(sdgLabel(g.goal))}</span>`).join('');
 }
+/* Semua simpul ToC, urut per kolom */
+function nodesOf(p){
+  const out = [];
+  TOC_COLS.forEach(([col])=>{
+    if (col==='outcome') p.outcomes.forEach(o=>out.push({id:o.id, col, kind:'card', text:o.outcome||'', to:o.tocTo, indikator:o.indikator, ref:o}));
+    p.toc.items.filter(x=>x.col===col).forEach(x=>out.push({id:x.id, col, kind:'item', text:x.text, to:x.to, indikator:x.indikator, ref:x}));
+  });
+  return out;
+}
+const nodeById = (p, id) => nodesOf(p).find(n=>n.id===id);
+function validTo(p, n, all){ all = all || nodesOf(p); return (n.to||[]).filter(t=>{ const m = all.find(x=>x.id===t); return m && COL_IX[m.col] > COL_IX[n.col]; }); }
+function pruneLinks(p){ const all = nodesOf(p); all.forEach(n=>{ const v = validTo(p, n, all); n.to.splice(0, n.to.length, ...v); }); }
+function tocBox(p, n, ed, all){
+  const tos = validTo(p, n, all).map(t=>all.find(x=>x.id===t)).filter(Boolean);
+  let tag = '';
+  if (n.kind==='card'){ const o = n.ref; const valued = !o.kualitatif && Object.values(o.years||{}).some(d=>!isBlank(d.nilai));
+    tag = o.negatif ? '<span class="tm tm-neg">negatif</span>' : o.kualitatif ? '<span class="tm">kualitatif</span>' : valued ? '<span class="tm tm-ok">dirupiahkan</span>' : '<span class="tm">kartu outcome</span>'; }
+  else if (n.col==='outcome') tag = '<span class="tm tm-warn">belum ada kartu</span>';
+  return `<div class="it${n.kind==='card'?' card-node':''}" data-item="${n.id}" data-node="${n.id}" data-kind="${n.kind}">
+    ${ed ? grip(n.text) : ''}<span class="it-t">${n.text ? esc(n.text) : '<i class="muted">(kosong)</i>'} ${tag}</span>
+    ${ed ? `<button type="button" class="it-ed" data-act="tocEdit" data-id="${n.id}" title="Ubah isi, panah, dan indikator" aria-label="Ubah kotak">✎</button>` : ''}
+    ${n.indikator && (ed ? pref.tocInd : n.kind==='item') ? `<div class="it-ind">Indikator: ${esc(n.indikator)}</div>` : ''}
+    ${tos.length ? `<div class="it-to">→ ${tos.map(m=>esc(short(m.text||'(kosong)',40))).join('; ')}</div>` : ''}
+  </div>`;
+}
 function tocDiagram(p, ed){
-  const t = p.toc;
-  const ctx = [['Masalah / konteks',t.masalah],['Sasaran',t.sasaran]].filter(x=>!isBlank(x[1]));
-  const after = [['Asumsi',t.asumsi],['Risiko & mitigasi',t.risiko],['Bukti / rujukan',t.bukti]].filter(x=>!isBlank(x[1]));
-  const sb = sdgBadges(p);
+  const t = p.toc, all = nodesOf(p);
+  const ctx = ed ? [] : [['Masalah / konteks',t.masalah],['Sasaran',t.sasaran]].filter(x=>!isBlank(x[1]));
+  const after = ed ? [] : [['Asumsi',t.asumsi],['Risiko & mitigasi',t.risiko],['Bukti / rujukan',t.bukti]].filter(x=>!isBlank(x[1]));
+  const sb = ed ? '' : sdgBadges(p);
   return `${ctx.length?`<div class="toc-ctx">${ctx.map(([k,v])=>`<div><b>${k}:</b> ${nl2br(v)}</div>`).join('')}</div>`:''}
-    <div class="toc">${TOC_COLS.map(([k,l,sub])=>{ const items = lines(t[k]);
-      return `<div class="col"${ed?` data-sort="toc:${k}" data-group="toc"`:''}><h4>${l}<small>${sub}</small></h4>${
-        ed ? items.map((x,i)=>`<div class="it" data-item="${k}-${i}" data-text="${esc(x)}">${grip(x)}<span>${esc(x)}</span></div>`).join('') + (items.length?'':'<div class="it muted">–</div>')
-           : (items.map(x=>`<div class="it">${esc(x)}</div>`).join('') || '<div class="it muted">–</div>')}</div>`; }).join('')}</div>
+    <div class="toc-wrap" data-toc${ed?' data-arrows':''}>
+      <div class="toc">${TOC_COLS.map(([k,l,sub])=>{ const ns = all.filter(n=>n.col===k);
+        return `<div class="col"${ed?` data-sort="toc:${k}" data-group="toc"`:''}><h4>${l}<small>${sub}</small></h4>${ns.map(n=>tocBox(p,n,ed,all)).join('') || (ed?'':'<div class="it muted">–</div>')}${
+          ed ? `<button type="button" class="tocadd noprint" data-act="tocAdd" data-col="${k}">+ Tambah</button>` : ''}</div>`; }).join('')}</div>
+      ${ed ? '<svg class="toc-arrows" aria-hidden="true"></svg>' : ''}
+    </div>
     ${after.length?`<div class="toc-ctx" style="margin-top:12px">${after.map(([k,v])=>`<div><b>${k}:</b> ${nl2br(v)}</div>`).join('')}</div>`:''}
     ${sb?`<div class="toc-sdg"><b>Kontribusi SDGs:</b> ${sb}</div>`:''}`;
 }
+/* Panah antar kotak (hanya saat kolom tampil berdampingan) */
+function drawArrows(){
+  document.querySelectorAll('[data-toc][data-arrows]').forEach(w=>{
+    const svg = w.querySelector('svg.toc-arrows'), cols = w.querySelectorAll('.toc > .col');
+    const horizontal = cols.length>1 && Math.abs(cols[0].getBoundingClientRect().top - cols[1].getBoundingClientRect().top) < 4;
+    w.classList.toggle('has-arrows', horizontal);
+    if (!svg) return;
+    if (!horizontal){ svg.innerHTML = ''; return; }
+    const wr = w.getBoundingClientRect(), p = cur(), all = nodesOf(p), paths = [];
+    svg.setAttribute('width', wr.width); svg.setAttribute('height', wr.height); svg.setAttribute('viewBox', `0 0 ${wr.width} ${wr.height}`);
+    all.forEach(n=>validTo(p,n,all).forEach(tid=>{
+      const a = w.querySelector(`[data-node="${n.id}"]`), b = w.querySelector(`[data-node="${tid}"]`); if (!a || !b) return;
+      const ra = a.getBoundingClientRect(), rb = b.getBoundingClientRect();
+      const x1 = ra.right - wr.left, y1 = ra.top + ra.height/2 - wr.top, x2 = rb.left - wr.left - 3, y2 = rb.top + rb.height/2 - wr.top, dx = Math.max(16, (x2-x1)/2);
+      paths.push(`<path data-from="${n.id}" data-to="${tid}" d="M${x1.toFixed(1)},${y1.toFixed(1)} C${(x1+dx).toFixed(1)},${y1.toFixed(1)} ${(x2-dx).toFixed(1)},${y2.toFixed(1)} ${x2.toFixed(1)},${y2.toFixed(1)}" marker-end="url(#tocah)"/>`);
+    }));
+    svg.innerHTML = `<defs><marker id="tocah" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0,0 L10,5 L0,10 z" fill="#7d8f88"/></marker></defs>${paths.join('')}`;
+  });
+}
+window.addEventListener('resize', ()=>drawArrows());
+document.addEventListener('mouseover', e=>{
+  const n = e.target.closest && e.target.closest('[data-arrows] [data-node]'); const w = n && n.closest('[data-arrows]');
+  document.querySelectorAll('.toc-arrows path.hl, [data-arrows] .it.hl').forEach(x=>x.classList.remove('hl'));
+  if (!n || !w) return; const id = n.dataset.node;
+  w.querySelectorAll(`path[data-from="${CSS.escape(id)}"], path[data-to="${CSS.escape(id)}"]`).forEach(pth=>{ pth.classList.add('hl');
+    const other = pth.dataset.from===id ? pth.dataset.to : pth.dataset.from; const o = w.querySelector(`[data-node="${CSS.escape(other)}"]`); if (o) o.classList.add('hl'); });
+});
+
+/* ---- Editor kotak (✎) ---- */
+let tocEditId = null;
+function tocEditHTML(p, id){
+  const all = nodesOf(p), n = all.find(x=>x.id===id); if (!n) return '';
+  const later = TOC_COLS.filter(([k])=>COL_IX[k] > COL_IX[n.col]);
+  const toList = later.map(([k,l])=>{ const ns = all.filter(m=>m.col===k); if (!ns.length) return '';
+    return `<div class="tiny muted" style="margin-top:4px">${esc(l)}</div>${ns.map(m=>`<label class="chk"><input type="checkbox" data-from="${n.id}" data-tocto="${m.id}" ${n.to.includes(m.id)?'checked':''}> ${esc(m.text||'(kosong)')}</label>`).join('')}`; }).join('');
+  return `<div class="hpop-h"><b>Kotak ${esc(colName(n.col))}</b><button type="button" class="hpop-x" data-act="tocClose" aria-label="Tutup">×</button></div>
+    ${n.kind==='card' ? `<p class="tiny muted">Kotak ini adalah kartu outcome. Mengubah isi dan indikator di sini juga mengubahnya di ${tabRef('outcome')}.</p>` : ''}
+    <div class="f"><label>Isi kotak ${qBtn('tiText','Isi kotak')}</label><textarea data-tocf="text" data-id="${n.id}" rows="2" aria-label="Isi kotak">${esc(n.text)}</textarea></div>
+    ${n.col!=='impact' ? `<div class="f" style="margin-top:8px"><label>Mengarah ke ${qBtn('tiTo','Mengarah ke')}</label><div class="to-list">${toList || '<p class="tiny muted">Belum ada kotak di kolom sesudahnya.</p>'}</div></div>` : ''}
+    <div class="f" style="margin-top:8px"><label>Indikator (opsional) ${qBtn('tiIndikator','Indikator kotak')}</label><input type="text" data-tocf="indikator" data-id="${n.id}" value="${esc(n.indikator||'')}" aria-label="Indikator"></div>
+    <div class="row" style="gap:6px;margin-top:10px">
+      ${n.kind==='item' ? `<button class="btn sm del" data-act="tocDel" data-id="${n.id}">Hapus kotak</button>` : `<button class="btn sm" data-act="tocOpenCard" data-id="${n.id}">Buka kartu outcome</button>`}
+      ${n.kind==='item' && n.col==='outcome' ? `<button class="btn sm" data-act="tocToCard" data-id="${n.id}" title="Buat kartu outcome supaya bisa dinilai">Jadikan kartu outcome</button>` : ''}
+      <button class="btn sm pri" data-act="tocClose" style="margin-left:auto">Selesai</button></div>`;
+}
+function openTocEdit(id, anchor){
+  closeHelp(); closeTocEdit(true);
+  const html = tocEditHTML(cur(), id); if (!html) return;
+  const pop = document.createElement('div'); pop.id = 'tocpop'; pop.className = 'hpop tocpop'; pop.setAttribute('role','dialog'); pop.setAttribute('aria-label','Ubah kotak');
+  pop.innerHTML = html; document.body.appendChild(pop); tocEditId = id;
+  if (innerWidth <= 560) pop.classList.add('sheet');
+  else { const r = (anchor || document.querySelector(`[data-node="${CSS.escape(id)}"]`) || document.body).getBoundingClientRect(), W = pop.offsetWidth, H = pop.offsetHeight;
+    const left = Math.min(Math.max(8, r.left), innerWidth - W - 8); let top = r.bottom + 6;
+    if (top + H > innerHeight - 8 && r.top - H - 6 > stickyH()) top = r.top - H - 6;
+    pop.style.left = (left + scrollX) + 'px'; pop.style.top = (top + scrollY) + 'px'; }
+  const ta = pop.querySelector('textarea'); if (ta){ ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+}
+function closeTocEdit(silent){
+  const el = document.getElementById('tocpop'); if (el) el.remove();
+  const id = tocEditId; tocEditId = null; if (!id) return;
+  const p = cur(), it = p.toc.items.find(x=>x.id===id);
+  if (it && isBlank(it.text)){ p.toc.items = p.toc.items.filter(x=>x.id!==id); pruneLinks(p); save(); if (!silent) refreshToc(); }
+}
+function refreshToc(){ if (tab!=='toc') return; const p = cur(); setLive('tocDiag', tocDiagram(p, true)); setLive('tocQ', tocQuality(p)); drawArrows(); }
+function tocQuality(p){
+  const W = analyze(p, compute(p)).filter(w=>w.tab==='toc');
+  return W.length ? warnList(W, false) : '<p class="small" style="color:var(--accent-2)">✓ Tidak ada catatan. Rantai perubahan sudah terhubung.</p>';
+}
+/* Ganti isi satu kolom dari daftar baris (dipakai panduan langkah demi langkah) */
+function setColLines(p, col, arr){
+  const old = p.toc.items.filter(x=>x.col===col), used = new Set(), keep = [];
+  arr.forEach(t=>{ const m = old.find(x=>x.text===t && !used.has(x.id)); if (m){ used.add(m.id); keep.push(m); } else keep.push(blankTi(col, t)); });
+  p.toc.items = p.toc.items.filter(x=>x.col!==col).concat(keep);
+  pruneLinks(p);
+}
+
+/* ---- Template ToC per jenis program (pola umum, tanpa angka) ---- */
+const TOC_TEMPLATES = [
+  {k:'beasiswa', n:'Beasiswa & pengembangan mahasiswa', masalah:'Mahasiswa berprestasi dari keluarga kurang mampu berisiko putus kuliah dan kurang siap kerja.', sasaran:'Mahasiswa penerima beasiswa',
+    input:['Dana beasiswa (uang saku, UKT)','Mentor dan pelatih','Mitra pengelola program'],
+    kegiatan:['Penyaluran uang saku dan subsidi UKT>0','Pelatihan kepemimpinan dan soft skill>1','Mentoring karier dan proyek sosial>1,2'],
+    output:['Mahasiswa menerima beasiswa tepat waktu>0','Mahasiswa menyelesaikan pelatihan>1,2','Proyek sosial/bisnis mahasiswa terlaksana>1'],
+    outcomePendek:['Beban biaya kuliah berkurang>0','Keterampilan kepemimpinan dan komunikasi meningkat>1,2','Kepercayaan diri meningkat>1'],
+    outcome:['Studi berlanjut sampai lulus>0','Kesiapan kerja meningkat>0','Muncul usaha atau inisiatif baru mahasiswa>1'],
+    impact:['Lulusan berdaya saing dan mobilitas sosial keluarga meningkat','Lahir pemimpin muda yang peduli komunitas'],
+    asumsi:'Mahasiswa aktif mengikuti pelatihan; dana cair tepat waktu.', risiko:'Mahasiswa mundur di tengah program → seleksi komitmen dan pendampingan rutin.'},
+  {k:'umkm', n:'Pemberdayaan UMKM & akses pasar', masalah:'UMKM punya produk potensial tetapi belum siap memasuki pasar yang lebih luas.', sasaran:'Pelaku UMKM terkurasi',
+    input:['Dana pendampingan','Kurator dan mentor','Jejaring pameran dan pembeli'],
+    kegiatan:['Kurasi produk>0','Pelatihan pemasaran dan ekspor>1','Pameran dan business matching>2'],
+    output:['UMKM terkurasi>0','UMKM menyelesaikan pelatihan>0,1','UMKM bertemu calon pembeli>2'],
+    outcomePendek:['Kualitas dan standar produk meningkat>0','Pengetahuan pasar dan prosedur ekspor meningkat>0,1','Jejaring pembeli bertambah>0,1'],
+    outcome:['Penjualan dan omzet UMKM meningkat>0,1','UMKM menembus pasar baru atau ekspor>1'],
+    impact:['Pendapatan pelaku usaha dan tenaga kerja meningkat','Ekonomi lokal tumbuh'],
+    asumsi:'Permintaan pasar tersedia; UMKM sanggup memenuhi volume pesanan.', risiko:'Kapasitas produksi terbatas → pendampingan produksi dan akses pembiayaan.'},
+  {k:'deswita', n:'Desa wisata', masalah:'Potensi alam dan budaya desa belum memberi penghasilan berkelanjutan bagi warga.', sasaran:'Pengelola desa wisata dan warga desa',
+    input:['Dana pengembangan','Pendamping desa wisata','Pemerintah desa dan pokdarwis'],
+    kegiatan:['Pelatihan pengelolaan dan pelayanan wisata>0','Perbaikan sarana wisata>1','Promosi dan paket wisata>2'],
+    output:['Pengelola terlatih>0,2','Sarana wisata siap pakai>1','Paket wisata dipasarkan>1'],
+    outcomePendek:['Kapasitas pengelola meningkat>0,1','Kunjungan wisatawan bertambah>0','Warga lebih peduli kebersihan dan budaya>2'],
+    outcome:['Pendapatan warga dari wisata meningkat>0','Kelembagaan desa wisata lebih mandiri>1','Kesadaran menjaga lingkungan dan budaya meningkat>2'],
+    impact:['Kesejahteraan warga desa meningkat','Desa wisata berkelanjutan','Alam dan budaya desa lestari'],
+    asumsi:'Akses menuju desa memadai; warga mau terlibat.', risiko:'Kunjungan musiman → paket wisata untuk musim sepi dan pemasaran daring.'},
+  {k:'konservasi', n:'Konservasi alam & satwa', masalah:'Populasi satwa dan ekosistem terancam karena perburuan, kerusakan habitat, dan rendahnya kesadaran.', sasaran:'Kelompok konservasi dan masyarakat sekitar',
+    input:['Dana konservasi','Kelompok/komunitas konservasi','Mitra ahli dan pemerintah'],
+    kegiatan:['Patroli dan penyelamatan (mis. telur/tukik)>0','Edukasi masyarakat dan pengunjung>1','Penguatan kelompok konservasi>2'],
+    output:['Telur/satwa terselamatkan>0','Warga dan pelajar teredukasi>1','Kelompok konservasi terlatih>2'],
+    outcomePendek:['Angka penetasan/kelangsungan hidup meningkat>0','Pengetahuan dan kepedulian warga meningkat>1','Kapasitas kelompok meningkat>2'],
+    outcome:['Populasi dan habitat lebih terjaga>0','Perburuan dan perusakan berkurang>0','Kelompok mandiri dengan penghasilan dari ekowisata>1'],
+    impact:['Ekosistem pesisir/alam lestari','Kesejahteraan komunitas konservasi meningkat'],
+    asumsi:'Dukungan aparat dan pemerintah daerah; cuaca mendukung musim bertelur.', risiko:'Abrasi atau cuaca ekstrem → relokasi sarang dan penetasan semi-alami.'},
+  {k:'kerajinan', n:'Kerajinan & budaya (mis. tenun)', masalah:'Perajin tradisional berpenghasilan rendah dan keterampilan/bahan warisan budaya mulai hilang.', sasaran:'Perajin dan kelompok perajin',
+    input:['Dana pelatihan','Pelatih/ahli pewarna alam','Akses pameran'],
+    kegiatan:['Pelatihan teknik dan pewarna alam>0','Pengembangan motif dan produk>1','Pameran dan perluasan pasar>2'],
+    output:['Perajin terlatih>0,3','Produk dan motif baru dihasilkan>1','Produk tampil di pameran>2'],
+    outcomePendek:['Keterampilan perajin meningkat>0,2','Kualitas dan nilai jual produk naik>0','Pembeli baru didapat>0','Perajin memakai pewarna alam>1'],
+    outcome:['Pendapatan perajin meningkat>0','Tanaman pewarna alam dibudidayakan>1','Kebanggaan dan regenerasi perajin muda>2'],
+    impact:['Kesejahteraan perajin meningkat','Lingkungan lebih lestari','Warisan budaya lestari'],
+    asumsi:'Ada permintaan untuk produk pewarna alam; bahan baku tersedia.', risiko:'Harga jual tidak menutup biaya → kurasi produk premium dan kemitraan pembeli tetap.'},
+  {k:'sampah', n:'Pengelolaan sampah & lingkungan', masalah:'Sampah rumah tangga dibuang atau dibakar; warga minim sumber penghasilan tambahan.', sasaran:'Ibu rumah tangga dan warga desa',
+    input:['Dana program','Pendamping lapangan','Alat bank sampah'],
+    kegiatan:['Pelatihan pemilahan sampah>0','Pembentukan bank sampah>1','Pendampingan rutin>1'],
+    output:['Warga terlatih memilah>0','Bank sampah beroperasi>1'],
+    outcomePendek:['Warga paham cara memilah sampah>1','Warga rutin menyetor sampah>0,1'],
+    outcome:['Penghasilan tambahan dari sampah>0','Sampah ke TPA/sungai berkurang>1'],
+    impact:['Kesejahteraan keluarga meningkat','Lingkungan lebih bersih dan sehat'],
+    asumsi:'Harga jual sampah stabil; pengepul tetap membeli.', risiko:'Harga sampah turun → kerja sama dengan beberapa pengepul dan olah sampah organik.'},
+  {k:'inklusi', n:'Pelatihan keterampilan kelompok rentan', masalah:'Kelompok rentan (mis. penyandang disabilitas) sulit mendapat keterampilan dan akses kerja yang setara.', sasaran:'Peserta dari kelompok rentan',
+    input:['Dana pelatihan','Pelatih profesional dan juru bahasa isyarat','Alat dan bahan praktik'],
+    kegiatan:['Pelatihan keterampilan profesional>0','Sertifikasi kompetensi>1','Pendampingan usaha dan pemasaran>2'],
+    output:['Peserta lulus pelatihan>0,1','Peserta tersertifikasi>2','Peserta mendapat alat dan akses pasar>3'],
+    outcomePendek:['Keterampilan teknis meningkat>0','Kepercayaan diri dan motivasi meningkat>0,1','Kompetensi diakui lewat sertifikat>0','Klien atau pelanggan bertambah>0'],
+    outcome:['Penghasilan dari pekerjaan atau usaha baru>0','Penerimaan dan perlakuan setara di lingkungan kerja>1'],
+    impact:['Kemandirian ekonomi kelompok rentan','Masyarakat lebih inklusif'],
+    asumsi:'Ada permintaan jasa; lingkungan kerja mau menerima.', risiko:'Hambatan komunikasi → juru bahasa isyarat dan materi visual.'}
+];
+function applyTemplate(p, key){
+  const T = TOC_TEMPLATES.find(x=>x.k===key); if (!T) return;
+  const byCol = {};
+  TOC_COLS.forEach(([col])=>{ byCol[col] = (T[col]||[]).map(s=>{ const [text, links] = s.split('>'); return {ti: blankTi(col, text.trim()), links: links ? links.split(',').map(Number) : []}; }); });
+  TOC_COLS.forEach(([col], i)=>{ const next = TOC_COLS[i+1]; if (!next) return;
+    byCol[col].forEach(x=>x.links.forEach(j=>{ const t = byCol[next[0]][j]; if (t) x.ti.to.push(t.ti.id); })); });
+  p.toc.items = TOC_COLS.flatMap(([col])=>byCol[col].map(x=>x.ti));
+  p.outcomes.forEach(o=>{ o.tocTo = []; });
+  Object.assign(p.toc, {masalah:T.masalah, sasaran:T.sasaran, asumsi:T.asumsi, risiko:T.risiko});
+}
+
+/* ---- Panduan langkah demi langkah ---- */
+let tocWiz = null;
+const WIZ = [
+  {k:'konteks', t:'Masalah & sasaran', q:'Masalah apa yang ingin diselesaikan, dan siapa sasarannya?'},
+  {k:'impact', col:'impact', t:'Kondisi jangka panjang (impact)', q:'Kalau program berhasil, kondisi apa yang terwujud 3–5 tahun lagi?', hint:'Perubahan yang luas. Program ikut berkontribusi, tidak sendirian.', ex:'Kesejahteraan keluarga meningkat\nLingkungan desa lebih bersih'},
+  {k:'outcome', col:'outcome', t:'Perubahan perilaku atau kondisi (outcome jangka menengah)', q:'Perubahan apa yang perlu terjadi pada stakeholder supaya kondisi itu tercapai?', hint:'Biasanya ini yang dirupiahkan. Kartu outcome yang sudah ada otomatis ikut; tulis di sini perubahan lain yang belum punya kartu.', ex:'Ibu punya penghasilan tambahan dari sampah\nSampah ke sungai berkurang'},
+  {k:'outcomePendek', col:'outcomePendek', t:'Perubahan awal (outcome jangka pendek)', q:'Perubahan awal apa yang mendahuluinya: pengetahuan, keterampilan, sikap, atau akses?', ex:'Ibu paham cara memilah sampah\nIbu tahu harga jual tiap jenis sampah'},
+  {k:'output', col:'output', t:'Output', q:'Hasil langsung kegiatan apa yang dibutuhkan? Tulis dengan jumlah.', ex:'40 ibu dilatih\n2 bank sampah beroperasi'},
+  {k:'kegiatan', col:'kegiatan', t:'Kegiatan', q:'Kegiatan apa yang menghasilkan output itu? Pakai kata kerja.', ex:'Pelatihan pemilahan sampah\nPendampingan rutin'},
+  {k:'input', col:'input', t:'Input', q:'Sumber daya apa yang dibutuhkan?', ex:'Dana program\nPendamping lapangan'},
+  {k:'link', t:'Hubungkan kotak', q:'Untuk setiap kotak, centang kotak di kolom berikutnya yang dihasilkannya. Hubungan ini muncul sebagai panah di diagram.'},
+  {k:'asumsi', t:'Asumsi & risiko', q:'Apa yang harus benar supaya rantai ini bekerja, dan apa yang bisa menggagalkannya?'}
+];
+function wizHTML(p){
+  const st = WIZ[tocWiz], all = nodesOf(p);
+  let body = '';
+  if (st.k==='konteks') body = `<div class="grid g2">${fld({label:'Masalah / konteks', path:'toc:masalah', type:'textarea', rows:3})}${fld({label:'Sasaran / penerima manfaat', path:'toc:sasaran', type:'textarea', rows:3})}</div>`;
+  else if (st.k==='asumsi') body = `<div class="grid g2">${fld({label:'Asumsi', path:'toc:asumsi', type:'textarea', rows:3})}${fld({label:'Risiko & mitigasi', path:'toc:risiko', type:'textarea', rows:3})}</div>`;
+  else if (st.k==='link'){
+    const rows = TOC_COLS.slice(1, -1).map(([col], i)=>{ const next = TOC_COLS[i+2][0], targets = all.filter(n=>n.col===next);
+      return all.filter(n=>n.col===col).map(n=>`<div class="wl-link"><b>${esc(n.text||'(kosong)')}</b> <span class="tiny muted">(${esc(colName(col))})</span><div class="to-list">${
+        targets.length ? targets.map(m=>`<label class="chk"><input type="checkbox" data-from="${n.id}" data-tocto="${m.id}" ${n.to.includes(m.id)?'checked':''}> ${esc(m.text||'(kosong)')}</label>`).join('') : `<span class="tiny muted">Kolom ${esc(colName(next))} masih kosong.</span>`}</div></div>`).join(''); }).join('');
+    body = rows || '<p class="small muted">Belum ada kotak untuk dihubungkan.</p>';
+  } else {
+    const cards = st.col==='outcome' ? p.outcomes.filter(o=>!isBlank(o.outcome)) : [];
+    const val = p.toc.items.filter(x=>x.col===st.col).map(x=>x.text).join('\n');
+    body = `${cards.length ? `<p class="small">Sudah ada sebagai kartu outcome: ${cards.map(o=>`<span class="tm tm-ok">${esc(o.outcome)}</span>`).join(' ')}</p>` : ''}
+      ${st.hint ? `<p class="small muted">${st.hint}</p>` : ''}
+      <textarea class="wiz-ta" data-wiz="${st.col}" rows="5" aria-label="${esc(st.t)}" placeholder="Satu baris = satu kotak">${esc(val)}</textarea>
+      <div class="exbox small"><b>Contoh:</b><br>${nl2br(st.ex||'')}</div>`;
+  }
+  return `<div class="wiz card">
+    <div class="row" style="align-items:center"><h3 style="margin:0;flex:1">🧭 Langkah ${tocWiz+1} dari ${WIZ.length}: ${esc(st.t)}</h3><button class="btn sm" data-act="wizCancel">Tutup panduan</button></div>
+    <div class="wiz-bar"><span style="width:${((tocWiz+1)/WIZ.length*100).toFixed(0)}%"></span></div>
+    <p><b>${esc(st.q)}</b></p>${body}
+    <div class="row" style="gap:6px;margin-top:10px">${tocWiz>0?'<button class="btn" data-act="wizPrev">← Kembali</button>':''}
+      ${tocWiz<WIZ.length-1 ? '<button class="btn pri" data-act="wizNext">Lanjut →</button>' : '<button class="btn pri" data-act="wizDone">Selesai</button>'}</div>
+  </div>`;
+}
+function wizApply(){ const ta = document.querySelector('[data-wiz]'); if (!ta) return; setColLines(cur(), ta.dataset.wiz, lines(ta.value)); save(); }
+
 function tToc(){
   const p = cur();
   return `${howTo('toc')}<div class="card"><h2>Theory of Change</h2>
-    <p class="small muted">Satu baris = satu kotak di diagram. Klik <b>?</b> untuk cara mengisi tiap kolom. Di diagram, geser ⠿ untuk mengubah urutan kotak atau memindahkannya ke kolom lain.</p>
-    <div class="sec" style="border-top:0;margin-top:0;padding-top:0"><h4>1. Konteks</h4>
-      <div class="grid g3">
-        ${fld({label:'Masalah / konteks', path:'toc:masalah', type:'textarea', rows:3, cls:'span2', help:'tocMasalah'})}
-        ${fld({label:'Sasaran / penerima manfaat', path:'toc:sasaran', type:'textarea', rows:3, help:'tocSasaran'})}
-      </div>
+    <p class="small muted">Menjelaskan bagaimana kegiatan menghasilkan perubahan. Belum pernah menyusun? Pakai <b>Susun dengan panduan</b> atau mulai dari template, lalu sesuaikan.</p>
+    <div class="row noprint" style="gap:6px;align-items:center">
+      <button class="btn pri" data-act="wizStart">🧭 Susun dengan panduan</button>
+      <select data-tpl aria-label="Pilih template"><option value="">— pilih template —</option>${TOC_TEMPLATES.map(t=>`<option value="${t.k}">${esc(t.n)}</option>`).join('')}</select>
+      <button class="btn" data-act="tplApply">Pakai template</button>
+      <button class="btn" data-act="tocFill" title="Tambahkan uraian dari tab Input ke kolom Input">Ambil dari tab Input</button>
     </div>
-    <div class="sec"><h4>2. Rantai perubahan</h4>
-      <div class="grid g3">
-        ${TOC_COLS.map(([k,l,sub,h])=>fld({label:`${l} (${sub})`, path:'toc:'+k, type:'textarea', rows:5, help:h})).join('')}
-      </div>
-    </div>
-    <div class="sec"><h4>3. Asumsi, risiko, dan bukti</h4>
-      <div class="grid g3">
-        ${fld({label:'Asumsi', path:'toc:asumsi', type:'textarea', rows:4, help:'tocAsumsi'})}
-        ${fld({label:'Risiko & mitigasi', path:'toc:risiko', type:'textarea', rows:4, help:'tocRisiko'})}
-        ${fld({label:'Bukti / rujukan', path:'toc:bukti', type:'textarea', rows:4, help:'tocBukti'})}
-      </div>
-    </div>
-    <div style="margin-top:10px" class="noprint"><button class="btn" data-act="tocFill">Ambil dari Input & Outcome</button>
-      <button class="btn" data-tab="selaras">Isi SDGs & regulasi →</button></div>
   </div>
-  <div class="card"><h2>Diagram</h2><p class="small muted noprint">Geser ⠿ kotak untuk menyusun ulang; isian di atas ikut berubah.</p><div data-live="tocDiag">${tocDiagram(p, true)}</div></div>`;
+  ${tocWiz!=null ? wizHTML(p) : ''}
+  <div class="card"><h2>1. Konteks</h2>
+    <div class="grid g3">
+      ${fld({label:'Masalah / konteks', path:'toc:masalah', type:'textarea', rows:3, cls:'span2'})}
+      ${fld({label:'Sasaran / penerima manfaat', path:'toc:sasaran', type:'textarea', rows:3})}
+    </div>
+  </div>
+  <div class="card"><h2>2. Rantai perubahan</h2>
+    <p class="small muted noprint">Klik <b>✎</b> untuk mengubah isi, menambah panah (<i>mengarah ke</i>), dan indikator. Geser <b>⠿</b> untuk mengubah urutan atau memindahkan kotak ke kolom lain. Kolom <i>Outcome jangka menengah</i> otomatis berisi kartu dari ${tabRef('outcome')}. Arahkan kursor ke kotak untuk menyorot hubungannya.</p>
+    <label class="chk noprint small" style="margin:0 0 8px"><input type="checkbox" id="tocIndChk" ${pref.tocInd?'checked':''}> Tampilkan indikator di diagram</label>
+    <div data-live="tocDiag">${tocDiagram(p, true)}</div>
+  </div>
+  <div class="card"><h2>3. Asumsi, risiko, dan bukti</h2>
+    <div class="grid g3">
+      ${fld({label:'Asumsi', path:'toc:asumsi', type:'textarea', rows:4})}
+      ${fld({label:'Risiko & mitigasi', path:'toc:risiko', type:'textarea', rows:4})}
+      ${fld({label:'Bukti / rujukan', path:'toc:bukti', type:'textarea', rows:4})}
+    </div>
+  </div>
+  <div class="card"><h2>Cek kualitas</h2><p class="small muted">Diperiksa otomatis setiap kali diubah.</p><div data-live="tocQ">${tocQuality(p)}</div>
+    <div style="margin-top:8px" class="noprint"><button class="btn" data-tab="selaras">Isi SDGs & regulasi →</button></div></div>`;
 }
 
 /* ---- 8. Keselarasan: regulasi, SDGs, unit terkait ---- */
@@ -2147,6 +2732,10 @@ function tSelaras(){
         ${fld({label:'Peran dalam program', path:`u:${u.id}:peran`, type:'textarea', ph:'mis. membuka rekening tabungan untuk nasabah bank sampah'})}
         ${fld({label:'Manfaat bagi unit / bisnis', path:`u:${u.id}:manfaat`, type:'textarea', help:'uManfaat', ph:'mis. nasabah baru, calon debitur, data untuk laporan'})}
         ${fld({label:'Tingkat creating shared value', path:`u:${u.id}:csv`, type:'select', options:csvOptions(), help:'uCsv'})}
+        ${fld({label:'Outcome sosial terkait', path:`u:${u.id}:outcomeId`, type:'select', options:ocOptions()})}
+        ${fld({label:'Bagaimana outcome menghasilkan manfaat bisnis?', path:`u:${u.id}:mekanisme`, type:'textarea', cls:'span2', ph:'outcome sosial → perubahan → manfaat bisnis'})}
+        ${fld({label:'Status bukti bisnis', path:`u:${u.id}:statusBukti`, type:'select', options:STATUS_B})}
+        ${fld({label:'Realisasi & bukti', path:`u:${u.id}:bukti`, type:'textarea', cls:'span2', ph:'wajib untuk status terukur/terverifikasi'})}
         ${fld({label:'Indikator bisnis yang dipantau', path:`u:${u.id}:indikator`, cls:'span2', help:'uIndikator', ph:'mis. jumlah rekening baru dari peserta, saldo tabungan'})}
         ${fld({label:'PIC / kontak', path:`u:${u.id}:pic`, ph:'nama & jabatan'})}
       </div>
@@ -2164,7 +2753,7 @@ function tSelaras(){
   </div>
   <div class="card">
     <h2>B. SDGs (Tujuan Pembangunan Berkelanjutan)</h2>
-    <p class="small muted">Pilih 1–2 tujuan utama dan beberapa pendukung, isi targetnya, lalu hubungkan dengan outcome di tab 4. Saran target adalah ringkasan bebas; cek bunyi resmi di metadata TPB Bappenas atau sdgs.un.org. ${helpBtnInline('sdgKontribusi')}</p>
+    <p class="small muted">Pilih 1–2 tujuan utama dan beberapa pendukung, isi targetnya, lalu hubungkan dengan outcome di ${tabRef('outcome')}. Saran target adalah ringkasan bebas; cek bunyi resmi di metadata TPB Bappenas atau sdgs.un.org. ${helpBtnInline('sdgKontribusi')}</p>
     <div class="toc-sdg" data-live="sdgB" style="margin:0 0 10px">${sb}</div>
     <div class="tw"><table class="edit-table">
       <thead><tr><th></th><th>#</th>${thQ('Tujuan SDGs','sdgGoal')}${thQ('Peran','sdgPeran')}${thQ('Target','sdgTarget')}${thQ('Outcome terkait','sdgOutcome')}${thQ('Kontribusi','sdgKontribusi')}<th></th></tr></thead>
@@ -2179,14 +2768,24 @@ function tSelaras(){
     <div class="grid g2" style="margin-bottom:12px">${fld({label:'Ringkasan shared value program ini', path:'p:csvCatatan', type:'textarea', rows:3, cls:'span2', help:'csvCatatan'})}</div>
     ${units ? `<div data-sort="unit" data-compact>${units}</div>` : `<div class="empty">Belum ada unit terkait.</div>`}
     <div style="margin-top:10px"><button class="btn pri" data-act="addU">+ Tambah unit terkait</button></div>
-    <p class="tiny muted" style="margin-top:10px">Di tab ini manfaat bagi perusahaan hanya dicatat. Kalau ingin ikut dihitung (mis. PR value seperti di worksheet konsultan), buat stakeholder jenis "Pemrakarsa program" dan outcome-nya di tab 4. Hasil akan menampilkan rasio dengan dan tanpa manfaat pemrakarsa.</p>
+    <p class="tiny muted" style="margin-top:10px">Di tab ini manfaat bagi perusahaan hanya dicatat. Kalau ingin ikut dihitung (mis. PR value seperti di worksheet konsultan), buat stakeholder jenis "Pemrakarsa program" dan outcome-nya di ${tabRef('outcome')}. Hasil akan menampilkan rasio dengan dan tanpa manfaat pemrakarsa.</p>
   </div>`;
 }
 
 /* ---- 9. Checklist ---- */
 function tChecklist(){
   const p = cur();
-  return `${howTo('checklist')}<div class="card"><h2>Checklist prinsip SROI</h2>
+  return `${howTo('checklist')}<div class="card"><h2>Catatan review</h2>
+    <p class="small muted">Siapa yang memeriksa, apa temuannya, dan keputusan apa yang diambil dari hasil analisis.</p>
+    <div class="grid g3">
+      ${fld({label:'Reviewer', path:'rv:nama'})}
+      ${fld({label:'Tanggal review', path:'rv:tanggal', ph:'mis. 12 Mei 2026'})}
+      ${fld({label:'Revisi dokumen', path:'rv:revisi', ph:'mis. Revisi 2'})}
+      ${fld({label:'Temuan & koreksi', path:'rv:temuan', type:'textarea', rows:3, cls:'span3'})}
+      ${fld({label:'Keputusan & tindak lanjut', path:'rv:keputusan', type:'textarea', rows:3, cls:'span3'})}
+    </div>
+  </div>
+  <div class="card"><h2>Checklist prinsip SROI</h2>
     <p class="small muted">Centang kalau prinsipnya sudah dipenuhi, lalu tulis buktinya. Ini yang biasanya dicek reviewer atau assurance.</p>
     ${PRINCIPLES.map(([id,en,desc,hint],i)=>`<div class="pr">
       <input type="checkbox" data-path="ck:${i}:done" ${p.checklist[i].done?'checked':''} aria-label="${esc(id)}">
@@ -2216,40 +2815,106 @@ function selarasPrint(p){
       <p class="tiny muted">Unit terkait dicatat sebagai dokumentasi. Hanya outcome stakeholder jenis "Pemrakarsa program" yang ikut dihitung (lihat rasio dengan dan tanpa pemrakarsa).</p>`:''}`:''}
   </div>`;
 }
-function tRingkasan(){
-  const p = cur(), res = compute(p), W = analyze(p,res), st = sensTests(p), be = breakEven(p);
-  const meta = [['Organisasi',p.organisasi],['Lokasi',p.sites.map(x=>x.nama).filter(Boolean).join(', ')],['Periode',`${res.ys[0]}–${res.ys[res.ys.length-1]} (${fmtNum(res.months)} bulan)`],['Jenis',p.jenis==='prakiraan'?'Prakiraan (forecast)':'Evaluatif'],
-    ['Rate',`${fmtRate(res.r)} (rata-rata per tahun)`],['Nilai saat ini di tahun',String(res.ref)],['Disusun oleh',p.penyusun]].filter(x=>!isBlank(x[1]));
+/* ---- Laporan: pilih bagian, untuk mitra CSR atau lengkap, cetak/PDF dan simpan HTML ---- */
+function bisnisPrint(p, internal){
+  const un = p.units.filter(u=>!isBlank(u.nama));
+  if (!un.length && isBlank(p.csvCatatan)) return '';
+  const ocName = id => { const o = p.outcomes.find(x=>x.id===id); return o ? o.outcome : ''; };
+  return `${!isBlank(p.csvCatatan)?`<p class="small">${nl2br(p.csvCatatan)}</p>`:''}
+    ${un.length?`<div class="tw"><table><thead><tr><th>Unit / manfaat bisnis</th><th>Outcome sosial terkait</th><th>Bagaimana terjadi</th><th>Indikator</th><th>Status bukti</th>${internal?'<th>PIC & koordinasi</th>':''}</tr></thead><tbody>
+      ${un.map(u=>`<tr><td><b>${esc(u.nama)}</b>${u.manfaat?`<div class="small">${nl2br(u.manfaat)}</div>`:''}${u.csv?`<div class="tiny muted">CSV: ${esc(optLabel(csvOptions(),u.csv))}</div>`:''}</td>
+        <td>${esc(ocName(u.outcomeId)||'–')}</td><td>${nl2br(u.mekanisme||'–')}</td><td>${nl2br(u.indikator||'–')}</td>
+        <td>${statusBadge(u.statusBukti, STATUS_B)}${u.bukti?`<div class="tiny">${nl2br(u.bukti)}</div>`:''}</td>
+        ${internal?`<td>${esc(u.pic||'–')}<div class="tiny muted">${esc(optLabel(UNIT_STATUS,u.status))}</div></td>`:''}</tr>`).join('')}</tbody></table></div>
+      <p class="tiny muted">Manfaat bisnis disajikan terpisah dan tidak menambah rasio SROI, kecuali outcome stakeholder jenis pemrakarsa (ditampilkan juga rasio tanpa itu).</p>`:''}`;
+}
+function selarasRegSdg(p){
+  const reg = p.regulasi.filter(r=>!isBlank(r.nama)), sdg = p.sdgs.filter(g=>g.goal);
+  if (!reg.length && !sdg.length) return '';
+  const ocName = id => { const o = p.outcomes.find(x=>x.id===id); return o ? o.outcome : ''; };
+  return `${sdg.length?`<h3>SDGs</h3><div class="toc-sdg" style="margin:0 0 8px">${sdgBadges(p)}</div><div class="tw"><table><thead><tr><th>Tujuan</th><th>Peran</th><th>Target</th><th>Outcome terkait</th><th>Kontribusi</th></tr></thead><tbody>
+      ${sdg.map(g=>`<tr><td>${esc(sdgLabel(g.goal))}</td><td>${g.peran==='utama'?'Utama':'Pendukung'}</td><td>${esc(g.target)}</td><td>${esc(ocName(g.outcomeId))}</td><td>${nl2br(g.kontribusi)}</td></tr>`).join('')}</tbody></table></div>`:''}
+    ${reg.length?`<h3 style="margin-top:12px">Regulasi terkait</h3><div class="tw"><table><thead><tr><th>Regulasi / standar</th><th>Sifat</th><th>Pasal</th><th>Kaitan</th></tr></thead><tbody>
+      ${reg.map(r=>`<tr><td>${esc(r.nama)}</td><td>${esc(optLabel(REG_SIFAT,r.sifat))}</td><td>${nl2br(r.pasal)}</td><td>${nl2br(r.kaitan)}</td></tr>`).join('')}</tbody></table></div>`:''}`;
+}
+function outcomeTargetTable(p, res){
+  if (!p.outcomes.length) return '<p class="small muted">Belum ada outcome.</p>';
+  const ev = tahapOf(p)==='evaluasi';
+  return `<div class="tw"><table><thead><tr><th>#</th><th>Outcome</th><th>Stakeholder</th><th>Indikator</th><th>Baseline</th><th>Target</th>${ev?'<th>Realisasi</th>':''}<th>Status</th><th class="num">Nilai saat ini</th></tr></thead><tbody>
+    ${p.outcomes.map((o,i)=>{ const s = findS(o.stakeholderId), r = res.rows.find(x=>x.o.id===o.id), ex = (res.excluded||[]).includes(o);
+      return `<tr><td>${i+1}</td><td>${esc(o.outcome||'–')}${o.negatif?' <span style="color:var(--neg)">(negatif)</span>':''}</td><td>${esc(s?s.nama:'–')}</td><td>${esc(o.indikator||'–')}</td>
+        <td>${esc(o.baseline||'–')}</td><td>${esc(o.target||'–')}</td>${ev?`<td>${esc(o.realisasi||'–')}</td>`:''}<td>${statusBadge(o.status)}</td>
+        <td class="num">${ex ? '<span class="tiny muted">di luar lingkup</span>' : o.kualitatif ? '<span class="tiny muted">kualitatif</span>' : r ? fmtRp(r.pv) : '–'}</td></tr>`; }).join('')}
+  </tbody></table></div>`;
+}
+function reportHTML(p, parts){
+  parts = parts || p.display.report;
+  const res = compute(p), W = analyze(p,res), us = tahapOf(p)==='usulan', on = k => !!parts[k];
+  const card = (k, title, body) => on(k) && body ? `<div class="card rp-${k}"><h2>${title}</h2>${body}</div>` : '';
+  const meta = [['Tahap', us?'Usulan (proyeksi)':'Evaluasi'], ['Organisasi',p.organisasi], ['Lokasi',p.sites.map(x=>x.nama).filter(Boolean).join(', ')],
+    ['Periode',`${res.ys[0]}–${res.ys[res.ys.length-1]} (${fmtNum(res.months)} bulan)`], ['Disusun oleh',p.penyusun]].filter(x=>!isBlank(x[1]));
+  const inp = p.inputs.slice().sort((a,b)=>String(a.tahun).localeCompare(String(b.tahun))).map(i=>{ const st = findSite(i.siteId);
+    return `<tr><td>${esc(i.tahun||'–')}</td><td>${esc(i.uraian)}${st?`<div class="tiny muted">${esc(st.nama)}</div>`:''}</td><td class="num">${fmtRp(Math.max(0,valE(i.nilai,0)))}</td><td>${esc(i.sumber)}</td></tr>`; }).join('');
   const stk = p.stakeholders.map(s=>`<tr><td>${esc(s.nama)}</td><td>${esc(optName(JENIS_STK,s.jenis))}</td><td class="num">${esc(s.jumlah)}</td><td>${esc(s.libat)}</td><td>${s.material==='ya'?'Ya':'Tidak'}${s.alasanMaterial?` — ${esc(s.alasanMaterial)}`:''}</td></tr>`).join('');
-  const inp = p.inputs.slice().sort((a,b)=>String(a.tahun).localeCompare(String(b.tahun))).map(i=>{ const st = findSite(i.siteId), e = evalExpr(i.nilai);
-    return `<tr><td>${esc(i.tahun||'–')}</td><td>${esc(i.uraian)}${st?`<div class="tiny muted">${esc(st.nama)}</div>`:''}</td><td class="num">${fmtRp(Math.max(0,valE(i.nilai,0)))}${e.expr?`<div class="tiny muted">${esc(i.nilai)}</div>`:''}</td><td>${esc(i.sumber)}</td></tr>`; }).join('');
-  return `<div class="noprint card flat row" style="align-items:center"><div style="flex:1">Halaman ini disusun untuk dicetak atau disimpan sebagai PDF (pilih "Save as PDF" di jendela cetak).</div><button class="btn pri" data-act="print">🖨️ Cetak / PDF</button></div>
-  ${p.isContoh?`<div class="card" style="border:2px dashed #d9a441;color:var(--contoh)"><b>CONTOH — angka dummy, bukan data nyata.</b></div>`:''}
-  <div class="card"><h1 style="font-size:1.45rem">${esc(p.nama)}</h1>
-    <div class="small muted">Laporan ringkas SROI · dicetak ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
-    ${meta.length?`<div class="small" style="margin-top:8px">${meta.map(([k,v])=>`<b>${k}:</b> ${esc(v)}`).join(' · ')}</div>`:''}
-    ${p.lingkup?`<p class="small" style="margin-top:8px"><b>Lingkup:</b> ${nl2br(p.lingkup)}</p>`:''}
+  const st = sensTests(p), be = breakEven(p);
+  const kb = [['Keberlanjutan setelah pendanaan',p.keberlanjutan],['Asumsi',p.toc.asumsi],['Risiko & mitigasi',p.toc.risiko]].filter(x=>!isBlank(x[1]));
+  const rv = p.review;
+  return `${p.isContoh?`<div class="card" style="border:2px dashed #d9a441;color:var(--contoh)"><b>CONTOH — angka dummy, bukan data nyata.</b></div>`:''}
+  <div class="card rp-head"><div class="small muted">Laporan SROI${p.display.untuk?` · untuk ${esc(p.display.untuk)}`:''} · ${new Date().toLocaleDateString('id-ID',{day:'numeric',month:'long',year:'numeric'})}</div>
+    <h1 style="font-size:1.5rem;margin:.3em 0">${esc(p.nama)}</h1>
+    <div class="small">${meta.map(([k,v])=>`<b>${k}:</b> ${esc(v)}`).join(' · ')}</div>
+    ${isBlank(p.tujuan)?'':`<p style="margin-top:8px"><b>Tujuan:</b> ${nl2br(p.tujuan)}</p>`}
+    ${on('cerita') && p.lingkup ? `<p class="small"><b>Lingkup:</b> ${nl2br(p.lingkup)}</p>` : ''}
   </div>
-  ${kpis(res)}
-  <div class="card" style="margin-top:14px"><h2>Per tahun</h2>${yearTable(res)}</div>
-  ${siteTable(p)}
-  <div class="card"><h2>Rincian per outcome, cara hitung, dan sumber</h2>${outcomeTable(p,res,true)}</div>
-  <div class="card"><h2>Analisis sensitivitas</h2>
-    ${st.base!=null ? `<div class="tw"><table><thead><tr><th>Asumsi</th><th>Perubahan</th><th class="num">SROI kalau asumsi diturunkan</th><th class="num">SROI kalau asumsi dinaikkan</th></tr></thead>
+  ${on('cerita') ? `<div class="card"><h2>Cerita program</h2>${storyFlow(p,res)}<div class="live" style="margin-top:12px">${summarySentence(p,res)}</div></div>` : ''}
+  ${on('hasil') ? `${kpis(res)}<div class="card" style="margin-top:14px"><h2>Per tahun</h2>${yearTable(res)}</div>` : ''}
+  ${card('outcomes', 'Outcome, target & indikator', outcomeTargetTable(p,res))}
+  ${card('banding', 'Usulan vs evaluasi', p.usulan ? bandingTable(p,res) : '')}
+  ${card('grafik', 'Dari nilai kotor ke nilai saat ini', res.cuts.gross>0 ? fiksasiChart(p,res) : '')}
+  ${on('lokasi') ? siteTable(p) : ''}
+  ${card('rincian', 'Rincian valuasi & fiksasi dampak per outcome', outcomeTable(p,res,true))}
+  ${card('anggaran', 'Anggaran & dukungan', `${isBlank(p.budgetAsk)?'':`<p><b>Dukungan yang diminta:</b> ${fmtRp(valE(p.budgetAsk,0))}</p>`}
+    <div class="tw"><table><thead><tr><th>Tahun</th><th>Uraian</th><th class="num">Nilai</th><th>Sumber</th></tr></thead><tbody>${inp||'<tr><td colspan="4">–</td></tr>'}
+    <tr class="tot"><td colspan="2">Total anggaran (semua kontribusi)</td><td class="num">${fmtRp(res.totalInput)}</td><td></td></tr></tbody></table></div>`)}
+  ${card('stakeholder', 'Stakeholder', `<div class="tw"><table><thead><tr><th>Stakeholder</th><th>Jenis</th><th class="num">Jumlah</th><th>Cara dilibatkan</th><th>Dihitung?</th></tr></thead><tbody>${stk||'<tr><td colspan="5">–</td></tr>'}</tbody></table></div>`)}
+  ${card('toc', 'Theory of Change', (p.toc.items.length || p.outcomes.length) ? tocDiagram(p) : '')}
+  ${card('selaras', 'Regulasi & SDGs', selarasRegSdg(p))}
+  ${card('bisnis', 'Manfaat bisnis & creating shared value', bisnisPrint(p, on('review')))}
+  ${card('keberlanjutan', 'Keberlanjutan, asumsi & risiko', kb.length ? kb.map(([k,v])=>`<p><b>${k}:</b> ${nl2br(v)}</p>`).join('') : '')}
+  ${card('sens', 'Analisis sensitivitas', st.base!=null ? `<div class="tw"><table><thead><tr><th>Asumsi</th><th>Perubahan</th><th class="num">SROI kalau diturunkan</th><th class="num">SROI kalau dinaikkan</th></tr></thead>
       <tbody>${st.tests.map(t=>`<tr><td>${t.n}</td><td>${t.desc}</td><td class="num">${fmtRatio(t.A)}</td><td class="num">${fmtRatio(t.B)}</td></tr>`).join('')}
       ${st.noPem!=null?`<tr><td>Tanpa manfaat pemrakarsa</td><td></td><td class="num" colspan="2">${fmtRatio(st.noPem)}</td></tr>`:''}</tbody></table></div>
-      <h3 style="margin-top:12px">Titik impas (SROI = 1 : 1)</h3>
-      <div class="tw"><table><tbody>${be.map(b=>`<tr><td>${b.n}</td><td>${b.txt}</td></tr>`).join('')}</tbody></table></div>` : '<p class="small muted">–</p>'}
+      <h3 style="margin-top:12px">Titik impas (SROI = 1 : 1)</h3><div class="tw"><table><tbody>${be.map(b=>`<tr><td>${b.n}</td><td>${b.txt}</td></tr>`).join('')}</tbody></table></div>` : '')}
+  ${card('metode', 'Cara hitung & rate', formulaBox(p,res) + (p.rateAlasan?`<p class="small" style="margin-top:8px"><b>Alasan rate:</b> ${esc(p.rateAlasan)}</p>`:''))}
+  ${card('review', 'Review & checklist prinsip SROI', `${[['Reviewer',rv.nama],['Tanggal',rv.tanggal],['Revisi',rv.revisi]].filter(x=>!isBlank(x[1])).map(([k,v])=>`<b>${k}:</b> ${esc(v)}`).join(' · ')}
+    ${rv.temuan?`<p class="small"><b>Temuan & koreksi:</b> ${nl2br(rv.temuan)}</p>`:''}${rv.keputusan?`<p class="small"><b>Keputusan & tindak lanjut:</b> ${nl2br(rv.keputusan)}</p>`:''}
+    <div class="tw"><table><tbody>${PRINCIPLES.map(([id],i)=>`<tr><td style="width:24px">${p.checklist[i].done?'✅':'⬜'}</td><td><b>${esc(id)}</b>${p.checklist[i].bukti?`<div class="small">${nl2br(p.checklist[i].bukti)}</div>`:''}</td></tr>`).join('')}</tbody></table></div>`)}
+  ${card('kelengkapan', 'Catatan kelengkapan (internal)', warnList(W,false) + (p.catatan?`<p class="small" style="margin-top:8px"><b>Catatan:</b> ${nl2br(p.catatan)}</p>`:''))}
+  <div class="footer">Disusun dengan Kalkulator SROI v${APP_VERSION} · rumus mengikuti worksheet perhitungan SROI konsultan dan A Guide to Social Return on Investment (Cabinet Office UK, 2012)${us?' · angka tahap usulan adalah proyeksi':''}</div>`;
+}
+function tLaporan(){
+  const p = cur(), r = p.display.report;
+  return `<div class="card noprint"><h2>Laporan</h2>
+    <p class="small muted">Pilih bagian yang ditampilkan. Pilihan ini berlaku untuk pratinjau di bawah, cetak/PDF, dan file HTML; tersimpan per program. File JSON dan CSV tetap membawa semua data.</p>
+    <div class="grid g2">${fld({label:'Laporan untuk', path:'dp:untuk', ph:'mis. Calon mitra CSR: PT Contoh'})}</div>
+    <div class="row" style="gap:6px;margin:10px 0"><span class="small" style="align-self:center">Pilihan cepat:</span>
+      <button class="btn sm" data-act="rpPreset" data-v="mitra">Ringkas untuk mitra CSR</button><button class="btn sm" data-act="rpPreset" data-v="lengkap">Lengkap (internal)</button></div>
+    <div class="tabpick">${REPORT_PARTS.map(([k,l])=>`<label class="chk"><input type="checkbox" data-rpart="${k}" ${r[k]?'checked':''}> ${esc(l)}</label>`).join('')}</div>
+    <div class="row" style="gap:6px;margin-top:12px"><button class="btn pri" data-act="print">🖨️ Cetak / PDF</button><button class="btn" data-act="exportReport">💾 Simpan laporan HTML</button></div>
+    <p class="tiny muted" style="margin-top:8px">Sebelum mengirim ke mitra, periksa isinya. Pilihan "Ringkas untuk mitra CSR" tidak menampilkan catatan kelengkapan, review internal, serta PIC dan status koordinasi unit.</p>
   </div>
-  <div class="card pbreak"><h2>Stakeholder</h2><div class="tw"><table><thead><tr><th>Stakeholder</th><th>Jenis</th><th class="num">Jumlah</th><th>Cara dilibatkan</th><th>Dihitung?</th></tr></thead><tbody>${stk||'<tr><td colspan="5">–</td></tr>'}</tbody></table></div></div>
-  <div class="card"><h2>Input (investasi)</h2><div class="tw"><table><thead><tr><th>Tahun</th><th>Uraian</th><th class="num">Nilai</th><th>Sumber</th></tr></thead><tbody>${inp||'<tr><td colspan="4">–</td></tr>'}<tr class="tot"><td colspan="2">Total nominal</td><td class="num">${fmtRp(res.totalInput)}</td><td></td></tr><tr class="tot"><td colspan="2">Total nilai saat ini</td><td class="num">${fmtRp(res.totalInputPV)}</td><td></td></tr></tbody></table></div></div>
-  <div class="card"><h2>Theory of Change</h2>${tocDiagram(p)}</div>
-  ${selarasPrint(p)}
-  <div class="card"><h2>Cara hitung & asumsi</h2>${formulaBox(p,res)}${p.rateAlasan?`<p class="small" style="margin-top:8px"><b>Alasan rate:</b> ${esc(p.rateAlasan)}</p>`:''}</div>
-  <div class="card"><h2>Checklist prinsip SROI</h2><div class="tw"><table><tbody>${PRINCIPLES.map(([id],i)=>`<tr><td style="width:24px">${p.checklist[i].done?'✅':'⬜'}</td><td><b>${esc(id)}</b>${p.checklist[i].bukti?`<div class="small">${nl2br(p.checklist[i].bukti)}</div>`:''}</td></tr>`).join('')}</tbody></table></div></div>
-  <div class="card"><h2>Catatan kelengkapan</h2>${warnList(W,false)}</div>
-  ${p.catatan?`<div class="card"><h2>Catatan</h2><p class="small">${nl2br(p.catatan)}</p></div>`:''}
-  <div class="footer">Kalkulator SROI v${APP_VERSION} · rumus mengikuti worksheet perhitungan SROI konsultan dan A Guide to Social Return on Investment (Cabinet Office UK, 2012)</div>`;
+  <div class="report">${reportHTML(p)}</div>`;
+}
+function exportReport(){
+  const p = cur(), box = document.createElement('div');
+  box.innerHTML = reportHTML(p);
+  box.querySelectorAll('button, .noprint, .q, svg.toc-arrows, [data-act]').forEach(el=>el.remove());
+  const css = (document.querySelector('style')||{}).textContent || '';
+  const doc = `<!doctype html>\n<html lang="id"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>${esc(p.nama)} · Laporan SROI</title><style>${css}
+body{background:#fff} main.report{max-width:1040px;margin:0 auto;padding:24px 16px 60px}</style></head>
+<body><main class="report">${box.innerHTML}</main></body></html>`;
+  download(fileName(p.nama + ' laporan', 'html'), doc, 'text/html');
 }
 
 /* ---- Panduan ---- */
@@ -2269,13 +2934,15 @@ function tPanduan(){
   <h2>Cara pakai untuk tim</h2>
   <ol>
     <li>Buka file <b>sroi-v2.html</b> dengan double-click (Chrome, Edge atau Safari). Tidak perlu internet.</li>
-    <li>Klik <b>+ Baru</b> untuk program baru. Urutan isi yang disarankan: <b>1. Program → 7. Theory of Change → 8. Keselarasan → 2. Stakeholder → 3. Input → 4. Outcome</b>. Tab 5 (Hasil) dan 6 (Sensitivitas) terisi otomatis. Terakhir, isi <b>9. Checklist</b>.</li>
+    <li>Klik <b>+ Baru</b> untuk program baru, lalu pilih <b>tahap</b> di tab Program atau ⚙ Atur tampilan: <b>Usulan</b> untuk proposal, <b>Evaluasi</b> untuk menilai hasil. Tab tersusun sesuai tahap; ikuti nomornya. Progres terlihat di <b>Ikhtisar</b>.</li>
+    <li>Program usulan yang sudah berjalan: buka Ikhtisar → <b>Mulai evaluasi</b>. Angka usulan disimpan sebagai pembanding, lalu isi realisasi tiap outcome. Laporan menampilkan usulan vs evaluasi.</li>
+    <li>Untuk mitra CSR: tab <b>Laporan</b> → <i>Ringkas untuk mitra CSR</i> → Cetak/PDF atau Simpan laporan HTML.</li>
     <li>Klik tombol <b>?</b> di samping nama kolom (juga di judul kolom tabel) untuk cara mengisinya: apa itu, langkah, contoh, dan yang perlu dihindari. Kotak biru <b>📘</b> di atas tiap tab berisi langkah singkat tab itu.</li>
     <li>Urutan stakeholder, input, outcome, lokasi, regulasi, SDGs, unit, dan kotak Theory of Change bisa diubah dengan menggeser tombol <b>⠿</b> (atau pilih ⠿ lalu tekan panah atas/bawah).</li>
     <li>Mau lihat contoh yang sudah terisi lengkap? <b>File ▾ → Tambah program CONTOH</b>.</li>
     <li>Data tersimpan otomatis di browser komputer masing-masing. <b>Data tidak otomatis terlihat di laptop orang lain.</b></li>
     <li>Untuk berbagi ke tim atau backup: <b>File ▾ → Simpan program ke file</b>. Kirim file .json itu lewat Drive, email atau WhatsApp. Penerima membukanya lewat <b>File ▾ → Buka file program</b>.</li>
-    <li>Untuk laporan: tab <b>Ringkasan</b> → Cetak → pilih "Save as PDF". Untuk olah di Excel: <b>File ▾ → Ekspor peta dampak (CSV)</b>.</li>
+    <li>Untuk olah di Excel: <b>File ▾ → Ekspor peta dampak (CSV)</b>.</li>
   </ol>
   <p class="small muted">Ketik angka bebas format: 3600000, 3.600.000 atau 3,6 juta ditulis 3.600.000. Desimal pakai koma (3,5) atau titik (3.5). Di bawah kolom rupiah muncul angka hasil bacaan aplikasi, jadi bisa dicek.</p>
 
@@ -2348,13 +3015,15 @@ function tPanduan(){
   <div class="footer">Kalkulator SROI v${APP_VERSION}</div>`;
 }
 
-const RENDER = {program:tProgram, stakeholder:tStakeholder, input:tInput, outcome:tOutcome, hasil:tHasil, sens:tSens, toc:tToc, selaras:tSelaras, checklist:tChecklist, ringkasan:tRingkasan, panduan:tPanduan};
+const RENDER = {ikhtisar:tIkhtisar, tampilan:tTampilan, program:tProgram, stakeholder:tStakeholder, input:tInput, outcome:tOutcome, hasil:tHasil, sens:tSens, toc:tToc, selaras:tSelaras, checklist:tChecklist, laporan:tLaporan, ringkasan:tLaporan, panduan:tPanduan};
 
 function render(){
-  closeHelp();
+  closeHelp(); if (tocEditId){ document.getElementById('tocpop')?.remove(); tocEditId = null; }
+  if (tab==='ringkasan') tab = 'laporan';
   renderProgSelect(); renderBanner();
   $('#main').innerHTML = RENDER[tab]();
   renderBadge();
+  drawArrows();
 }
 
 /* ---- Live updates without re-render (keeps focus) ---- */
@@ -2383,7 +3052,8 @@ function updateLive(changedPath){
   }
   if (tab==='input') setLive('inpSum', inputSummary(p,res));
   if (tab==='sens'){ setLive('sensOut', sensOut()); setLive('scenRes', scenOut()); }
-  if (tab==='toc') setLive('tocDiag', tocDiagram(p, true));
+  if (tab==='laporan'){ const rb = document.querySelector('.report'); if (rb) rb.innerHTML = reportHTML(p); }
+  if (tab==='toc'){ setLive('tocDiag', tocDiagram(p, true)); setLive('tocQ', tocQuality(p)); drawArrows(); }
   if (tab==='selaras') setLive('sdgB', sdgBadges(p));
 }
 /* field yang mengubah susunan halaman → render ulang saat selesai diubah */
@@ -2411,6 +3081,8 @@ function onField(el){
 document.addEventListener('input', e=>{
   const el = e.target;
   if (el.dataset.path && el.type!=='checkbox' && el.tagName!=='SELECT') onField(el);
+  if (el.dataset.tocf){ const p = cur(), n = nodeById(p, el.dataset.id);
+    if (n){ const k = el.dataset.tocf; if (n.kind==='card') n.ref[k==='text'?'outcome':'indikator'] = el.value; else n.ref[k] = el.value; save(); refreshToc(); } }
   if (el.dataset.scen){
     const k = el.dataset.scen; const v = parseFloat(el.value);
     if (k==='r') scen.r = v; else scen[k] = v;
@@ -2422,10 +3094,16 @@ document.addEventListener('change', e=>{
   const el = e.target;
   if (el.dataset.path && (el.type==='checkbox' || el.tagName==='SELECT')) onField(el);
   if (el.dataset.path && RERENDER.test(el.dataset.path)){ const y = window.scrollY; render(); window.scrollTo(0,y); }
-  if (el.id==='progSelect'){ db.activeId = el.value; resetScen(); save(true); render(); window.scrollTo(0,0); }
+  if (el.id==='progSelect'){ db.activeId = el.value; resetScen(); tocWiz = null; save(true); render(); window.scrollTo(0,0); }
+  if (el.dataset.tocto){ const p = cur(), n = nodeById(p, el.dataset.from); if (n){ const id = el.dataset.tocto, k = n.to.indexOf(id);
+    if (el.checked && k<0) n.to.push(id); if (!el.checked && k>=0) n.to.splice(k,1); save(); refreshToc(); } }
+  if (el.id==='tocIndChk'){ pref.tocInd = el.checked; savePref(); refreshToc(); }
+  if (el.dataset.rpart){ const p = cur(); p.display.report[el.dataset.rpart] = el.checked; save(); const y = scrollY; render(); scrollTo(0,y); }
+  if (el.dataset.disp){ const p = cur(); p.display.hidden[tahapOf(p)][el.dataset.disp] = !el.checked; save(); render(); }
 });
 document.addEventListener('click', e=>{
   if (helpOpenBtn && !e.target.closest('#hpop') && !e.target.closest('[data-act="help"]')) closeHelp();
+  if (tocEditId && !e.target.closest('#tocpop') && !e.target.closest('#hpop') && !e.target.closest('[data-act="tocEdit"]') && !e.target.closest('[data-act="help"]')) closeTocEdit();
   const t = e.target.closest('[data-tab],[data-act]');
   if (!t) { const m = $('#fileMenu'); if (m && m.open && !e.target.closest('#fileMenu')) m.open = false; return; }
   if (t.dataset.tab && !t.dataset.act){
@@ -2487,21 +3165,48 @@ document.addEventListener('click', e=>{
     case 'delI': if (confirm('Hapus baris input ini?')){ p.inputs = p.inputs.filter(x=>x.id!==t.dataset.id); save(); render(); } break;
     case 'addO': { const o = blankOutcome(p.stakeholders.length===1?p.stakeholders[0].id:''); p.outcomes.push(o); save(); render();
       const c = document.querySelector(`[data-oc="${o.id}"]`); if (c){ c.scrollIntoView({behavior:'smooth',block:'start'}); const f = c.querySelector('select,input'); if (f) setTimeout(()=>f.focus(),300); } break; }
-    case 'delO': { const o = p.outcomes.find(x=>x.id===t.dataset.id); if (confirm(`Hapus outcome "${o&&o.outcome||'(belum dinamai)'}"?`)){ p.outcomes = p.outcomes.filter(x=>x.id!==t.dataset.id); save(); render(); } break; }
+    case 'delO': { const o = p.outcomes.find(x=>x.id===t.dataset.id); if (confirm(`Hapus outcome "${o&&o.outcome||'(belum dinamai)'}"?`)){ p.outcomes = p.outcomes.filter(x=>x.id!==t.dataset.id); pruneLinks(p); save(); render(); } break; }
     case 'dupO': { const i = p.outcomes.findIndex(x=>x.id===t.dataset.id); const c = JSON.parse(JSON.stringify(p.outcomes[i])); c.id = uid(); c.outcome = (c.outcome||'') + ' (salinan)'; p.outcomes.splice(i+1,0,c); save(); render(); break; }
     case 'mvO': { const i = p.outcomes.findIndex(x=>x.id===t.dataset.id), j = i + (+t.dataset.d); if (j<0||j>=p.outcomes.length) break; [p.outcomes[i],p.outcomes[j]] = [p.outcomes[j],p.outcomes[i]]; save(); render(); break; }
     case 'togO': { const o = p.outcomes.find(x=>x.id===t.dataset.id); o.collapsed = !o.collapsed; save(); render(); break; }
     case 'collapseAll': p.outcomes.forEach(o=>o.collapsed = t.dataset.v==='1'); save(); render(); break;
     case 'scenReset': resetScen(); render(); break;
     case 'tocFill': {
-      const merge = (k, items) => { const ex = lines(p.toc[k]); items.forEach(x=>{ x = String(x||'').trim(); if (x && !ex.includes(x)) ex.push(x); }); p.toc[k] = ex.join('\n'); };
-      merge('input', p.inputs.map(i=>i.uraian + (valE(i.nilai,0)?` (${i.tahun?i.tahun+', ':''}${fmtRpShort(valE(i.nilai,0))})`:'')));
-      merge('outcome', p.outcomes.map(o=>o.outcome + (o.negatif?' (negatif)':'')));
-      save(); render(); toast('Diambil dari Input & Outcome'); break;
+      const ex = p.toc.items.filter(x=>x.col==='input').map(x=>x.text); let n = 0;
+      p.inputs.forEach(it=>{ const t = String(it.uraian||'').trim(); if (t && !ex.includes(t)){ p.toc.items.push(blankTi('input', t)); ex.push(t); n++; } });
+      save(); render(); toast(n ? `${n} kotak input ditambahkan dari tab Input` : 'Tidak ada uraian input baru'); break;
     }
+    case 'tocEdit': openTocEdit(t.dataset.id, t.closest('[data-node]')); break;
+    case 'tocClose': closeTocEdit(); break;
+    case 'tocAdd': { const it = blankTi(t.dataset.col, ''); p.toc.items.push(it); save(); refreshToc(); openTocEdit(it.id); break; }
+    case 'tocDel': { const id = t.dataset.id; tocEditId = null; document.getElementById('tocpop')?.remove();
+      p.toc.items = p.toc.items.filter(x=>x.id!==id); pruneLinks(p); save(); refreshToc(); toast('Kotak dihapus'); break; }
+    case 'tocToCard': { const it = p.toc.items.find(x=>x.id===t.dataset.id); if (!it) break;
+      const o = blankOutcome(p.stakeholders.length===1 ? p.stakeholders[0].id : ''); o.outcome = it.text; o.indikator = it.indikator; o.tocTo = it.to.slice();
+      p.outcomes.push(o); nodesOf(p).forEach(n=>{ const k = n.to.indexOf(it.id); if (k>=0) n.to[k] = o.id; });
+      p.toc.items = p.toc.items.filter(x=>x!==it); tocEditId = null; document.getElementById('tocpop')?.remove();
+      pruneLinks(p); save(); refreshToc(); toast('Kartu outcome dibuat. Lengkapi stakeholder dan nilainya di tab Outcome.'); break; }
+    case 'tocOpenCard': { const id = t.dataset.id; tocEditId = null; document.getElementById('tocpop')?.remove();
+      const o = p.outcomes.find(x=>x.id===id); if (o) o.collapsed = false; tab = 'outcome'; render();
+      const c = document.querySelector(`[data-oc="${CSS.escape(id)}"]`); if (c) c.scrollIntoView({block:'start'}); break; }
+    case 'wizStart': tocWiz = 0; render(); document.querySelector('.wiz')?.scrollIntoView({block:'start'}); break;
+    case 'wizNext': wizApply(); tocWiz = Math.min(WIZ.length-1, tocWiz+1); render(); document.querySelector('.wiz')?.scrollIntoView({block:'start'}); break;
+    case 'wizPrev': wizApply(); tocWiz = Math.max(0, tocWiz-1); render(); document.querySelector('.wiz')?.scrollIntoView({block:'start'}); break;
+    case 'wizDone': wizApply(); tocWiz = null; render(); toast('Theory of Change tersimpan. Cek panah dan catatan kualitas di bawah.'); break;
+    case 'wizCancel': tocWiz = null; render(); break;
+    case 'tplApply': { const k = (document.querySelector('[data-tpl]')||{}).value; if (!k){ toast('Pilih template dulu'); break; }
+      if ((p.toc.items.length || !isBlank(p.toc.masalah)) && !confirm('Ganti isi Theory of Change dengan template ini?\nKartu outcome tidak berubah, tapi panahnya dikosongkan.')) break;
+      applyTemplate(p, k); save(); render(); toast('Template dipakai. Sesuaikan isinya dengan program Anda.'); break; }
+    case 'mulaiEvaluasi': {
+      if (!confirm('Pindah ke tahap evaluasi?\n\nAngka usulan saat ini (target, nilai, SROI) disimpan sebagai pembanding, lalu tab disusun untuk menilai hasil.')) break;
+      p.usulan = snapshotUsulan(p, compute(p)); p.jenis = 'evaluatif'; save(); render(); toast('Tahap evaluasi. Isi realisasi dan perbarui status bukti tiap outcome.'); break; }
+    case 'rpPreset': { const m = t.dataset.v==='mitra'; REPORT_PARTS.forEach(([k])=>{ p.display.report[k] = m ? REPORT_MITRA.includes(k) : true; }); save(); const y = scrollY; render(); scrollTo(0,y); break; }
+    case 'exportReport': exportReport(); break;
+    case 'hapusUsulan': if (confirm('Hapus data pembanding usulan?')){ p.usulan = null; save(); render(); } break;
+    case 'dispReset': { const d = defaultDisplay(); p.display.hidden[tahapOf(p)] = d.hidden[tahapOf(p)]; save(); render(); break; }
     case 'newProg': { const n = prompt('Nama program baru:', 'Program baru'); if (n===null) break; const np = blankProgram(n.trim()||'Program baru'); db.programs[np.id] = np; db.activeId = np.id; tab='program'; resetScen(); save(true); render(); break; }
     case 'dupProg': { const c = migrate(JSON.parse(JSON.stringify(p))); c.id = uid(); c.nama = p.nama + ' (salinan)'; c.created = c.updated = new Date().toISOString(); db.programs[c.id] = c; db.activeId = c.id; save(true); render(); toast('Program diduplikat'); break; }
-    case 'loadSample': { const s = sampleProgram(); db.programs[s.id] = s; db.activeId = s.id; tab='program'; resetScen(); save(true); render(); break; }
+    case 'loadSample': { const s = sampleProgram(); db.programs[s.id] = s; db.activeId = s.id; tab='ikhtisar'; resetScen(); save(true); render(); break; }
     case 'delProg': {
       if (!confirm(`Hapus program "${p.nama}" dari browser ini?\nSaran: simpan ke file dulu kalau masih perlu.`)) break;
       delete db.programs[p.id];
@@ -2513,7 +3218,7 @@ document.addEventListener('click', e=>{
     case 'backupAll': download(`SROI_backup_semua_${today()}.json`, JSON.stringify({app:'sroi-kalkulator', appVersion:APP_VERSION, schema:SCHEMA, exported:new Date().toISOString(), programs:Object.values(db.programs)}, null, 2), 'application/json'); dirty=false; break;
     case 'openFile': $('#fileIn').value=''; $('#fileIn').click(); break;
     case 'exportCSV': exportCSV(); break;
-    case 'print': tab='ringkasan'; render(); setTimeout(()=>window.print(), 120); break;
+    case 'print': tab='laporan'; render(); setTimeout(()=>window.print(), 120); break;
   }
 });
 function focusLast(prefix){ const els = $$(`[data-path^="${prefix}"]`); if (els.length){ const row = els[els.length-1].closest('tr'); const f = row && row.querySelector('input,textarea'); if (f) f.focus(); } }
@@ -2553,12 +3258,12 @@ function exportCSV(){
   const p = cur(), res = compute(p), ys = res.ys;
   const num = (v,d=2) => { const x = Math.round(v*Math.pow(10,d))/Math.pow(10,d); return String(x).replace('.',','); };
   const q = s => { s = String(s??''); return /[;"\n\r]/.test(s) ? '"' + s.replace(/"/g,'""') + '"' : s; };
-  const head = ['No','Stakeholder','Jenis stakeholder','Lokasi','Outcome','Aspek','Indikator','Negatif','Kualitatif','Metode valuasi','Proxy & cara hitung','Sumber data & referensi'];
+  const head = ['No','Stakeholder','Jenis stakeholder','Lokasi','Outcome','Aspek','Indikator','Baseline','Target','Realisasi','Status bukti','Negatif','Kualitatif','Metode valuasi','Proxy & cara hitung','Sumber data & referensi'];
   ys.forEach(y=>head.push(`Nilai manfaat ${y} (Rp)`, `Rumus ${y}`, `DW ${y} %`, `Attr ${y} %`, `Disp ${y} %`, `DO ${y} %`, `Nilai bersih ${y} (Rp)`));
   head.push('Penjelasan deadweight','Penjelasan attribution','Penjelasan displacement','Penjelasan drop-off','Total nilai bersih (Rp)','Nilai saat ini (Rp)');
   const rows = [head];
   res.rows.forEach((r,i)=>{ const o = r.o, s = findS(o.stakeholderId), st = findSite(o.siteId);
-    const row = [i+1, s?s.nama:'', s?optName(JENIS_STK,s.jenis):'', st?st.nama:'', o.outcome, optName(ASPEK,o.aspek), o.indikator, o.negatif?'Ya':'Tidak', o.kualitatif?'Ya':'Tidak', optName(METODE,o.metode), o.deskripsi, o.proxySumber];
+    const row = [i+1, s?s.nama:'', s?optName(JENIS_STK,s.jenis):'', st?st.nama:'', o.outcome, optName(ASPEK,o.aspek), o.indikator, o.baseline, o.target, o.realisasi, optName(STATUS_O,o.status), o.negatif?'Ya':'Tidak', o.kualitatif?'Ya':'Tidak', optName(METODE,o.metode), o.deskripsi, o.proxySumber];
     ys.forEach(y=>{ const t = r.years.find(x=>x.y===y), d = (o.years||{})[y]||{};
       if (!t || t.empty) row.push('', '', '', '', '', '', '');
       else row.push(num(Math.abs(t.gross),0), evalExpr(d.nilai).expr ? d.nilai : '', num(t.dw*100), num(t.at*100), num(t.di*100), num(t.dr*100), num(t.net,0)); });
@@ -2600,7 +3305,7 @@ document.addEventListener('toggle', e=>{
   const d = e.target; if (!d || !d.dataset || !d.dataset.howto) return;
   pref.open[d.dataset.howto] = d.open; savePref();
 }, true);
-window.addEventListener('beforeprint',()=>{ if (tab!=='ringkasan'){ tab='ringkasan'; render(); } });
+window.addEventListener('beforeprint',()=>{ if (tab!=='laporan'){ tab='laporan'; render(); } });
 
 /* ================= Boot ================= */
 loadDB();
